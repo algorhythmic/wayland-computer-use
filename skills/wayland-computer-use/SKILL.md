@@ -12,6 +12,37 @@ Use the plugin's `wayland` MCP tools. This is a custom Hyprland integration, not
 3. Use the returned `frame_id` for one input action. Coordinates are pixels in that exact screenshot, starting at its top-left. Do not use global monitor coordinates or coordinates from a resized preview; use the original image dimensions in metadata.
 4. Input tools return a new screenshot and frame ID. Inspect it before the next action. Frames expire after two minutes and are invalidated by monitor-layout or active-window changes; take a fresh screenshot if rejected.
 
+## Local observations and outcome waits
+
+When available, `observe_window` returns a focused-window crop and a guarded
+`frame_id` from the same capture. Coordinates are relative to that exact crop,
+not the monitor. Inspect the full returned image before input. These frames
+receive pixel revalidation even when focus restoration is not requested.
+Standalone `wayland_observer` revisions and accessibility refs are never input
+capabilities; do not substitute them for an input server's frame ID.
+
+Use `wait_for` for an exact accessible name, unique mapped window title/class,
+or change inside a specified crop region. Region waits need a retained
+`since_revision` with baseline pixels. `wait_for_change` on the standalone
+observer still means any change, including animation. Prefer a condition tied
+to the user's task. Accessibility may be unavailable or partial; a name wait
+requires complete evidence and an unambiguous match.
+
+Input tools accept optional `after: {condition: ..., timeout_ms: ...}` to perform
+one approved input and then wait locally for an accessible name or window.
+Inspect the returned outcome and screenshot before further input. A timeout
+does not undo or authorize replaying the input. `action_performed: "unknown"`
+means input may have partially executed; never retry blindly. Ordinary input
+returns the next capture without a fixed settling delay, so it may precede an
+asynchronous UI result. Use an explicit condition when completion matters.
+
+`channels` selects metadata, pixels, and/or accessibility collection. On the
+standalone observer, `images: false` only suppresses image delivery. Default
+freshness requires collection started after the request. `after_action` accepts
+the input response's local `action_completed_ns` watermark; `max_age_ms` allows
+explicitly bounded cached evidence. Check `freshness_satisfied` and `status`.
+`stop_observing` clears observation history and stops the bounded local lease.
+
 ## Approval dialogs and focus
 
 When approval requires interacting with another window, request the input with

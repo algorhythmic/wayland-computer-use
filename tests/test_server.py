@@ -123,7 +123,7 @@ class Tests(unittest.TestCase):
             process.return_value.returncode = 1
             self.assertIs(d.prepare("pointer", args), f)
             self.assertEqual(state["active"], "0x123")
-            def steal_focus(*unused):
+            def steal_focus(*unused, **kwargs):
                 state["active"] = "0x456"
                 return (784, 584, bytes(rgb))
             with patch.object(d, "target_pixels", side_effect=steal_focus), \
@@ -154,14 +154,13 @@ class Tests(unittest.TestCase):
 
     def test_crop_uses_supplied_screenshot_without_recapture(self):
         d = server.Desktop()
-        png = b"\x89PNG\r\n\x1a\n" + bytes(8) + server.struct.pack(">II", 100, 100)
+        from cu.capture import Capture
+        capture = Capture(100, 100, bytes(30000), 1, 2, "test")
         monitor = {"name": "DP-1", "width": 100, "height": 100, "scale": 1,
                    "transform": 0, "x": 0, "y": 0}
-        with patch.object(server, "run", return_value=bytes(4*4*3)) as run:
-            d.target_pixels({"at": [10, 10], "size": [20, 20]}, monitor, png)
-            self.assertEqual(run.call_count, 1)
-            self.assertEqual(run.call_args.args[0][0], "magick")
-            self.assertEqual(run.call_args.args[1], png)
+        with patch.object(d.capturer, "capture", side_effect=AssertionError("recaptured")):
+            result = d.target_pixels({"at": [10, 10], "size": [20, 20]}, monitor, capture)
+            self.assertEqual(result, (4, 4, bytes(48)))
 
     def test_focus_race_after_restoration_rejected(self):
         d, f, state, args = self.approval_desktop()
@@ -284,9 +283,77 @@ class Tests(unittest.TestCase):
         with patch.object(d, "guard", return_value=frame()), \
                 patch.object(d, "mouse") as mouse, \
                 patch.object(d, "move", side_effect=[None, RuntimeError("test failure")]):
-            with self.assertRaises(RuntimeError):
+            with self.assertRaises(server.ActionRejected) as error:
                 d.call("drag", {"frame_id": "x", "x": 10, "y": 10, "end_x": 40, "end_y": 40})
             self.assertEqual(mouse.call_args_list[-1].args, ("click", "0x80"))
+            self.assertEqual(json.loads(error.exception.content[0]["text"])["action_performed"], "unknown")
+
+    def test_shared_crop_maps_coordinates_and_uses_exact_capture(self):
+        from cu.capture import Capture
+        d, f, state, args = self.approval_desktop()
+        monitor = dict(f['monitor'], id=1)
+        target = dict(f['target'], at=[20,30], size=[100,100])
+        capture = Capture(100,100,bytes(30000),time.monotonic_ns(),time.monotonic_ns(),'test')
+        with patch.object(d.capturer,'capture',side_effect=AssertionError('recaptured')):
+            content=d.capture_content(capture,monitor,target,f['layout'],'0x123',[20,30,100,100],True)
+        meta=json.loads(content[0]['text']);current=d.frames[meta['frame_id']]
+        self.assertEqual(d.point(current,50,60),(70,90))
+        self.assertEqual(current['visual'],(84,84,bytes(84*84*3)))
+        self.assertEqual(meta['origin'],[20,30])
+        self.assertTrue(current['shared_observation'])
+
+    def test_shared_observation_checks_pixels_without_restoring_focus(self):
+        d,f,state,args=self.approval_desktop()
+        state['active']='0x123';f['shared_observation']=True
+        args['restore_focus']=False
+        changed=bytearray(f['visual'][2]);changed[0]=255
+        with patch.object(server.subprocess,'run') as process, \
+                patch.object(d,'target_pixels',return_value=(784,584,bytes(changed))), \
+                patch.object(d,'screenshot',return_value=[]),patch.object(d,'dispatch') as dispatch:
+            process.return_value.returncode=1
+            with self.assertRaises(server.ActionRejected):d.prepare('pointer',args)
+            dispatch.assert_not_called()
+
+    def test_input_plus_wait_executes_once_and_reports_timeout(self):
+        d=server.Desktop();f=frame();f['target']={'address':'0x123'}
+        args={'frame_id':'token','text':'hello','after':{'condition':{'kind':'accessible','name':'Ready'},'timeout_ms':10}}
+        d.frames['token']=f
+        with patch.object(d,'guard',return_value=f),patch.object(server,'run') as run, \
+                patch.object(d,'observation_content',return_value=[server.text_content({'status':'timeout','condition_met':False})]) as wait, \
+                patch.object(d,'screenshot',return_value=[]),patch.object(server.time,'sleep') as sleep:
+            result=d.call('type_text',args)
+        run.assert_called_once_with(['wtype','-'],b'hello')
+        sleep.assert_not_called()
+        meta=json.loads(result[0]['text'])
+        self.assertTrue(meta['action_performed'])
+        self.assertEqual(wait.call_args.args[0]['after_action'],meta['action_completed_ns'])
+        self.assertEqual(meta['status'],'timeout')
+
+    def test_ordinary_input_preserves_first_block_frame_metadata(self):
+        d=server.Desktop()
+        with patch.object(d,'guard',return_value=frame()),patch.object(server,'run'), \
+                patch.object(d,'screenshot',return_value=[server.text_content({'frame_id':'next','timings_ms':{'encode_ms':1}})]):
+            result=d.call('press_key',{'frame_id':'old','key':'Tab'})
+        meta=json.loads(result[0]['text'])
+        self.assertEqual(meta['frame_id'],'next')
+        self.assertEqual(meta['timings_ms']['encode_ms'],1)
+        self.assertTrue(meta['action_performed'])
+
+    def test_post_input_capture_failure_reports_performed_and_never_replays(self):
+        d=server.Desktop()
+        with patch.object(d,'guard',return_value=frame()),patch.object(server,'run') as run, \
+                patch.object(d,'screenshot',side_effect=RuntimeError('capture unavailable')):
+            with self.assertRaises(server.ActionRejected) as error:
+                d.call('type_text',{'frame_id':'x','text':'hello'})
+        run.assert_called_once()
+        self.assertTrue(json.loads(error.exception.content[0]['text'])['action_performed'])
+
+    def test_invalid_wait_rejected_before_focus_or_input(self):
+        d,f,state,args=self.approval_desktop()
+        args.pop('steps');args['after']={'condition':{'kind':'accessible','name':'Ready'},'timeout_ms':True}
+        with patch.object(d,'dispatch') as dispatch,patch.object(d,'mouse') as mouse:
+            with self.assertRaises(ValueError):d.call('pointer',args)
+        dispatch.assert_not_called();mouse.assert_not_called()
 
     def test_mcp_handshake_and_validation(self):
         requests = [
@@ -302,7 +369,7 @@ class Tests(unittest.TestCase):
         responses = [json.loads(line) for line in stdout.getvalue().splitlines()]
         self.assertEqual(len(responses), 3)
         self.assertEqual(responses[0]["result"]["protocolVersion"], "2025-06-18")
-        self.assertEqual(len(responses[1]["result"]["tools"]), 8)
+        self.assertEqual(len(responses[1]["result"]["tools"]), 11)
         self.assertTrue(responses[2]["result"]["isError"])
 
 

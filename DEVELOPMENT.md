@@ -4,9 +4,32 @@ The repository is now the consolidated development source for both servers.
 Commands below describing `/home/david/plugins/` are this machine's existing
 installation, which consolidation did not modify. For another checkout/install,
 substitute its actual destination. Observer development lives in
-`wayland-desktop-observer/` and is not hot-reloaded by the input host.
+`scripts/cu/` with a separate entry point in `wayland-desktop-observer/`.
+That independent observer process is not hot-reloaded by the input host.
 The root README is the current setup guide; historical benchmark reproduction
 is documented in `benchmarks/PRESERVATION.md`.
+
+## Activating the latency implementation
+
+This change adds tool schemas and a bundle-aware host. Do not publish a new bundle
+into an installation still running the old host: that host cannot load it, and an
+existing tool contract cannot discover the added tools. Update the plugin files,
+publish with the new host present, and reconnect both MCP servers through the
+client's normal plugin flow. Existing approvals are unchanged. A source checkout
+or a successful local publication does not update an already connected plugin.
+
+For local verification without changing installed plugins:
+
+```bash
+python3 scripts/build_capture.py
+python3 scripts/dev_publish.py --destination .
+python3 scripts/benchmark_latency.py --focus-fixture
+```
+
+The last command explicitly focuses one disposable GTK fixture at startup and
+aborts on later focus changes. It injects no keys/buttons and saves only metrics.
+Omit `--focus-fixture` when allowing the fixture to receive focus naturally.
+[Runtime design and tool examples](docs/latency.md).
 
 ## Lower-latency local-client operation
 
@@ -21,7 +44,7 @@ outstanding request per client; drain previous responses before switching to it.
 On timeout or transport failure, stop and inspect—never resend input blindly.
 Approval policy is unchanged. This adapter does not grant tools absent from a chat.
 
-PNG capture now uses lossless compression level 1 instead of default 6. A local
+The previous implementation changed PNG compression level 6 to level 1. A local
 six-capture interleaved benchmark measured 221–260 ms versus 975–1082 ms, with
 roughly 15% larger images. Those are capture/encoding times, not total action or
 model latency; network/image processing may offset some savings.
@@ -36,10 +59,13 @@ This is local, agent-driven development within the user's requested task. It is
 not an autonomous service that edits code, relaxes guards, or sends telemetry.
 
 The MCP configuration starts `scripts/dev_host.py`. This stable stdio host loads
-an explicitly published, SHA-256-identified `server.py` implementation. It checks
+an explicitly published, SHA-256-identified runtime bundle. It checks
 the published pointer before each request and switches implementations only
 between requests. Host PID and the MCP connection stay intact; the implementation
-and its in-memory screenshot frames are replaced. No signals or app restart.
+and its in-memory screenshot frames are replaced, and old workers are closed.
+Bundle manifests cover `server.py`, `cu/*.py`, and the optional capture binary.
+Python dependencies execute from verified bytes with a fresh import namespace.
+Legacy single-file releases remain readable by the new host. No signals or app restart.
 
 ## Iterate from this conversation
 
@@ -73,7 +99,7 @@ inject input. Existing long-running actions finish before their host reloads.
 
 ## Boundaries and recovery
 
-- Only `server.py` implementation changes are hot-reloaded. Tool definitions
+- Only runtime bundle implementation changes are hot-reloaded. Tool definitions
   (including descriptions/annotations), host changes, dependencies, `.mcp.json`,
   and agent instructions require normal installation/client rediscovery.
 - The host verifies complete tool definitions against its startup contract and

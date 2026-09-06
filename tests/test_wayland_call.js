@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../scripts/wayland_call.js'), 'utf8');
 async function test() {
   let writes, displayed;
-  async function run(chunks) {
+  async function run(chunks, request = {name:'pointer', arguments:{x:1,y:2}}, clock = () => 0) {
     writes = []; displayed = [];
     const tools = {
       write_stdin: async args => { writes.push(args); assert.ok(chunks.length); return chunks.shift(); },
@@ -11,7 +11,8 @@ async function test() {
     };
     const text = () => {};
     const image = value => displayed.push(value);
-    return eval(source)(123, {name:'pointer', arguments:{x:1,y:2}});
+    const Date = {now: clock};
+    return eval(source)(123, request);
   }
   const result = JSON.stringify({jsonrpc:'2.0',id:3,result:{isError:false,content:[
     {type:'text',text:'{"frame_id":"new"}'},
@@ -26,6 +27,13 @@ async function test() {
   await assert.rejects(run([{output:result.replace('/tmp/hush-mcp-test.png','/home/david/secret.png')}]), /Unexpected screenshot path/);
   await run([{output:result.replace('"isError":false','"isError":true')}]);
   assert.equal(writes.length,1); // Rejections are displayed, never automatically retried.
+  let times = [0,25000];
+  await run([{output:''},{output:result}],
+    {name:'wait_for',arguments:{timeout_ms:30000}}, () => times.shift() ?? 25000);
+  assert.equal(writes.length,2); assert.equal(writes[1].chars,'');
+  times = [0,51000];
+  await assert.rejects(run([{output:''}],
+    {name:'wait_for',arguments:{timeout_ms:30000}}, () => times.shift() ?? 51000), /outcome unknown/);
   console.log('PASS: single execution, fragmented result, no replay, safe image path, rejection review');
 }
 test().catch(error => { console.error(error); process.exitCode=1; });

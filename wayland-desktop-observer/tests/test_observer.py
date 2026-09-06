@@ -10,8 +10,10 @@ import time
 import unittest
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-import observer_server as m
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]/'scripts'))
+from cu import observation as m
+from cu.capture import Capture
+OBSERVER_ENTRY = Path(__file__).resolve().parents[1]/'scripts/observer_server.py'
 
 
 def sample(rgb=None, value=0, width=128, height=128):
@@ -94,6 +96,7 @@ class CollectorTests(unittest.TestCase):
     def setUp(self):
         with patch.object(m.baseline, 'session_env'):
             self.c = m.Collector()
+        self.addCleanup(self.c.close)
         self.window = {'address':'0xa','pid':123,'class':'Test','title':'Test',
                        'at':[0,0], 'size':[100,100], 'workspace':{'id':1}, 'monitor':0, 'mapped':True}
         self.monitor = {'id':0,'name':'DP-1','x':0,'y':0,'width':200,'height':200,'scale':1,'transform':0}
@@ -106,6 +109,17 @@ class CollectorTests(unittest.TestCase):
         self.assertIsNone(s['rgb'])
         self.assertEqual(s['state']['accessibility']['status'], 'not_requested')
 
+    def test_channels_skip_capture_or_accessibility_work(self):
+        with patch.object(self.c.capturer,'capture',side_effect=AssertionError('pixels requested')) as capture, \
+                patch.object(self.c.accessibility,'probe',return_value={'status':'available','nodes':[]}) as probe, \
+                patch.object(m.subprocess,'run') as run:
+            run.return_value.returncode=1
+            s=self.c.collect('0xa',channels=['metadata','accessibility'])
+            self.assertIsNone(s['rgb']);capture.assert_not_called();probe.assert_called_once()
+            probe.reset_mock()
+            self.c.collect('0xa',channels=['metadata'])
+            probe.assert_not_called();capture.assert_not_called()
+
     def test_unfocused_or_missing_window_does_not_capture(self):
         for address, reason in [('0xa','target_not_focused'),('0xb','window_missing')]:
             self.c.hypr = lambda name: {'clients':[self.window], 'monitors':[self.monitor], 'activewindow':{}}[name]
@@ -115,12 +129,10 @@ class CollectorTests(unittest.TestCase):
             self.assertIsNone(s['rgb'])
 
     def test_accessibility_timeout_preserves_valid_visual(self):
-        png = m.png_rgb(100,100,bytes(30000))
-        def cmd(args, *a, **kw):
-            if args[0] == 'grim':return png
-            if args[0] == 'magick':return bytes(30000)
-            raise subprocess.TimeoutExpired(args,2)
-        with patch.object(m, 'command', side_effect=cmd), patch.object(m.subprocess,'run') as run:
+        capture = Capture(100,100,bytes(30000),1,2,'test')
+        with patch.object(self.c.capturer, 'capture', return_value=capture), \
+                patch.object(self.c.accessibility, 'probe', return_value={'status':'unavailable','reason':'probe_timeout'}), \
+                patch.object(m.subprocess,'run') as run:
             run.return_value.returncode = 1
             s = self.c.collect('0xa')
         self.assertEqual(s['state']['accessibility']['reason'], 'probe_timeout')
@@ -135,13 +147,12 @@ class CollectorTests(unittest.TestCase):
                 return self.window if calls == 1 else {}
             return {'clients':[self.window], 'monitors':[self.monitor]}[name]
         self.c.hypr = hypr
-        def cmd(args,*a,**kw):
-            if args[0]=='grim':return m.png_rgb(100,100,bytes(30000))
-            if args[0]=='magick':return bytes(30000)
-            return b'{"status":"unavailable"}'
-        with patch.object(m,'command',side_effect=cmd),patch.object(m.subprocess,'run') as run:
+        with patch.object(self.c.capturer, 'capture', return_value=Capture(100,100,bytes(30000),1,2,'test')), \
+                patch.object(self.c.accessibility,'probe',return_value={'status':'unavailable'}), \
+                patch.object(m.subprocess,'run') as run:
             run.return_value.returncode=1;s=self.c.collect('0xa')
         self.assertIsNone(s['rgb'])
+        self.assertIsNone(s['capture'])
         self.assertEqual(s['state']['visual']['reason'], 'desktop_changed_during_collection')
 
     def test_window_identity_survives_title_change_not_pid_reuse(self):
@@ -161,7 +172,7 @@ class WorkerTests(unittest.TestCase):
     def setUp(self):
         class Fake:
             value=0
-            def collect(self, window):return sample(value=(window,self.value))
+            def collect(self, window, channels=None):return sample(value=(window,self.value))
         self.fake=Fake()
         self.p=patch.object(m.Observer,'connect_events');self.p.start()
         self.o=m.Observer(self.fake,interval=.01)
@@ -209,11 +220,11 @@ class ProtocolTests(unittest.TestCase):
                   {'jsonrpc':'2.0','method':'notifications/initialized'},
                   {'jsonrpc':'2.0','id':2,'method':'tools/list'},
                   {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'pointer','arguments':{}}}]
-        out=subprocess.run([sys.executable,str(m.ROOT/'scripts/observer_server.py')],
+        out=subprocess.run([sys.executable,str(OBSERVER_ENTRY)],
                            input='\n'.join(map(json.dumps,requests))+'\n',text=True,capture_output=True,timeout=5,check=True)
         responses=[json.loads(l) for l in out.stdout.splitlines()]
         self.assertEqual([r['id'] for r in responses],[1,2,3])
-        self.assertEqual(len(responses[1]['result']['tools']),3)
+        self.assertEqual(len(responses[1]['result']['tools']),4)
         self.assertTrue(responses[2]['result']['isError'])
 
 

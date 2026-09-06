@@ -4,16 +4,18 @@ Experimental local MCP tools for operating and observing a **Hyprland/Wayland**
 desktop, developed on Omarchy. A community project, not an official OpenAI
 computer-use implementation or support for every Wayland compositor.
 
-One repository, **two independent MCP servers**. Consolidation does not merge
-their permissions, state, or input guards.
+One repository, **two independent MCP servers**, using shared observation code.
+Their permissions, runtime state, and input guards remain separate.
 
 | Component | Location / server | Purpose |
 |---|---|---|
-| Computer Use | Root / `wayland` | Screenshots and guarded focus, pointer, typing, keys, scrolling and dragging |
+| Computer Use | Root / `wayland` | Guarded input, screenshots, actionable window observations and outcome waits |
 | Desktop Observer | `wayland-desktop-observer/` / `wayland_observer` | Read-only versioned state, accessibility evidence, changed-region images and bounded waits |
 
-Observer revisions are **not** input `frame_id`s. Actions still need a fresh
-Computer Use screenshot and its validations. Neither server makes model decisions.
+Standalone observer revisions are **not** input `frame_id`s. Computer Use can now
+issue its own guarded frame from the exact capture returned by `observe_window`
+or `wait_for`, avoiding a second capture just to obtain a frame. Neither server
+makes model decisions. [Latency design, tool examples and measurements](docs/latency.md).
 Approvals remain the MCP client's responsibility; read-only does not mean
 privacy-free or automatically approved.
 
@@ -49,7 +51,9 @@ experiments. Do not move it or overwrite the historical results.
 
 ## Setup
 
-Requirements: unlocked Hyprland, Python 3, `hyprctl`, `grim`, ImageMagick (`magick`).
+Requirements: unlocked Hyprland, Python 3, `hyprctl`, `grim`.
+ImageMagick (`magick`) is used by legacy fixtures and image round-trip tests,
+not the current capture path.
 Input additionally needs `wtype` and `ydotool` with a private uinput daemon.
 Accessibility needs PyGObject and the Atspi 2.0 GI typelib; the benchmark fixture
 also needs GTK4. Node is used only for adapter tests. The MCP host must allow
@@ -59,6 +63,7 @@ Clone into a directory named `wayland-computer-use`. From its root:
 
 ```bash
 python3 scripts/configure_mcp.py --write-plugin-configs
+python3 scripts/build_capture.py  # optional: requires cc, pkg-config, wayland-scanner, wayland-client
 python3 scripts/dev_publish.py --destination .
 ```
 
@@ -88,9 +93,14 @@ is not equivalent to a complete model-driven acceptance test.
 ## Behavior and boundaries
 
 Computer Use exposes `desktop_state`, `screenshot`, `focus_window`, `pointer`,
-`type_text`, `press_key`, `scroll`, and `drag`. Input returns the next screenshot.
-Images are lossless PNG at compression level 1. A frame records target identity,
-layout and visible pixels, and expires after 120 seconds.
+`type_text`, `press_key`, `scroll`, `drag`, `observe_window`, `wait_for`, and
+`stop_observing`. Input returns the next screenshot, optionally after a bounded
+`after` condition. There is no unconditional 200 ms post-input sleep. A screenshot
+alone does not establish task completion; use an explicit outcome condition.
+Captures use raw RGB internally and encode lossless PNG at delivery. The optional
+persistent helper uses wlr-screencopy on untransformed scale-1 outputs; other
+configurations use raw `grim`. A frame records capture time, target identity,
+layout and visible pixels, and expires after 120 seconds from capture start.
 
 Approval dialogs can steal focus. With `restore_focus:true`, input names the
 observed window/title, validates it, restores it once, rechecks, and acts within
@@ -99,11 +109,16 @@ retries. Non-scroll input also uses a noise-tolerant pixel guard, stricter near
 the action. It is not semantic UI recognition: animation may still be rejected
 and subtle changes may pass.
 
-The observer exposes `observe`, `wait_for_change`, and `stop_observing`. Hyprland
-events wake a sampler; periodic sampling catches pixel changes. An initial window
+The observer exposes `observe`, `wait_for_change`, `wait_for`, and `stop_observing`.
+An interruptible pipe, filtered Hyprland events, and a persistent AT-SPI worker
+wake a sampler; periodic sampling reconciles missing events. An initial window
 crop is followed by versioned metadata/accessibility changes and a bounding crop
 of changed tiles. A renewable 120-second lease bounds collection; explicit stop
-clears retained history. Waiting detects **any revision change**, not task success.
+clears retained history. `wait_for_change` detects **any revision change**;
+`wait_for` evaluates an explicit accessible-name, window, or changed-region
+condition. Neither infers task success from a repaint. `channels` selects what is
+collected; `images` controls delivery. Freshness can require collection after a
+request or an `action_completed_ns` watermark. Cached observations report their age.
 AT-SPI refs are revision-local, not stable control identifiers, and their bounds
 are not validated for input. Missing accessibility is explicit; there is no OCR.
 
@@ -128,14 +143,14 @@ python3 -m unittest discover -s tests -v
 node tests/test_wayland_call.js
 python3 -m unittest discover -s wayland-desktop-observer/tests -v
 python3 -m unittest discover -s wayland-desktop-observer/baseline/tests -v
-sha256sum --check benchmarks/SHA256SUMS
+python3 scripts/verify_comparison.py
 ```
 
-[Same-chat development loop](DEVELOPMENT.md): input implementation hot reload
-preserves stdio but invalidates frames. It does not reload tool schemas, host code
-or observer code, or change approvals. The observer still imports utilities from
-its frozen `baseline/`; shared-code extraction or server unification is a later,
-separately measured change.
+[Same-chat development loop](DEVELOPMENT.md): the input host reloads verified
+runtime bundles, closes old workers and invalidates frames. This release changes
+host code and tool schemas, so existing MCP connections require restart and
+rediscovery. The independent observer also requires restart to adopt source changes.
+The frozen `baseline/`, original results, and comparison tag remain unchanged.
 
 [Computer Use reference](docs/computer-use-reference.md) and
 [Observer reference](docs/observer-reference.md) retain pre-consolidation technical

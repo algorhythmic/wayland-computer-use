@@ -36,7 +36,7 @@ def main():
         process.stdin.write('{"jsonrpc":"2.0","method":"notifications/initialized"}\n')
         process.stdin.flush()
         tools = request('tools/list')['tools']
-        assert {t['name'] for t in tools} == {'observe','wait_for_change','stop_observing'}
+        assert {t['name'] for t in tools} == {'observe','wait_for_change','wait_for','stop_observing'}
         state, images = call('observe', images=False)
         assert not images and not state['actionable']
         assert 'windows' in state['state'], state['state']

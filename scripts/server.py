@@ -15,6 +15,20 @@ import time
 import tempfile
 import uuid
 
+# Published builds load as unique packages so shared modules cannot survive a
+# hot reload with stale state. Direct invocation/tests use the checkout package.
+if __package__:
+    from .cu.capture import Capturer
+    from .cu.pixels import crop, png_rgb
+    from .cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
+    from .cu import observation
+else:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from cu.capture import Capturer
+    from cu.pixels import crop, png_rgb
+    from cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
+    from cu import observation
+
 
 def run(args, data=None, timeout=15):
     result = subprocess.run(args, input=data, stdout=subprocess.PIPE,
@@ -195,6 +209,28 @@ def save_visual_debug(before, after, metrics):
 class Desktop:
     def __init__(self):
         self.frames = {}
+        self.capturer = Capturer(command=run)
+        self.observer = None
+        self.action_started = False
+
+    def close(self):
+        if self.observer:
+            self.observer.close()
+        self.capturer.close()
+        self.frames.clear()
+
+    def observation_service(self):
+        if self.observer is None:
+            self.observer = Observer(Collector(capturer=self.capturer))
+        return self.observer
+
+    def wait_focus(self, address, timeout=.4):
+        end = time.monotonic()+timeout
+        while self.hypr('activewindow').get('address') != address:
+            remaining = end-time.monotonic()
+            if remaining <= 0:
+                raise ValueError('Focus changed again after restoration')
+            time.sleep(min(.015, remaining))
 
     def hypr(self, command):
         if not os.environ.get("HYPRLAND_INSTANCE_SIGNATURE"):
@@ -242,26 +278,57 @@ class Desktop:
         active = self.hypr("activewindow")
         before = active.get("address")
         target = self.target_record(active) if active.get("mapped") and active.get("monitor") == m.get("id") else None
-        png = run(["grim", "-s", "1", "-o", m["name"], "-t", "png", "-l", "1", "-"])
-        if png[:8] != b"\x89PNG\r\n\x1a\n":
-            raise RuntimeError("Invalid screenshot")
-        width, height = struct.unpack(">II", png[16:24])
-        visual = self.target_pixels(target, m, png) if target else None
+        if subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0:
+            raise RuntimeError('Desktop is locked')
+        capture = self.capturer.capture(m)
         current = self.hypr("activewindow")
         after = current.get("address")
         if before != after or self.layout(monitors) != self.layout(self.hypr("monitors")):
             raise RuntimeError("Desktop changed during capture; take another screenshot")
         if target and self.target_record(current) != target:
             raise RuntimeError("Target changed during capture; take another screenshot")
+        if subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0:
+            raise RuntimeError('Desktop locked during capture')
+        return self.capture_content(capture, m, target, self.layout(monitors), after)
+
+    @staticmethod
+    def mapping(monitor, geometry=None):
+        if geometry is None:
+            return monitor
+        x, y, width, height = geometry
+        return dict(monitor, x=x, y=y, width=width, height=height, scale=1, transform=0)
+
+    def capture_content(self, capture, monitor, target, layout, active, geometry=None, shared=False):
+        width, height = capture.width, capture.height
+        visual = self.target_pixels(target, monitor, capture, geometry) if target else None
         token = uuid.uuid4().hex
-        self.frames = {token: {"time": time.monotonic(), "monitor": m, "width": width,
-                              "height": height, "layout": self.layout(monitors), "active": after,
-                              "target": target, "visual": visual}}
-        return [text_content({"frame_id": token, "monitor": m["name"], "width": width,
-                              "height": height, "origin": [m["x"], m["y"]],
-                              "coordinates": "screenshot pixels", "active_window": after,
-                              "target_window": target}),
+        self.frames = {token: {"time": capture.started_ns/1e9, "monitor": monitor, "width": width,
+                              "height": height, "layout": layout, "active": active,
+                              "target": target, "visual": visual, "geometry": geometry,
+                              "shared_observation": shared}}
+        encode_start = time.monotonic_ns()
+        png = png_rgb(width, height, capture.rgb)
+        return [text_content({"frame_id": token, "monitor": monitor["name"], "width": width,
+                              "height": height, "origin": geometry[:2] if geometry else [monitor["x"], monitor["y"]],
+                              "coordinates": "screenshot pixels", "active_window": active,
+                              "target_window": target, 'capture_started_ns': capture.started_ns,
+                              'capture_backend': capture.backend, 'presentation_ns': capture.presentation_ns,
+                              'timings_ms': {'capture_ms': (capture.completed_ns-capture.started_ns)/1e6,
+                                             'encode_ms': (time.monotonic_ns()-encode_start)/1e6}}),
                 {"type": "image", "mimeType": "image/png", "data": base64.b64encode(png).decode()}]
+
+    def observation_content(self, args):
+        content, sample = self.observation_service().observe(**args, images=False, return_sample=True)
+        meta = json.loads(content[0]['text'])
+        capture = sample.get('capture')
+        if capture and meta['freshness_satisfied'] and time.monotonic_ns()-capture.started_ns < 120_000_000_000:
+            target = {k: v for k, v in sample['target'].items() if k != 'id'}
+            next_frame = self.capture_content(capture, sample['monitor'], target,
+                self.layout(sample['state']['monitors']), sample['state']['active_window'], sample['geometry'], True)
+            meta.update(actionable=True, input_frame_id=json.loads(next_frame[0]['text'])['frame_id'])
+            content[0]['text'] = json.dumps(meta)
+            content += next_frame
+        return content
 
     @staticmethod
     def target_record(window):
@@ -288,24 +355,19 @@ class Desktop:
             raise ValueError("Target has no visible interior on this monitor")
         return left, top, right, bottom
 
-    def target_pixels(self, target, monitor, png=None):
-        # Baseline pixels come from the SAME PNG returned to the agent.
-        if png is None:
-            png = run(["grim", "-s", "1", "-o", monitor["name"], "-t", "png", "-l", "1", "-"])
-        iw, ih = struct.unpack(">II", png[16:24])
-        left, top, right, bottom = self.target_bounds(target, monitor, iw, ih)
+    def target_pixels(self, target, monitor, capture=None, geometry=None):
+        # Validation and delivered PNG derive from the SAME immutable RGB capture.
+        capture = capture or self.capturer.capture(monitor, geometry)
+        iw, ih = capture.width, capture.height
+        left, top, right, bottom = self.target_bounds(target, self.mapping(monitor, geometry), iw, ih)
         cw, ch = right-left, bottom-top
-        rgb = run(["magick", "png:-", "-crop", f"{cw}x{ch}+{left}+{top}",
-                   "+repage", "-alpha", "off", "-depth", "8", "rgb:-"], png)
-        if len(rgb) != cw * ch * 3:
-            raise ValueError("Invalid RGB crop size")
-        return cw, ch, rgb
+        return cw, ch, crop(capture.rgb, iw, (left, top, right, bottom))
 
     def action_region(self, frame, args):
         if "x" not in args:
             return None
         left, top, right, bottom = self.target_bounds(
-            frame["target"], frame["monitor"], frame["width"], frame["height"])
+            frame["target"], self.mapping(frame["monitor"], frame.get('geometry')), frame["width"], frame["height"])
         points = [(args["x"], args["y"])]
         if "end_x" in args:
             points.append((args["end_x"], args["end_y"]))
@@ -339,7 +401,21 @@ class Desktop:
 
     def prepare(self, name, a):
         if not a.get("restore_focus", False):
-            return self.guard(a["frame_id"])
+            frame = self.guard(a["frame_id"])
+            if frame.get('shared_observation'):
+                try:
+                    self.check_target(frame)
+                    after = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
+                    metrics = visual_guard(frame['visual'], after, self.action_region(frame, a))
+                    if not metrics['accepted']:
+                        self.reject('Target pixels changed; review before input', frame['monitor']['name'], {'visual_difference': metrics})
+                    self.check_target(frame)
+                    self.guard(a['frame_id'])
+                except ValueError as exc:
+                    if isinstance(exc, ActionRejected):
+                        raise
+                    self.reject(str(exc), frame['monitor']['name'])
+            return frame
         frame = self.frames.get(a["frame_id"])
         if not frame or not frame.get("target"):
             raise ValueError("A screenshot with a focused target window is required")
@@ -350,14 +426,14 @@ class Desktop:
             self.check_target(frame)
             if self.hypr("activewindow").get("address") != target["address"]:
                 self.dispatch("focuswindow", "address:" + target["address"])
-                time.sleep(.4)
+                self.wait_focus(target['address'])
             self.check_target(frame)
             if self.hypr("activewindow").get("address") != target["address"]:
                 raise ValueError("Focus changed again after restoration")
             if time.monotonic() - frame["time"] > 120:
                 raise ValueError("Screenshot expired during approval; review the new screenshot")
             if name != "scroll":
-                after = self.target_pixels(target, frame["monitor"])
+                after = self.target_pixels(target, frame["monitor"], geometry=frame.get('geometry'))
                 metrics = visual_guard(frame["visual"], after, self.action_region(frame, a))
                 if not metrics["accepted"]:
                     details = {"visual_difference": metrics}
@@ -402,7 +478,7 @@ class Desktop:
     def point(frame, x, y):
         integer(x, 0, frame["width"] - 1)
         integer(y, 0, frame["height"] - 1)
-        m = frame["monitor"]
+        m = Desktop.mapping(frame["monitor"], frame.get('geometry'))
         w, h = m["width"], m["height"]
         if m["transform"] % 2:
             w, h = h, w
@@ -418,6 +494,39 @@ class Desktop:
         run(["ydotool", *args])
 
     def call(self, name, a):
+        validate(name, a)
+        started_ns = time.monotonic_ns()
+        self.action_started = False
+        self.action_completed_ns = None
+        self.timings = {}
+        try:
+            content = self._call(name, a)
+        except ActionRejected:
+            raise
+        except Exception as exc:
+            if self.action_started:
+                # Input may have partially executed. Never suggest an automatic retry.
+                raise ActionRejected(str(exc), [text_content({'error': str(exc)[:1400],
+                    'action_performed': True if self.action_completed_ns else 'unknown',
+                    'action_completed_ns': self.action_completed_ns, 'requires_review': True})]) from exc
+            raise
+        if self.action_completed_ns is not None:
+            self.timings['total_ms'] = (time.monotonic_ns()-started_ns)/1e6
+            operation = {'action_performed': True, 'action_completed_ns': self.action_completed_ns}
+            if content and content[0]['type'] == 'text':
+                metadata = json.loads(content[0]['text'])
+                metadata.update(operation)
+                metadata['timings_ms'] = {**metadata.get('timings_ms', {}), **self.timings}
+                content[0] = text_content(metadata)
+            else:
+                content.insert(0, text_content({**operation, 'timings_ms': self.timings}))
+        return content
+
+    def _call(self, name, a):
+        if name in ('observe_window', 'wait_for'):
+            return self.observation_content(a)
+        if name == 'stop_observing':
+            return self.observer.stop() if self.observer else [text_content({'stopped': True, 'history_cleared': True})]
         if name == "desktop_state":
             return [text_content(self.state())]
         if name == "screenshot":
@@ -427,8 +536,10 @@ class Desktop:
             if address not in [w["address"] for w in self.hypr("clients") if w.get("mapped")]:
                 raise ValueError("Unknown window address")
             self.frames.clear()
+            self.action_started = True
             self.dispatch("focuswindow", "address:" + address)
-            time.sleep(.2)
+            self.wait_focus(address)
+            self.action_completed_ns = time.monotonic_ns()
             return self.screenshot()
         # Validate all action arguments before restoration, which is itself a mutation.
         validate(name, a)
@@ -445,10 +556,19 @@ class Desktop:
             for xkey, ykey in (("x", "y"), ("end_x", "end_y")):
                 if xkey in a:
                     self.point(pending, a[xkey], a[ykey])
+        if 'after' in a:
+            validate_condition(a['after']['condition'])
+            if a['after']['condition']['kind'] == 'region_changed':
+                raise ValueError('Use wait_for with since_revision for region waits')
+            if a['after']['condition']['kind'] == 'accessible' and not (pending or {}).get('target'):
+                raise ValueError('Accessible outcome wait requires a screenshot with a focused target')
+        tick = time.monotonic_ns()
         frame = self.prepare(name, a)
+        self.timings['guard_ms'] = (time.monotonic_ns()-tick)/1e6
+        tick = time.monotonic_ns()
         started = False
         def recheck():
-            if a.get("restore_focus", False):
+            if a.get("restore_focus", False) or frame.get('shared_observation'):
                 try:
                     self.check_target(frame)
                     if self.hypr("activewindow").get("address") != frame["active"]:
@@ -464,6 +584,7 @@ class Desktop:
             code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
             count = integer(a.get("count", 1), 1, 3)
             self.frames.clear()
+            self.action_started = True
             self.move(point)
             recheck()
             if code:
@@ -476,12 +597,14 @@ class Desktop:
             self.frames.clear()
             recheck()
             started = True
+            self.action_started = True
             run(["wtype", "-"], value.encode())
         elif name == "press_key":
             args = key_args(a["key"])
             self.frames.clear()
             recheck()
             started = True
+            self.action_started = True
             run(["wtype", *args])
         elif name == "scroll":
             point = self.point(frame, a["x"], a["y"])
@@ -489,6 +612,7 @@ class Desktop:
             axis = a.get("axis", "vertical")
             dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
             self.frames.clear()
+            self.action_started = True
             self.move(point)
             recheck()
             started = True
@@ -497,6 +621,7 @@ class Desktop:
             start = self.point(frame, a["x"], a["y"])
             end = self.point(frame, a["end_x"], a["end_y"])
             self.frames.clear()
+            self.action_started = True
             self.move(start)
             try:
                 recheck()
@@ -510,13 +635,27 @@ class Desktop:
                 self.mouse("click", "0x80")
         else:
             raise ValueError("Unknown tool")
-        time.sleep(.2)
+        self.action_completed_ns = time.monotonic_ns()
+        self.timings['input_ms'] = (self.action_completed_ns-tick)/1e6
+        if 'after' in a:
+            tick = time.monotonic_ns()
+            condition = a['after']['condition']
+            window = None if condition['kind'] == 'window' else (frame.get('target') or {}).get('address')
+            result = self.observation_content({'window': window, 'condition': condition,
+                'timeout_ms': a['after'].get('timeout_ms', 5000), 'after_action': self.action_completed_ns})
+            self.timings['wait_ms'] = (time.monotonic_ns()-tick)/1e6
+            if not any(block['type'] == 'image' for block in result):
+                result += self.screenshot(frame['monitor']['name'])
+            return result
         return self.screenshot(frame["monitor"]["name"])
 
 
 S = {"type": "string"}
 I = {"type": "integer"}
 FRAME = {"frame_id": S,
+         'after': {'type': 'object', 'properties': {'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT},
+                   'required': ['condition'], 'additionalProperties': False,
+                   'description': 'Perform this one input, then wait locally for an accessible name or window. Timeout does not undo input; inspect before retrying.'},
          "restore_focus": {"type": "boolean", "default": False,
                            "description": "Explicitly approve restoring the named target's focus and performing this input in ONE execution. Default false rejects focus changes."},
          "target_window": {"type": "string", "description": "Required with restore_focus: screenshot target_window.address."},
@@ -552,10 +691,22 @@ TOOLS = [
          ["frame_id", "x", "y", "steps"]),
     tool("drag", "Left-button drag between two points in one screenshot; release even on failure.",
          {**FRAME, **XY, "end_x": I, "end_y": I}, ["frame_id", "x", "y", "end_x", "end_y"]),
+    tool('observe_window', 'Observe an exact focused window. Returns a full crop and guarded frame from the same capture when pixels are available. Channel selection controls collection.',
+         {k: v for k, v in COMMON.items() if k != 'images'}, ['window'], True),
+    tool('wait_for', 'Wait locally for an exact accessible name, unique window, or changed crop region. Returns outcome evidence and a guarded frame when pixels are available. No input.',
+         {**{k: v for k, v in COMMON.items() if k != 'images'}, 'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT}, ['condition'], True),
+    tool('stop_observing', 'Stop background observation and clear its retained history. No input.', {}, [], True),
 ]
 
 
 def validate(name, args):
+    if name in ('observe_window', 'wait_for', 'stop_observing'):
+        if isinstance(args, dict) and 'images' in args:
+            raise ValueError('Input observation tools deliver full actionable images when pixels are requested')
+        observation.validate('observe' if name == 'observe_window' else name, args)
+        if name == 'observe_window' and not args.get('window'):
+            raise ValueError('observe_window requires window')
+        return
     spec = next((t["inputSchema"] for t in TOOLS if t["name"] == name), None)
     if spec is None or not isinstance(args, dict):
         raise ValueError("Unknown tool or invalid arguments")
@@ -567,6 +718,12 @@ def validate(name, args):
             raise ValueError("Invalid argument type: " + k)
         if p["type"] == "boolean" and type(v) is not bool:
             raise ValueError("Invalid argument type: " + k)
+        if k == 'after':
+            if not isinstance(v, dict) or set(v)-{'condition', 'timeout_ms'} or 'condition' not in v:
+                raise ValueError('Invalid after wait')
+            validate_condition(v['condition'])
+            if 'timeout_ms' in v:
+                integer(v['timeout_ms'], 1, 30000)
         if "enum" in p and v not in p["enum"]:
             raise ValueError("Invalid choice: " + k)
 
@@ -574,40 +731,43 @@ def validate(name, args):
 def serve():
     session_env()
     desktop = Desktop()
-    for line in sys.stdin.buffer:
-        request = None
-        try:
-            request = json.loads(line)
-            if not isinstance(request, dict):
-                raise ValueError("Expected JSON-RPC object")
-            if "id" not in request:
-                continue
-            method = request.get("method")
-            params = request.get("params", {})
-            if method == "initialize":
-                result = {"protocolVersion": "2025-06-18", "capabilities": {"tools": {}},
-                          "serverInfo": {"name": "wayland-computer-use", "version": "0.1.0"},
-                          "instructions": "Use screenshots before input. Approval dialogs may steal focus: request ONE combined input with restore_focus=true and target_window/target_title from the screenshot. Describe it as Focus <title> and <action>. Do not loop separate refocus calls. Default false rejects focus changes. On action_performed=false, review the returned screenshot before a new approval. Frames expire after 120 seconds. Shared live desktop; do not disable approval gates."}
-            elif method == "ping":
-                result = {}
-            elif method == "tools/list":
-                result = {"tools": TOOLS}
-            elif method == "tools/call":
-                try:
-                    name, args = params["name"], params.get("arguments", {})
-                    validate(name, args)
-                    result = {"content": desktop.call(name, args), "isError": False}
-                except ActionRejected as exc:
-                    result = {"content": exc.content, "isError": True}
-                except Exception as exc:
-                    result = {"content": [text_content({"error": str(exc)[:1400]})], "isError": True}
-            else:
-                print(json.dumps({"jsonrpc": "2.0", "id": request["id"], "error": {"code": -32601, "message": "Method not found"}}), flush=True)
-                continue
-            print(json.dumps({"jsonrpc": "2.0", "id": request["id"], "result": result}), flush=True)
-        except Exception:
-            rid = request.get("id") if isinstance(request, dict) else None
-            print(json.dumps({"jsonrpc": "2.0", "id": rid, "error": {"code": -32700, "message": "Invalid JSON-RPC request"}}), flush=True)
+    try:
+        for line in sys.stdin.buffer:
+            request = None
+            try:
+                request = json.loads(line)
+                if not isinstance(request, dict):
+                    raise ValueError("Expected JSON-RPC object")
+                if "id" not in request:
+                    continue
+                method = request.get("method")
+                params = request.get("params", {})
+                if method == "initialize":
+                    result = {"protocolVersion": "2025-06-18", "capabilities": {"tools": {}},
+                              "serverInfo": {"name": "wayland-computer-use", "version": "0.1.0"},
+                              "instructions": "Use screenshots before input. Approval dialogs may steal focus: request ONE combined input with restore_focus=true and target_window/target_title from the screenshot. Describe it as Focus <title> and <action>. Do not loop separate refocus calls. Default false rejects focus changes. On action_performed=false, review the returned screenshot before a new approval. Frames expire after 120 seconds. Shared live desktop; do not disable approval gates."}
+                elif method == "ping":
+                    result = {}
+                elif method == "tools/list":
+                    result = {"tools": TOOLS}
+                elif method == "tools/call":
+                    try:
+                        name, args = params["name"], params.get("arguments", {})
+                        validate(name, args)
+                        result = {"content": desktop.call(name, args), "isError": False}
+                    except ActionRejected as exc:
+                        result = {"content": exc.content, "isError": True}
+                    except Exception as exc:
+                        result = {"content": [text_content({"error": str(exc)[:1400]})], "isError": True}
+                else:
+                    print(json.dumps({"jsonrpc": "2.0", "id": request["id"], "error": {"code": -32601, "message": "Method not found"}}), flush=True)
+                    continue
+                print(json.dumps({"jsonrpc": "2.0", "id": request["id"], "result": result}), flush=True)
+            except Exception:
+                rid = request.get("id") if isinstance(request, dict) else None
+                print(json.dumps({"jsonrpc": "2.0", "id": rid, "error": {"code": -32700, "message": "Invalid JSON-RPC request"}}), flush=True)
+    finally:
+        desktop.close()
 
 
 if __name__ == "__main__":

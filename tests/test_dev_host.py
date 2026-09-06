@@ -47,6 +47,28 @@ def release(root, source):
 
 
 class DevTests(unittest.TestCase):
+    def test_bundle_dependency_change_reloads_and_tampering_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/'scripts/cu').mkdir(parents=True)
+            (root/'scripts/dev_host.py').touch()
+            (root/'scripts/cu/__init__.py').write_text('')
+            (root/'scripts/cu/value.py').write_text('BUILD = "one"\n')
+            (root/'scripts/server.py').write_text((FIXTURE % 'unused')+'\nfrom .cu.value import BUILD\n')
+            with patch.object(publisher.subprocess,'run'):
+                first=publisher.publish(root,root)
+            runtime=host.Runtime(root);runtime.refresh()
+            self.assertEqual(runtime.module.BUILD,'one')
+            (root/'scripts/cu/value.py').write_text('BUILD = "two"\n')
+            with patch.object(publisher.subprocess,'run'):
+                second=publisher.publish(root,root)
+            self.assertNotEqual(first['published_revision'],second['published_revision'])
+            runtime.refresh();self.assertEqual(runtime.module.BUILD,'two')
+            dependency=root/'.dev/releases'/second['published_revision']/'cu/value.py'
+            dependency.write_text('BUILD = "tampered"\n')
+            with self.assertRaisesRegex(ValueError,'dependency checksum'):
+                runtime.refresh()
+
     def test_reload_discards_frames_and_pins_tool_contract(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

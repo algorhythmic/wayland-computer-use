@@ -89,7 +89,8 @@ class Client:
 
 
 def main():
-    import observer_server as impl
+    import observer_server  # Locate the shared implementation in this checkout.
+    from cu import observation as impl
     impl.baseline.session_env()
     original=json.loads(impl.command(['hyprctl','-j','activewindow']))
     gui=subprocess.Popen([sys.executable,__file__,'--fixture'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,
@@ -106,7 +107,7 @@ def main():
         window=next(w for w in windows if w['pid']==gui.pid and w['title']==TITLE)
         address=window['address']
         assert json.loads(impl.command(['hyprctl','-j','activewindow']))['address']==address,'Fixture is not focused; stop instead of stealing focus.'
-        config=json.loads((ROOT.parent/'.mcp.json').read_text())['mcpServers']['wayland']
+        config={'command':sys.executable,'args':[str(ROOT/'baseline/scripts/server.py')]}
         old=Client([config['command'],*config['args']]);new=Client([sys.executable,str(ROOT/'scripts/observer_server.py')])
         # Crop the exact status-label rectangle for the original pipeline's pixel predicate.
         # Conversion cost is recorded in task detection latency, outside tool latency.
@@ -174,7 +175,7 @@ def main():
                                            ROOT/'scripts/observer_server.py',ROOT/'scripts/accessibility_probe.py',
                                            ROOT/'baseline/scripts/server.py',Path(__file__).resolve()]},
                 'summary':summary,'samples':rows}
-        path.write_text(json.dumps(report,indent=2)+'\n')
+        with path.open('x') as output: output.write(json.dumps(report,indent=2)+'\n')
         print(json.dumps({'report':str(path),'summary':summary}),flush=True)
     finally:
         if new:

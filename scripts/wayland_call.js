@@ -1,7 +1,12 @@
 (async function waylandCall(sessionId, request) {
   // functions.exec adapter for the local PTY MCP client. One approved action,
   // one model round trip including its returned screenshot. Never replay input.
-  const deadline = Date.now() + 20000;
+  // Outcome waits can last 30 seconds. Reserve transport/capture time in
+  // addition, while retaining a hard bound even for invalid caller arguments.
+  const args = request.arguments || {};
+  const requestedWait = args.after?.timeout_ms ?? args.timeout_ms ?? 0;
+  const waitMs = Number.isInteger(requestedWait) ? Math.min(30000, Math.max(0, requestedWait)) : 0;
+  const deadline = Date.now() + 20000 + waitMs;
   let buffer = "";
   let chunk = await tools.write_stdin({
     session_id: sessionId, chars: JSON.stringify(request) + "\n",

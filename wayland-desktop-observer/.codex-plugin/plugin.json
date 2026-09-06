@@ -1,6 +1,6 @@
 {
   "name": "wayland-desktop-observer",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260906101910",
   "description": "Experimental read-only desktop observer for Hyprland.",
   "author": {
     "name": "Local developer"

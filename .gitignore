@@ -9,3 +9,4 @@ __pycache__/
 *.wav
 *.mp4
 rejection-*/
+scripts/cu/capture-helper

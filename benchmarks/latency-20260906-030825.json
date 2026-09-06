@@ -1,0 +1,175 @@
+{
+  "scope": "Local capture/encode and deterministic wait timings; no model or approval latency.",
+  "capture": [
+    {
+      "trial": 0,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 19.899781,
+      "capture_encode_ms": 44.696786,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 0,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 8.890015,
+      "capture_encode_ms": 32.138085,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 1,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 6.030667,
+      "capture_encode_ms": 28.340253,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 1,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 18.050038,
+      "capture_encode_ms": 40.15051,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 2,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 17.452007,
+      "capture_encode_ms": 40.634341,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 2,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 6.590454,
+      "capture_encode_ms": 28.802651,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 3,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 5.120503,
+      "capture_encode_ms": 27.446632,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 3,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 19.179521,
+      "capture_encode_ms": 42.683372,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 4,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 17.278284,
+      "capture_encode_ms": 39.35377,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 4,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 5.359874,
+      "capture_encode_ms": 27.572206,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 5,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 5.219777,
+      "capture_encode_ms": 28.42316,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    },
+    {
+      "trial": 5,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 17.7836,
+      "capture_encode_ms": 39.926564,
+      "png_bytes": 480742,
+      "fallback_reason": null
+    }
+  ],
+  "waits": [
+    {
+      "trial": 0,
+      "scheduled_delay_ms": 200,
+      "request_ms": 300.290845,
+      "timings_ms": {
+        "metadata_ms": 13.368158,
+        "accessibility_ms": 5.304786,
+        "validation_ms": 43.416683,
+        "collection_ms": 97.566956,
+        "response_ms": 0.024722,
+        "request_ms": 300.127561
+      }
+    },
+    {
+      "trial": 1,
+      "scheduled_delay_ms": 200,
+      "request_ms": 292.434784,
+      "timings_ms": {
+        "metadata_ms": 13.309359,
+        "accessibility_ms": 5.111678,
+        "validation_ms": 43.174099,
+        "collection_ms": 95.716408,
+        "response_ms": 0.009262,
+        "request_ms": 292.261728
+      }
+    },
+    {
+      "trial": 2,
+      "scheduled_delay_ms": 200,
+      "request_ms": 297.141707,
+      "timings_ms": {
+        "metadata_ms": 13.070717,
+        "accessibility_ms": 4.859846,
+        "validation_ms": 43.719916,
+        "collection_ms": 96.280751,
+        "response_ms": 0.009465,
+        "request_ms": 296.956373
+      }
+    }
+  ],
+  "damage_wait": {
+    "backend": "wlr-screencopy",
+    "elapsed_ms": 57.795577
+  },
+  "shared_capture": {
+    "actionable": true,
+    "image_count": 1,
+    "capture_backend": "wlr-screencopy"
+  },
+  "summary": {
+    "grim-ppm": {
+      "capture_ms": 17.92,
+      "capture_encode_ms": 40.39,
+      "png_bytes": 480742.0
+    },
+    "native": {
+      "capture_ms": 5.7,
+      "capture_encode_ms": 28.38,
+      "png_bytes": 480742.0
+    }
+  }
+}

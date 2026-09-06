@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test then atomically publish server.py. Does not restart apps or modify approvals."""
+"""Test then atomically publish a checksummed runtime bundle. No app restarts."""
 import argparse
 import hashlib
 import json
@@ -10,27 +10,48 @@ import sys
 import tempfile
 
 
+def sources(root):
+    files = {'server.py': (root/'scripts/server.py').read_bytes()}
+    if (root/'scripts/cu').is_dir():
+        for path in sorted((root/'scripts/cu').glob('*.py')):
+            files['cu/'+path.name] = path.read_bytes()
+        helper = root/'scripts/cu/capture-helper'
+        if helper.is_file():
+            files['cu/capture-helper'] = helper.read_bytes()
+    return files
+
+
 def publish(root, destination):
     root, destination = Path(root), Path(destination)
-    source = (root / "scripts" / "server.py").read_bytes()
-    compile(source, "server.py", "exec")
+    files = sources(root)
+    for name, data in files.items():
+        if name.endswith('.py'):
+            compile(data, name, 'exec')
     subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
                    cwd=root, check=True)
-    if source != (root / "scripts" / "server.py").read_bytes():
+    observer_tests = root/'wayland-desktop-observer/tests'
+    if observer_tests.is_dir():
+        subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', str(observer_tests), '-v'], cwd=root, check=True)
+    if files != sources(root):
         raise ValueError("Source changed during tests; publish again after edits finish")
     if not (destination / "scripts" / "dev_host.py").is_file():
         raise ValueError("Destination must have the development host installed first")
-    revision = hashlib.sha256(source).hexdigest()
+    manifest = json.dumps({'format': 2, 'files': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}, sort_keys=True).encode()
+    revision = hashlib.sha256(manifest).hexdigest()
     state = destination / ".dev"
     release = state / "releases" / revision
     release.mkdir(parents=True, exist_ok=True, mode=0o700)
-    code = release / "server.py"
-    try:
-        with code.open("xb") as output:
-            output.write(source)
-    except FileExistsError:
-        if code.read_bytes() != source:
-            raise ValueError("Existing release has mismatched contents; refusing overwrite")
+    for name, data in {**files, 'bundle.json': manifest}.items():
+        code = release/name
+        code.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        try:
+            with code.open('xb') as output:
+                output.write(data)
+        except FileExistsError:
+            if code.read_bytes() != data:
+                raise ValueError('Existing release has mismatched contents; refusing overwrite')
+        if name == 'cu/capture-helper':
+            code.chmod(0o700)
     # Commit pointer only after the complete release is available.
     fd, pending = tempfile.mkstemp(prefix="publish-", dir=state)
     try:
