@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "wayland_observer": {
+      "command": "/usr/bin/python3",
+      "args": [
+        "/absolute/path/to/wayland-computer-use/wayland-desktop-observer/scripts/observer_server.py"
+      ],
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "startup_timeout_sec": 20
+    }
+  }
+}

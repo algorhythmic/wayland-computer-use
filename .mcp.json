@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "wayland": {
+      "command": "/usr/bin/python3",
+      "args": ["/absolute/path/to/wayland-computer-use/scripts/dev_host.py"],
+      "env": {"PYTHONDONTWRITEBYTECODE": "1"},
+      "startup_timeout_sec": 20
+    }
+  }
+}

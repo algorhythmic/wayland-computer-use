@@ -1,0 +1,9 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>WaylandScrollTest</title>
+<style>body{margin:0;width:4000px;height:5000px;background:repeating-linear-gradient(45deg,#123 0px,#246 100px,#123 200px);color:white;font:24px sans-serif}p{position:fixed;top:20px;left:20px;background:#123;padding:20px}</style>
+<p>Disposable scroll test — no network or saved data</p>
+<script>
+function report(){document.title='WaylandScrollTest '+scrollX+' '+scrollY}
+addEventListener('scroll',report);scrollTo(500,500);report();
+</script>

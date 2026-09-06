@@ -1,0 +1,20 @@
+{
+  "name": "wayland-desktop-observer",
+  "version": "0.1.0",
+  "description": "Experimental read-only desktop observer for Hyprland.",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Wayland Desktop Observer",
+    "shortDescription": "Observe desktop changes without injecting input.",
+    "longDescription": "Separate experimental observer with versioned window state, accessibility evidence, image deltas and bounded waits.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": "Inspect desktop changes with Wayland Desktop Observer."
+  },
+  "mcpServers": "./.mcp.json"
+}

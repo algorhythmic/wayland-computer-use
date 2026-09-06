@@ -1,0 +1,751 @@
+{
+  "fixture": {
+    "size": [
+      833,
+      1390
+    ],
+    "label_bounds": [
+      60,
+      102,
+      300,
+      60
+    ]
+  },
+  "scope": "Local MCP and deterministic predicate timing. No model inference. Original detects exact label pixel change; observer detects matching accessible label. Timed change occurs 500ms after start.",
+  "original_config": [
+    "/home/david/plugins/wayland-computer-use/scripts/dev_host.py"
+  ],
+  "observer_entry": "/home/david/Work/wayland-desktop-observer/scripts/observer_server.py",
+  "summary": [
+    {
+      "method": "original",
+      "phase": "initial",
+      "n": 6,
+      "tool_ms": {
+        "median": 350.25,
+        "min": 335.49,
+        "max": 359.52
+      },
+      "wire_bytes": {
+        "median": 3388546.5,
+        "min": 3384239,
+        "max": 3406823
+      },
+      "image_pixels": {
+        "median": 3686400.0,
+        "min": 3686400,
+        "max": 3686400
+      }
+    },
+    {
+      "method": "original",
+      "phase": "unchanged",
+      "n": 18,
+      "tool_ms": {
+        "median": 337.02,
+        "min": 329.71,
+        "max": 365.2
+      },
+      "wire_bytes": {
+        "median": 3387597.0,
+        "min": 3384159,
+        "max": 3407275
+      },
+      "image_pixels": {
+        "median": 3686400.0,
+        "min": 3686400,
+        "max": 3686400
+      }
+    },
+    {
+      "method": "original",
+      "phase": "detect_change",
+      "n": 6,
+      "after_change_ms": {
+        "median": 813.47,
+        "min": 796.3,
+        "max": 859.84
+      },
+      "task_ms": {
+        "median": 1314.02,
+        "min": 1296.92,
+        "max": 1360.2
+      },
+      "calls": {
+        "median": 3.0,
+        "min": 3,
+        "max": 3
+      },
+      "wire_bytes": {
+        "median": 10162385.0,
+        "min": 10152289,
+        "max": 10217057
+      },
+      "image_pixels": {
+        "median": 11059200.0,
+        "min": 11059200,
+        "max": 11059200
+      }
+    },
+    {
+      "method": "observer",
+      "phase": "initial",
+      "n": 6,
+      "tool_ms": {
+        "median": 358.58,
+        "min": 335.66,
+        "max": 372.2
+      },
+      "wire_bytes": {
+        "median": 967413.5,
+        "min": 967308,
+        "max": 967736
+      },
+      "image_pixels": {
+        "median": 1157870.0,
+        "min": 1157870,
+        "max": 1157870
+      }
+    },
+    {
+      "method": "observer",
+      "phase": "unchanged",
+      "n": 18,
+      "tool_ms": {
+        "median": 398.97,
+        "min": 360.16,
+        "max": 1250.2
+      },
+      "wire_bytes": {
+        "median": 972.5,
+        "min": 833,
+        "max": 1108
+      },
+      "image_pixels": {
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    {
+      "method": "observer",
+      "phase": "detect_change",
+      "n": 6,
+      "after_change_ms": {
+        "median": 315.5,
+        "min": 294.42,
+        "max": 361.54
+      },
+      "task_ms": {
+        "median": 815.8,
+        "min": 794.69,
+        "max": 861.81
+      },
+      "calls": {
+        "median": 1.0,
+        "min": 1,
+        "max": 1
+      },
+      "wire_bytes": {
+        "median": 19734.5,
+        "min": 19651,
+        "max": 19755
+      },
+      "image_pixels": {
+        "median": 16384.0,
+        "min": 16384,
+        "max": 16384
+      }
+    }
+  ],
+  "samples": [
+    {
+      "trial": 0,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 349.0244880085811,
+      "wire_bytes": 3384282,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 0,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 336.45203699416015,
+      "wire_bytes": 3384278,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 0,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 334.43924599851016,
+      "wire_bytes": 3384254,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 0,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 353.6504369985778,
+      "wire_bytes": 3384166,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 0,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1313.2005570078036,
+      "after_change_ms": 812.8136440063827,
+      "calls": 3,
+      "wire_bytes": 10152474,
+      "image_pixels": 11059200
+    },
+    {
+      "trial": 0,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 363.1680980033707,
+      "wire_bytes": 967308,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 0,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 1250.2028000017162,
+      "wire_bytes": 837,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 0,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 406.8298830097774,
+      "wire_bytes": 972,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 0,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 419.7360249963822,
+      "wire_bytes": 1106,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 0,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 813.8282710133353,
+      "after_change_ms": 313.55385200004093,
+      "calls": 1,
+      "wire_bytes": 19751,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 1,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 364.110893002362,
+      "wire_bytes": 967736,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 1,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 373.8584849925246,
+      "wire_bytes": 838,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 1,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 401.7861389875179,
+      "wire_bytes": 973,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 1,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 388.7912890058942,
+      "wire_bytes": 1104,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 1,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 817.7624970121542,
+      "after_change_ms": 317.4471660022391,
+      "calls": 1,
+      "wire_bytes": 19651,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 1,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 335.49486999982037,
+      "wire_bytes": 3384366,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 1,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 334.25182799692266,
+      "wire_bytes": 3384395,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 1,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 333.145661992603,
+      "wire_bytes": 3384375,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 1,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 346.8829920020653,
+      "wire_bytes": 3384339,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 1,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1296.9213999895146,
+      "after_change_ms": 796.2963379977737,
+      "calls": 3,
+      "wire_bytes": 10152713,
+      "image_pixels": 11059200
+    },
+    {
+      "trial": 2,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 341.44040700630285,
+      "wire_bytes": 3384239,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 2,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 335.70552300079726,
+      "wire_bytes": 3384159,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 2,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 329.7132000006968,
+      "wire_bytes": 3384419,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 2,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 333.46495300065726,
+      "wire_bytes": 3384455,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 2,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1309.720068005845,
+      "after_change_ms": 808.2562230119947,
+      "calls": 3,
+      "wire_bytes": 10152289,
+      "image_pixels": 11059200
+    },
+    {
+      "trial": 2,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 335.6558719970053,
+      "wire_bytes": 967421,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 2,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 360.1609840115998,
+      "wire_bytes": 838,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 2,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 417.8248120006174,
+      "wire_bytes": 973,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 2,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 418.2813320076093,
+      "wire_bytes": 1105,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 2,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 794.6940109977731,
+      "after_change_ms": 294.4174269941868,
+      "calls": 1,
+      "wire_bytes": 19733,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 3,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 372.2046019975096,
+      "wire_bytes": 967377,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 3,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 394.69536900287494,
+      "wire_bytes": 840,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 3,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 397.6589379890356,
+      "wire_bytes": 972,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 3,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 392.4772479949752,
+      "wire_bytes": 1103,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 3,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 841.3114810100524,
+      "after_change_ms": 341.172036001808,
+      "calls": 1,
+      "wire_bytes": 19736,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 3,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 351.47893099929206,
+      "wire_bytes": 3392727,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 3,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 337.5846499984618,
+      "wire_bytes": 3392795,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 3,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 359.95265300152823,
+      "wire_bytes": 3393095,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 3,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 365.2031969977543,
+      "wire_bytes": 3393043,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 3,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1314.8493589978898,
+      "after_change_ms": 814.116641995497,
+      "calls": 3,
+      "wire_bytes": 10178661,
+      "image_pixels": 11059200
+    },
+    {
+      "trial": 4,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 359.5177980023436,
+      "wire_bytes": 3392819,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 4,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 359.0264179947553,
+      "wire_bytes": 3392823,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 4,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 334.47846199851483,
+      "wire_bytes": 3390831,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 4,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 335.5723940039752,
+      "wire_bytes": 3390739,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 4,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1324.1228120023152,
+      "after_change_ms": 823.6653700005263,
+      "calls": 3,
+      "wire_bytes": 10172057,
+      "image_pixels": 11059200
+    },
+    {
+      "trial": 4,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 342.70688900141977,
+      "wire_bytes": 967406,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 4,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 371.75563898927066,
+      "wire_bytes": 833,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 4,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 407.2650029993383,
+      "wire_bytes": 968,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 4,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 396.6301969921915,
+      "wire_bytes": 1102,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 4,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 805.5040770123014,
+      "after_change_ms": 305.2201850077836,
+      "calls": 1,
+      "wire_bytes": 19719,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 5,
+      "method": "observer",
+      "phase": "initial",
+      "tool_ms": 353.98908000206575,
+      "wire_bytes": 967680,
+      "image_pixels": 1157870,
+      "image_count": 1
+    },
+    {
+      "trial": 5,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 361.9184690032853,
+      "wire_bytes": 840,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 5,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 400.2852279954823,
+      "wire_bytes": 974,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 5,
+      "method": "observer",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 422.18333200435154,
+      "wire_bytes": 1108,
+      "image_pixels": 0,
+      "image_count": 0
+    },
+    {
+      "trial": 5,
+      "method": "observer",
+      "phase": "detect_change",
+      "task_ms": 861.8134279968217,
+      "after_change_ms": 361.53810399991926,
+      "calls": 1,
+      "wire_bytes": 19755,
+      "image_pixels": 16384
+    },
+    {
+      "trial": 5,
+      "method": "original",
+      "phase": "initial",
+      "tool_ms": 351.99409200868104,
+      "wire_bytes": 3406823,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 5,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 0,
+      "tool_ms": 349.41344300750643,
+      "wire_bytes": 3407171,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 5,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 1,
+      "tool_ms": 361.5256980119739,
+      "wire_bytes": 3407187,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 5,
+      "method": "original",
+      "phase": "unchanged",
+      "repeat": 2,
+      "tool_ms": 363.5638330015354,
+      "wire_bytes": 3407275,
+      "image_pixels": 3686400,
+      "image_count": 1
+    },
+    {
+      "trial": 5,
+      "method": "original",
+      "phase": "detect_change",
+      "task_ms": 1360.1971960015362,
+      "after_change_ms": 859.8359200113919,
+      "calls": 3,
+      "wire_bytes": 10217057,
+      "image_pixels": 11059200
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[Unit]
+Description=Wayland Computer Use input backend for david
+After=systemd-udevd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ydotoold --socket-path=/run/wayland-computer-use-1000/mouse.sock --socket-own=1000:1000 --socket-perm=0600
+RuntimeDirectory=wayland-computer-use-1000
+RuntimeDirectoryMode=0755
+Restart=on-failure
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+DevicePolicy=closed
+DeviceAllow=/dev/uinput rw
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=yes
+RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=multi-user.target

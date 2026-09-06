@@ -1,0 +1,9 @@
+{
+  "source": "/home/david/plugins/wayland-computer-use",
+  "files": {
+    "scripts/server.py": "d58ff2a66460f695ab07540524f7c78de56b84947e43ef1937d24ef93bc6076c",
+    "tests/test_server.py": "087a4885e5ed12853c797e00211514bc78334f57023e7be029cb99d5d224d9d9",
+    "README.md": "818c048be9136f07435bbb3e804254a8d921ebbbde78ebf97785282c9a304cbd",
+    "skills/wayland-computer-use/SKILL.md": "78785e0bf6271cd737e2ad18bc1a1a6a966bc04d32d682bfba1ee368d8c5b37f"
+  }
+}

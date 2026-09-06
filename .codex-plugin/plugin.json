@@ -1,0 +1,22 @@
+{
+  "name": "wayland-computer-use",
+  "version": "0.1.0+codex.20260905224921",
+  "description": "Local screenshot and desktop input tools for Hyprland on Wayland.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Wayland Computer Use",
+    "shortDescription": "Use Wayland Computer Use in Codex.",
+    "longDescription": "Inspect monitors and windows, capture screenshots, focus windows, click, drag, scroll, and type on your live Hyprland desktop. Uses grim, wtype and a local ydotool daemon. Screenshots are returned to the model; no independent cloud service is used.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": "Help me use Wayland Computer Use."
+  },
+  "mcpServers": "./.mcp.json"
+}
