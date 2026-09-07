@@ -115,6 +115,12 @@ Remove the variable from `.mcp.json` and restart the server to disable retention
 These crops may contain sensitive screen contents: do not commit or share them.
 Debug-write failures are reported and never turn a rejection into an allowed input.
 
+Optional `WAYLAND_CU_TRACE_DIR` records per-request timing spans, outcomes and
+counters as JSON lines in a private 0700 directory, capped at 64 MiB with an
+explicit dropped-record counter reported by `desktop_state`. Records contain no
+typed text, key names, titles, URLs or screen contents. See
+[latency.md](latency.md#tracing-and-attribution).
+
 Expired frames require renewed review rather than extending their lifetime.
 Pre-input revalidation failures return `action_performed: false`, `requires_review`,
 and a fresh screenshot when available. Focus restoration may already have occurred.

@@ -85,8 +85,12 @@ class Collector:
             reason = 'window_missing'
         elif target and (active.get('address') != window or not target['mapped']):
             reason = 'target_not_focused'
-        elif target and subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0:
-            reason = 'desktop_locked'
+        elif target:
+            tick = time.monotonic_ns()
+            locked = subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0
+            timings['lock_check_ms'] = (time.monotonic_ns()-tick)/1e6
+            if locked:
+                reason = 'desktop_locked'
         if reason:
             self.accessibility.close()
             for channel, key in requested:

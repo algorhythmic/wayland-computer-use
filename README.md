@@ -135,6 +135,8 @@ are not validated for input. Missing accessibility is explicit; there is no OCR.
   are disabled in the public configuration. The client may retain returned data.
 - No telemetry, network listener or separate cloud service is included. Images
   sent to a remotely hosted model still leave the machine through its client.
+  Optional local tracing (`WAYLAND_CU_TRACE_DIR`) writes only timings, counters
+  and outcome enums to a private file; see [docs/latency.md](docs/latency.md).
 
 ## Development
 

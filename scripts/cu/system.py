@@ -15,10 +15,18 @@ import time
 import tempfile
 import uuid
 
+from . import trace
+
 
 def run(args, data=None, timeout=15):
-    result = subprocess.run(args, input=data, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, timeout=timeout, check=False)
+    started_ns = time.monotonic_ns()
+    try:
+        result = subprocess.run(args, input=data, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, timeout=timeout, check=False)
+    except BaseException as exc:
+        trace.record_exec(args[0], started_ns, error=exc)
+        raise
+    trace.record_exec(args[0], started_ns, result.returncode)
     if result.returncode:
         detail = result.stderr or result.stdout
         raise RuntimeError(detail.decode(errors="replace")[:1200] or "Command failed")

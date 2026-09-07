@@ -1,0 +1,284 @@
+{
+  "scope": "Local capture/encode and deterministic wait timings; no model or approval latency.",
+  "status": "complete",
+  "error": null,
+  "started_at": 1788808259.527171,
+  "provenance": {
+    "python": "3.14.7",
+    "runs": "checkout source, not the published or installed bundle",
+    "capture_helper_present": true,
+    "checkout_git_revision": "4a2b34ca837405fe234eda50da76d16d6e021dfe",
+    "published_revision": "fc743bd87f156805f116501a99e1b263ba5dfa61cf14c4d0740c9c154e90fe7e",
+    "clock": "CLOCK_MONOTONIC; fixture timestamps use perf_counter in the same domain on Linux",
+    "source_sha256": {
+      "scripts/benchmark_latency.py": "969747447673a398f56a554c9af1663ba6f4cc55ea9d1ccf136b1d62194e32cb",
+      "scripts/server.py": "05701f0c4fb6e34fcd3c52cfc1a8c89dbe049195f181c7eb584a0ffe81ca868d",
+      "scripts/cu/__init__.py": "85fc33c472a914f9f1d87dd924058b92954591406c39a4c396c0fde8e71761b9",
+      "scripts/cu/accessibility.py": "5167cc2c226b39d6abf40565a676faaf1a8dd4d530b67960cba40a570ddb0437",
+      "scripts/cu/accessibility_worker.py": "40f23457450c4becfa13a70a256ac3bc74af2bc059f5a7b275f5be5c717e46b4",
+      "scripts/cu/capture.py": "df27d253cd74c218e8d699c08f70619e0866d1595dd9461507aefb185cf10b39",
+      "scripts/cu/events.py": "4e3a2429bf8e551a79dca077a8b91f4024499f9927ad9d1a4c027fb8f7a9b67e",
+      "scripts/cu/observation.py": "a7eab9d6c8179832eaafa575b1c403cd5e937c851c511a00fab73d2d73753419",
+      "scripts/cu/pixels.py": "2a0c5179dcc1cd68b24ffa05885af427657697ce8b2242e56801da3091bdf5eb",
+      "scripts/cu/system.py": "a3af13f6ae16f55020725cc902ecf7a4822c6e4293f5eb03f066b5cff6e58026",
+      "scripts/cu/trace.py": "19d37e6ba5a80abdd42f0e6e3bc6cc769f79bf267cfc25a760525b3e720b67e7",
+      "native/capture.c": "9eca0349915dfe8a5df30e27a91eaf6cdc0a1122ee153403f01489c9a9a5cbff",
+      "wayland-desktop-observer/scripts/benchmark.py": "0370936864ecdbe4ceb33af602cc165f01e42a4863322edf80960bab18789e7d"
+    }
+  },
+  "focus_fixture": true,
+  "capture": [
+    {
+      "trial": 0,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 18.935566,
+      "capture_encode_ms": 41.782395,
+      "lock_wait_ms": 0.00068,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": null
+    },
+    {
+      "trial": 0,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 8.992891,
+      "capture_encode_ms": 31.783698,
+      "lock_wait_ms": 0.00148,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 1,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 6.64334,
+      "capture_encode_ms": 28.844748,
+      "lock_wait_ms": 0.000639,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 1,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 17.277248,
+      "capture_encode_ms": 39.629189,
+      "lock_wait_ms": 0.000667,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 2,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 16.484129,
+      "capture_encode_ms": 39.108534,
+      "lock_wait_ms": 0.000578,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 2,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 4.918546,
+      "capture_encode_ms": 26.950639,
+      "lock_wait_ms": 0.000513,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 3,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 5.574166,
+      "capture_encode_ms": 27.718731,
+      "lock_wait_ms": 0.000588,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 3,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 16.516671,
+      "capture_encode_ms": 38.861058,
+      "lock_wait_ms": 0.000582,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 4,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 17.698924,
+      "capture_encode_ms": 42.400186,
+      "lock_wait_ms": 0.001197,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 4,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 4.953058,
+      "capture_encode_ms": 27.030987,
+      "lock_wait_ms": 0.001232,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 5,
+      "method": "native",
+      "backend": "wlr-screencopy",
+      "capture_ms": 5.30135,
+      "capture_encode_ms": 27.858672,
+      "lock_wait_ms": 0.000626,
+      "png_bytes": 480742,
+      "fallback_reason": null,
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 5,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 18.353825,
+      "capture_encode_ms": 40.755548,
+      "lock_wait_ms": 0.000591,
+      "png_bytes": 480742,
+      "fallback_reason": "helper_unavailable",
+      "rgb_matches_previous": true
+    }
+  ],
+  "waits": [
+    {
+      "trial": 0,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 191556151633655,
+      "applied_ns": 191556351953314,
+      "request_started_ns": 191556151649289,
+      "response_ns": 191556457260064,
+      "request_ms": 305.610775,
+      "schedule_to_applied_ms": 200.319659,
+      "after_change_ms": 105.30675,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 13.005226,
+        "lock_check_ms": 38.693556,
+        "accessibility_ms": 5.061796,
+        "validation_ms": 45.934113,
+        "collection_ms": 102.708017,
+        "response_ms": 0.010782,
+        "request_ms": 305.449921
+      }
+    },
+    {
+      "trial": 1,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 191556567180122,
+      "applied_ns": 191556767584544,
+      "request_started_ns": 191556567194708,
+      "response_ns": 191556870048449,
+      "request_ms": 302.853741,
+      "schedule_to_applied_ms": 200.404422,
+      "after_change_ms": 102.463905,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 13.013477,
+        "lock_check_ms": 37.112011,
+        "accessibility_ms": 5.513873,
+        "validation_ms": 45.987015,
+        "collection_ms": 101.636848,
+        "response_ms": 0.009757,
+        "request_ms": 302.674138
+      }
+    },
+    {
+      "trial": 2,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 191556980513212,
+      "applied_ns": 191557180956455,
+      "request_started_ns": 191556980527378,
+      "response_ns": 191557285598974,
+      "request_ms": 305.071596,
+      "schedule_to_applied_ms": 200.443243,
+      "after_change_ms": 104.642519,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 13.412414,
+        "lock_check_ms": 37.843262,
+        "accessibility_ms": 5.222073,
+        "validation_ms": 47.358957,
+        "collection_ms": 103.847602,
+        "response_ms": 0.009306,
+        "request_ms": 304.894928
+      }
+    }
+  ],
+  "saved_at": 1788808263.4710484,
+  "capture_dimensions": [
+    1261,
+    688
+  ],
+  "damage_wait": {
+    "backend": "wlr-screencopy",
+    "elapsed_ms": 57.90566,
+    "fallback_reason": null
+  },
+  "accessibility_events_received": 4,
+  "shared_capture": {
+    "actionable": true,
+    "image_count": 1,
+    "capture_backend": "wlr-screencopy",
+    "fallback_reason": null,
+    "timings_ms": {
+      "metadata_ms": 13.200768,
+      "lock_check_ms": 38.563835,
+      "capture_ms": 15.117841,
+      "accessibility_ms": 94.965725,
+      "validation_ms": 46.635235,
+      "collection_ms": 208.500353,
+      "response_ms": 0.011519,
+      "request_ms": 208.862844,
+      "observe_ms": 233.476715,
+      "total_ms": 233.523021
+    }
+  },
+  "summary": {
+    "grim-ppm": {
+      "capture_ms": 17.49,
+      "capture_encode_ms": 40.19,
+      "png_bytes": 480742.0
+    },
+    "native": {
+      "capture_ms": 5.44,
+      "capture_encode_ms": 27.79,
+      "png_bytes": 480742.0
+    },
+    "after_change_ms": [
+      105.31,
+      102.46,
+      104.64
+    ]
+  }
+}

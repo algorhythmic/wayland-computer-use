@@ -22,17 +22,25 @@ if __package__:
     from .cu.pixels import crop, png_rgb
     from .cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from .cu import observation
+    from .cu import trace
 else:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from cu.capture import Capturer
     from cu.pixels import crop, png_rgb
     from cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from cu import observation
+    from cu import trace
 
 
 def run(args, data=None, timeout=15):
-    result = subprocess.run(args, input=data, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, timeout=timeout, check=False)
+    started_ns = time.monotonic_ns()
+    try:
+        result = subprocess.run(args, input=data, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, timeout=timeout, check=False)
+    except BaseException as exc:
+        trace.record_exec(args[0], started_ns, error=exc)
+        raise
+    trace.record_exec(args[0], started_ns, result.returncode)
     if result.returncode:
         detail = result.stderr or result.stdout
         raise RuntimeError(detail.decode(errors="replace")[:1200] or "Command failed")
@@ -129,6 +137,56 @@ class ActionRejected(ValueError):
         self.content = content
 
 
+def argument_shape(name, a):
+    """Numeric/categorical request attributes only: never text, keys, or titles."""
+    if not isinstance(a, dict):
+        return {}
+    shape = {'restore_focus': a.get('restore_focus', False) is True, 'has_after': 'after' in a,
+             'has_frame': 'frame_id' in a}
+    if isinstance(a.get('text'), str):
+        shape['text_len'] = len(a['text'])
+    condition = a.get('condition') if isinstance(a.get('condition'), dict) else \
+        (a['after'].get('condition') if isinstance(a.get('after'), dict) else None)
+    if isinstance(condition, dict) and isinstance(condition.get('kind'), str):
+        shape['condition_kind'] = condition['kind']
+    for key in ('steps', 'count', 'timeout_ms', 'max_age_ms'):
+        if type(a.get(key)) is int:
+            shape[key] = a[key]
+    if isinstance(a.get('channels'), list):
+        shape['channel_count'] = len(a['channels'])
+    return shape
+
+
+def result_summary(content):
+    """Sizes, frame provenance, guard metrics and wait outcomes from a response."""
+    summary = {'blocks': len(content), 'images': 0, 'image_base64_bytes': 0, 'text_bytes': 0, 'frames': []}
+    for block in content:
+        if block.get('type') == 'image':
+            summary['images'] += 1
+            summary['image_base64_bytes'] += len(block.get('data', ''))
+            continue
+        text = block.get('text', '')
+        summary['text_bytes'] += len(text)
+        if len(text) > 65536:
+            continue
+        try:
+            body = json.loads(text)
+        except ValueError:
+            continue
+        if not isinstance(body, dict):
+            continue
+        if 'frame_id' in body:
+            summary['frames'].append({k: body.get(k) for k in ('capture_backend', 'fallback_reason', 'width',
+                                                                'height', 'png_bytes', 'monitor', 'timings_ms')})
+        if isinstance(body.get('visual_difference'), dict):
+            summary['guard_metrics'] = body['visual_difference']
+        for key in ('status', 'condition_met', 'wait_timed_out', 'fresh_sample', 'freshness_satisfied', 'age_ms',
+                    'actionable', 'requires_review', 'screenshot_error', 'debug_error'):
+            if key in body:
+                summary.setdefault('observation', {})[key] = body[key] if key != 'status' else str(body[key])
+    return summary
+
+
 def pixel_difference(before, after):
     if before[:2] != after[:2]:
         return {"dimensions_changed": True, "before_size": before[:2], "after_size": after[:2]}
@@ -212,12 +270,26 @@ class Desktop:
         self.capturer = Capturer(command=run)
         self.observer = None
         self.action_started = False
+        self.action_completed_ns = None
+        self.focus_restored = False
+        self.timings = {}
+        self.calls = 0
+        self.trace = None
+        self.recorder = trace.Recorder(provenance=trace.provenance([globals().get('__file__')]))
 
     def close(self):
         if self.observer:
             self.observer.close()
         self.capturer.close()
+        self.recorder.close()
         self.frames.clear()
+
+    def span(self, name, **attrs):
+        return trace.span_or_null(self.trace, name, **attrs)
+
+    def note(self, **attrs):
+        if self.trace is not None:
+            self.trace.note(**attrs)
 
     def observation_service(self):
         if self.observer is None:
@@ -260,7 +332,8 @@ class Desktop:
             {k: w.get(k) for k in ("address", "class", "title", "monitor", "workspace", "at", "size", "mapped")}
             for w in windows], "active_window": self.hypr("activewindow"),
             "tools": {t: bool(shutil.which(t)) for t in ("hyprctl", "grim", "wtype", "ydotool")},
-            "mouse_socket_available": os.access(os.environ["YDOTOOL_SOCKET"], os.W_OK)}
+            "mouse_socket_available": os.access(os.environ["YDOTOOL_SOCKET"], os.W_OK),
+            "trace": self.recorder.status()}
 
     @staticmethod
     def layout(monitors):
@@ -308,12 +381,15 @@ class Desktop:
                               "shared_observation": shared}}
         encode_start = time.monotonic_ns()
         png = png_rgb(width, height, capture.rgb)
+        requested = getattr(capture, 'requested_ns', None)
         return [text_content({"frame_id": token, "monitor": monitor["name"], "width": width,
                               "height": height, "origin": geometry[:2] if geometry else [monitor["x"], monitor["y"]],
                               "coordinates": "screenshot pixels", "active_window": active,
                               "target_window": target, 'capture_started_ns': capture.started_ns,
                               'capture_backend': capture.backend, 'presentation_ns': capture.presentation_ns,
+                              'fallback_reason': getattr(capture, 'fallback_reason', None), 'png_bytes': len(png),
                               'timings_ms': {'capture_ms': (capture.completed_ns-capture.started_ns)/1e6,
+                                             'lock_wait_ms': (capture.started_ns-requested)/1e6 if requested else 0,
                                              'encode_ms': (time.monotonic_ns()-encode_start)/1e6}}),
                 {"type": "image", "mimeType": "image/png", "data": base64.b64encode(png).decode()}]
 
@@ -384,7 +460,8 @@ class Desktop:
         content = [text_content({"error": message, "action_performed": False,
                                  "requires_review": True, **(details or {})})]
         try:
-            content += self.screenshot(monitor)
+            with self.span('recovery'):
+                content += self.screenshot(monitor)
         except Exception as exc:
             content.append(text_content({"screenshot_error": str(exc)}))
         raise ActionRejected(message, content)
@@ -402,11 +479,14 @@ class Desktop:
     def prepare(self, name, a):
         if not a.get("restore_focus", False):
             frame = self.guard(a["frame_id"])
+            self.note(frame_age_ms=(time.monotonic()-frame["time"])*1000,
+                      shared_observation=bool(frame.get('shared_observation')))
             if frame.get('shared_observation'):
                 try:
                     self.check_target(frame)
-                    after = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
-                    metrics = visual_guard(frame['visual'], after, self.action_region(frame, a))
+                    with self.span('visual_check'):
+                        after = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
+                        metrics = visual_guard(frame['visual'], after, self.action_region(frame, a))
                     if not metrics['accepted']:
                         self.reject('Target pixels changed; review before input', frame['monitor']['name'], {'visual_difference': metrics})
                     self.check_target(frame)
@@ -422,23 +502,28 @@ class Desktop:
         target = frame["target"]
         if a.get("target_window") != target["address"] or a.get("target_title") != target["title"]:
             raise ValueError("Approved target address/title must match the screenshot target")
+        self.note(frame_age_ms=(time.monotonic()-frame["time"])*1000, shared_observation=False)
         try:
             self.check_target(frame)
             if self.hypr("activewindow").get("address") != target["address"]:
-                self.dispatch("focuswindow", "address:" + target["address"])
-                self.wait_focus(target['address'])
+                with self.span('focus_restore'):
+                    self.dispatch("focuswindow", "address:" + target["address"])
+                    self.focus_restored = True
+                    self.wait_focus(target['address'])
             self.check_target(frame)
             if self.hypr("activewindow").get("address") != target["address"]:
                 raise ValueError("Focus changed again after restoration")
             if time.monotonic() - frame["time"] > 120:
                 raise ValueError("Screenshot expired during approval; review the new screenshot")
             if name != "scroll":
-                after = self.target_pixels(target, frame["monitor"], geometry=frame.get('geometry'))
-                metrics = visual_guard(frame["visual"], after, self.action_region(frame, a))
+                with self.span('visual_check'):
+                    after = self.target_pixels(target, frame["monitor"], geometry=frame.get('geometry'))
+                    metrics = visual_guard(frame["visual"], after, self.action_region(frame, a))
                 if not metrics["accepted"]:
                     details = {"visual_difference": metrics}
                     try:
-                        folder = save_visual_debug(frame["visual"], after, metrics)
+                        with self.span('debug_write'):
+                            folder = save_visual_debug(frame["visual"], after, metrics)
                         if folder:
                             details["debug_directory"] = folder
                     except Exception as exc:
@@ -494,43 +579,67 @@ class Desktop:
         run(["ydotool", *args])
 
     def call(self, name, a):
-        validate(name, a)
-        started_ns = time.monotonic_ns()
-        self.action_started = False
-        self.action_completed_ns = None
-        self.timings = {}
+        self.calls += 1
+        self.trace = trace.Trace('request', tool=str(name)[:40], seq=self.calls, **argument_shape(name, a))
+        self.action_started, self.action_completed_ns, self.focus_restored, self.timings = False, None, False, {}
+        previous = trace.activate(self.trace)
         try:
+            validate(name, a)
             content = self._call(name, a)
-        except ActionRejected:
+        except ActionRejected as exc:
+            self.finish(exc.content, 'rejected', exc)
             raise
         except Exception as exc:
             if self.action_started:
                 # Input may have partially executed. Never suggest an automatic retry.
-                raise ActionRejected(str(exc), [text_content({'error': str(exc)[:1400],
+                content = [text_content({'error': str(exc)[:1400],
                     'action_performed': True if self.action_completed_ns else 'unknown',
-                    'action_completed_ns': self.action_completed_ns, 'requires_review': True})]) from exc
+                    'action_completed_ns': self.action_completed_ns, 'requires_review': True})]
+                self.finish(content, 'error', exc)
+                raise ActionRejected(str(exc), content) from exc
+            self.finish(None, 'error', exc)
             raise
-        if self.action_completed_ns is not None:
-            self.timings['total_ms'] = (time.monotonic_ns()-started_ns)/1e6
-            operation = {'action_performed': True, 'action_completed_ns': self.action_completed_ns}
-            if content and content[0]['type'] == 'text':
-                metadata = json.loads(content[0]['text'])
-                metadata.update(operation)
-                metadata['timings_ms'] = {**metadata.get('timings_ms', {}), **self.timings}
-                content[0] = text_content(metadata)
-            else:
-                content.insert(0, text_content({**operation, 'timings_ms': self.timings}))
+        finally:
+            trace.activate(previous)
+        return self.finish(content, 'ok')
+
+    def finish(self, content, status, error=None):
+        """Close the request span on every path; keep timing in the response and sidecar."""
+        current = self.trace
+        current.close(error)
+        self.timings = current.durations_ms()
+        performed = True if self.action_completed_ns else ('unknown' if self.action_started else False)
+        if content and content[0]['type'] == 'text':
+            metadata = json.loads(content[0]['text'])
+            if status == 'ok' and performed is True:
+                metadata.update(action_performed=True, action_completed_ns=self.action_completed_ns)
+            metadata['timings_ms'] = {**metadata.get('timings_ms', {}), **self.timings}
+            content[0] = text_content(metadata)
+        elif content is not None and performed is True:
+            content.insert(0, text_content({'action_performed': True, 'action_completed_ns': self.action_completed_ns,
+                                            'timings_ms': self.timings}))
+        if self.recorder.enabled:
+            self.recorder.write({'kind': 'request', 'trace_id': current.id, 'wall_start_s': current.wall_started,
+                'start_ns': current.root['start_ns'], 'end_ns': current.root['end_ns'], **current.root.get('attrs', {}),
+                'outcome': {'status': status, 'action_performed': performed, 'action_started': self.action_started,
+                            'action_completed_ns': self.action_completed_ns, 'focus_restored': self.focus_restored,
+                            'error_type': type(error).__name__ if error is not None else None,
+                            'reason': str(error)[:trace.REASON_LIMIT] if error is not None else None},
+                'timings_ms': self.timings, 'spans': current.spans,
+                'result': result_summary(content) if content else None})
         return content
 
     def _call(self, name, a):
         if name in ('observe_window', 'wait_for'):
-            return self.observation_content(a)
+            with self.span('wait' if name == 'wait_for' else 'observe'):
+                return self.observation_content(a)
         if name == 'stop_observing':
             return self.observer.stop() if self.observer else [text_content({'stopped': True, 'history_cleared': True})]
         if name == "desktop_state":
             return [text_content(self.state())]
         if name == "screenshot":
-            return self.screenshot(a.get("monitor"))
+            with self.span('result'):
+                return self.screenshot(a.get("monitor"))
         if name == "focus_window":
             address = a["address"]
             if address not in [w["address"] for w in self.hypr("clients") if w.get("mapped")]:
@@ -540,7 +649,8 @@ class Desktop:
             self.dispatch("focuswindow", "address:" + address)
             self.wait_focus(address)
             self.action_completed_ns = time.monotonic_ns()
-            return self.screenshot()
+            with self.span('result'):
+                return self.screenshot()
         # Validate all action arguments before restoration, which is itself a mutation.
         validate(name, a)
         if name == "press_key":
@@ -562,10 +672,8 @@ class Desktop:
                 raise ValueError('Use wait_for with since_revision for region waits')
             if a['after']['condition']['kind'] == 'accessible' and not (pending or {}).get('target'):
                 raise ValueError('Accessible outcome wait requires a screenshot with a focused target')
-        tick = time.monotonic_ns()
-        frame = self.prepare(name, a)
-        self.timings['guard_ms'] = (time.monotonic_ns()-tick)/1e6
-        tick = time.monotonic_ns()
+        with self.span('guard'):
+            frame = self.prepare(name, a)
         started = False
         def recheck():
             if a.get("restore_focus", False) or frame.get('shared_observation'):
@@ -578,76 +686,77 @@ class Desktop:
                         self.reject(str(exc), frame["monitor"]["name"])
                     raise ValueError("Input interrupted after partial execution; inspect before retrying: " + str(exc))
         # Validate every argument before the first input event.
-        if name == "pointer":
-            point = self.point(frame, a["x"], a["y"])
-            button = a.get("button", "left")
-            code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
-            count = integer(a.get("count", 1), 1, 3)
-            self.frames.clear()
-            self.action_started = True
-            self.move(point)
-            recheck()
-            if code:
-                started = True
-                self.mouse("click", "--repeat", str(count), "--next-delay", "100", code)
-        elif name == "type_text":
-            value = a["text"]
-            if not isinstance(value, str) or len(value) > 8000 or "\x00" in value:
-                raise ValueError("Text must contain at most 8000 characters and no NUL")
-            self.frames.clear()
-            recheck()
-            started = True
-            self.action_started = True
-            run(["wtype", "-"], value.encode())
-        elif name == "press_key":
-            args = key_args(a["key"])
-            self.frames.clear()
-            recheck()
-            started = True
-            self.action_started = True
-            run(["wtype", *args])
-        elif name == "scroll":
-            point = self.point(frame, a["x"], a["y"])
-            steps = integer(a["steps"], -20, 20)
-            axis = a.get("axis", "vertical")
-            dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
-            self.frames.clear()
-            self.action_started = True
-            self.move(point)
-            recheck()
-            started = True
-            self.mouse("mousemove", "--wheel", "--", str(dx), str(dy))
-        elif name == "drag":
-            start = self.point(frame, a["x"], a["y"])
-            end = self.point(frame, a["end_x"], a["end_y"])
-            self.frames.clear()
-            self.action_started = True
-            self.move(start)
-            try:
+        with self.span('input'):
+            if name == "pointer":
+                point = self.point(frame, a["x"], a["y"])
+                button = a.get("button", "left")
+                code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
+                count = integer(a.get("count", 1), 1, 3)
+                self.frames.clear()
+                self.action_started = True
+                self.move(point)
+                recheck()
+                if code:
+                    started = True
+                    self.mouse("click", "--repeat", str(count), "--next-delay", "100", code)
+            elif name == "type_text":
+                value = a["text"]
+                if not isinstance(value, str) or len(value) > 8000 or "\x00" in value:
+                    raise ValueError("Text must contain at most 8000 characters and no NUL")
+                self.frames.clear()
                 recheck()
                 started = True
-                self.mouse("click", "0x40")
-                for i in range(1, 21):
+                self.action_started = True
+                run(["wtype", "-"], value.encode())
+            elif name == "press_key":
+                args = key_args(a["key"])
+                self.frames.clear()
+                recheck()
+                started = True
+                self.action_started = True
+                run(["wtype", *args])
+            elif name == "scroll":
+                point = self.point(frame, a["x"], a["y"])
+                steps = integer(a["steps"], -20, 20)
+                axis = a.get("axis", "vertical")
+                dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
+                self.frames.clear()
+                self.action_started = True
+                self.move(point)
+                recheck()
+                started = True
+                self.mouse("mousemove", "--wheel", "--", str(dx), str(dy))
+            elif name == "drag":
+                start = self.point(frame, a["x"], a["y"])
+                end = self.point(frame, a["end_x"], a["end_y"])
+                self.frames.clear()
+                self.action_started = True
+                self.move(start)
+                try:
                     recheck()
-                    self.move(tuple(round(s + (e-s)*i/20) for s, e in zip(start, end)))
-                    time.sleep(.015)
-            finally:
-                self.mouse("click", "0x80")
-        else:
-            raise ValueError("Unknown tool")
-        self.action_completed_ns = time.monotonic_ns()
-        self.timings['input_ms'] = (self.action_completed_ns-tick)/1e6
+                    started = True
+                    self.mouse("click", "0x40")
+                    for i in range(1, 21):
+                        recheck()
+                        self.move(tuple(round(s + (e-s)*i/20) for s, e in zip(start, end)))
+                        time.sleep(.015)
+                finally:
+                    self.mouse("click", "0x80")
+            else:
+                raise ValueError("Unknown tool")
+            self.action_completed_ns = time.monotonic_ns()
         if 'after' in a:
-            tick = time.monotonic_ns()
             condition = a['after']['condition']
             window = None if condition['kind'] == 'window' else (frame.get('target') or {}).get('address')
-            result = self.observation_content({'window': window, 'condition': condition,
-                'timeout_ms': a['after'].get('timeout_ms', 5000), 'after_action': self.action_completed_ns})
-            self.timings['wait_ms'] = (time.monotonic_ns()-tick)/1e6
+            with self.span('wait'):
+                result = self.observation_content({'window': window, 'condition': condition,
+                    'timeout_ms': a['after'].get('timeout_ms', 5000), 'after_action': self.action_completed_ns})
             if not any(block['type'] == 'image' for block in result):
-                result += self.screenshot(frame['monitor']['name'])
+                with self.span('result'):
+                    result += self.screenshot(frame['monitor']['name'])
             return result
-        return self.screenshot(frame["monitor"]["name"])
+        with self.span('result'):
+            return self.screenshot(frame["monitor"]["name"])
 
 
 S = {"type": "string"}

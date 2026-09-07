@@ -355,6 +355,84 @@ class Tests(unittest.TestCase):
             with self.assertRaises(ValueError):d.call('pointer',args)
         dispatch.assert_not_called();mouse.assert_not_called()
 
+    def test_guard_rejection_retains_timing_and_focus_side_effect(self):
+        d, f, state, args = self.approval_desktop()
+        args.pop('steps')
+        changed = bytearray(f['visual'][2]); changed[0] = 255
+        with patch.object(server.subprocess, 'run') as process, patch.object(server.time, 'sleep'), \
+                patch.object(d, 'target_pixels', return_value=(784, 584, bytes(changed))), \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'fresh'})]):
+            process.return_value.returncode = 1
+            with self.assertRaises(server.ActionRejected) as error:
+                d.call('pointer', args)
+        meta = json.loads(error.exception.content[0]['text'])
+        self.assertFalse(meta['action_performed'])
+        self.assertTrue(meta['requires_review'])
+        for key in ('guard_ms', 'focus_restore_ms', 'visual_check_ms', 'recovery_ms', 'total_ms'):
+            self.assertIn(key, meta['timings_ms'])
+        self.assertNotIn('input_ms', meta['timings_ms'])
+        self.assertTrue(d.focus_restored)
+        self.assertEqual(json.loads(error.exception.content[1]['text'])['frame_id'], 'fresh')
+
+    def test_partial_input_failure_retains_timing(self):
+        d = server.Desktop()
+        with patch.object(d, 'guard', return_value=frame()), \
+                patch.object(server, 'run', side_effect=RuntimeError('backend down')):
+            with self.assertRaises(server.ActionRejected) as error:
+                d.call('type_text', {'frame_id': 'token', 'text': 'hello'})
+        meta = json.loads(error.exception.content[0]['text'])
+        self.assertEqual(meta['action_performed'], 'unknown')
+        for key in ('guard_ms', 'input_ms', 'total_ms'):
+            self.assertIn(key, meta['timings_ms'])
+        self.assertNotIn('result_ms', meta['timings_ms'])
+        self.assertFalse(d.focus_restored)
+
+    def test_read_only_calls_report_request_total(self):
+        d = server.Desktop()
+        with patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'f', 'timings_ms': {'capture_ms': 1}})]):
+            meta = json.loads(d.call('screenshot', {})[0]['text'])
+        self.assertEqual(meta['timings_ms']['capture_ms'], 1)
+        for key in ('result_ms', 'total_ms'):
+            self.assertIn(key, meta['timings_ms'])
+        self.assertNotIn('action_performed', meta)
+
+    def test_trace_sidecar_records_every_outcome_without_text(self):
+        with tempfile.TemporaryDirectory() as folder:
+            os.chmod(folder, 0o700)
+            with patch.dict(os.environ, {'WAYLAND_CU_TRACE_DIR': folder}):
+                d = server.Desktop()
+            self.assertTrue(d.recorder.enabled)
+            delivered = [server.text_content({'frame_id': 'n', 'capture_backend': 'grim-ppm', 'fallback_reason': 'helper_unavailable',
+                                              'width': 2, 'height': 1, 'png_bytes': 70, 'timings_ms': {'capture_ms': 1}}),
+                         {'type': 'image', 'mimeType': 'image/png', 'data': 'AAAA'}]
+            with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), \
+                    patch.object(d, 'screenshot', return_value=delivered):
+                d.call('type_text', {'frame_id': 'old', 'text': 'SECRET WORDS'})
+            with patch.object(d, 'guard', side_effect=ValueError('Frame missing')):
+                with self.assertRaises(ValueError):
+                    d.call('press_key', {'frame_id': 'old', 'key': 'F13'})
+            d.close()
+            text = Path(d.recorder.path).read_text()
+            self.assertNotIn('SECRET', text)
+            self.assertNotIn('F13', text)
+            records = [json.loads(line) for line in text.splitlines()]
+            self.assertEqual([r['kind'] for r in records], ['process', 'request', 'request'])
+            self.assertIn('server.py', records[0]['source_sha256'])
+            ok, failed = records[1], records[2]
+            self.assertEqual((ok['tool'], ok['seq'], ok['text_len'], ok['outcome']['status'], ok['outcome']['action_performed']),
+                             ('type_text', 1, 12, 'ok', True))
+            self.assertEqual((ok['result']['images'], ok['result']['image_base64_bytes']), (1, 4))
+            self.assertEqual(ok['result']['frames'][0]['fallback_reason'], 'helper_unavailable')
+            self.assertEqual(ok['result']['frames'][0]['capture_backend'], 'grim-ppm')
+            self.assertEqual([s['name'] for s in ok['spans']][:1], ['request'])
+            self.assertEqual({s['name'] for s in ok['spans']} >= {'guard', 'input', 'result'}, True)
+            self.assertTrue(all(s['end_ns'] is not None for s in ok['spans']))
+            self.assertEqual((failed['tool'], failed['outcome']['status'], failed['outcome']['error_type'],
+                              failed['outcome']['action_performed'], failed['outcome']['reason']),
+                             ('press_key', 'error', 'ValueError', False, 'Frame missing'))
+            self.assertIn('total_ms', failed['timings_ms'])
+            self.assertTrue(d.recorder.status()['complete'])
+
     def test_mcp_handshake_and_validation(self):
         requests = [
             {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18"}},

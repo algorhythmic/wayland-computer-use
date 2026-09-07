@@ -23,6 +23,7 @@ class Capture:
     damage: object = None
     presentation_ns: object = None
     fallback_reason: object = None
+    requested_ns: object = None
 
 
 class Capturer:
@@ -59,12 +60,20 @@ class Capturer:
             self._stop()
 
     def capture(self, monitor, geometry=None, timeout=3, wait_damage_ms=0):
+        requested = time.monotonic_ns()  # Lock contention is reported, not hidden in capture time.
         with self.lock:
             started = time.monotonic_ns()
             # Initial helper implementation intentionally falls back for transformed
             # or scaled outputs. Never approximate an input coordinate transform.
-            eligible = monitor.get('scale') == 1 and monitor.get('transform') == 0
-            if eligible and time.monotonic() >= self.retry_at and os.access(self.helper, os.X_OK):
+            # Every fallback carries an explicit reason code for later attribution.
+            if not (monitor.get('scale') == 1 and monitor.get('transform') == 0):
+                reason = 'unsupported_output'
+            elif not os.access(self.helper, os.X_OK):
+                reason = 'helper_unavailable'
+            elif time.monotonic() < self.retry_at:
+                reason = 'helper_cooldown: '+(self.failure or '')
+            else:
+                reason = None
                 try:
                     if self.process is None:
                         self.process = subprocess.Popen([self.helper], stdin=subprocess.PIPE,
@@ -89,9 +98,10 @@ class Capturer:
                         raise ValueError('Native capture dimensions changed')
                     rgb = self._read(width*height*3, end)
                     return Capture(width, height, rgb, started, time.monotonic_ns(), 'wlr-screencopy',
-                                   meta.get('damage'), meta.get('presentation_ns'))
+                                   meta.get('damage'), meta.get('presentation_ns'), requested_ns=requested)
                 except (OSError, RuntimeError, ValueError, TimeoutError) as exc:
                     self.failure = str(exc)[:200]
+                    reason = 'helper_failed: '+self.failure
                     self.retry_at = time.monotonic()+30
                     self._stop()
             # A failed read-only capture can be replaced safely; no action is replayed.
@@ -105,4 +115,4 @@ class Capturer:
             if geometry and (width, height) != tuple(geometry[2:]):
                 raise ValueError('Capture dimensions do not match logical region')
             return Capture(width, height, rgb, started, time.monotonic_ns(), 'grim-ppm',
-                           fallback_reason=self.failure)
+                           fallback_reason=reason, requested_ns=requested)

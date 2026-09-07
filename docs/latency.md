@@ -134,6 +134,43 @@ Default `max_age_ms:0` requires collection begun after the request; values up to
 describe what was actually obtained. Timeout is not success. Evidence remains
 non-atomic across compositor metadata, accessibility, and pixels.
 
+## Tracing and attribution
+
+Every input-server request runs inside a request span that is closed on every
+exit path. Rejections, partial input failures, and post-input capture failures
+therefore return the same `timings_ms` fields as successes: `guard_ms`,
+`focus_restore_ms`, `visual_check_ms`, `debug_write_ms`, `input_ms`, `wait_ms`,
+`result_ms`, `recovery_ms`, and `total_ms`, whichever occurred. These values are
+**inclusive**: guard time contains focus restoration, the visual check and any
+recovery screenshot. Do not add them. Read-only calls report `result_ms` and
+`total_ms`. Frame metadata reports `capture_backend`, an explicit
+`fallback_reason` (`unsupported_output`, `helper_unavailable`,
+`helper_cooldown`, `helper_failed`), `png_bytes`, and `lock_wait_ms`, the time
+spent waiting for the shared capturer lock before the capture timer started.
+Observation timings add `lock_check_ms` for the compositor-lock probe that was
+previously unitemized inside `collection_ms`.
+
+Setting `WAYLAND_CU_TRACE_DIR` to an absolute, user-owned, mode-0700 directory
+records one JSON line per request to a 0600 file, outside MCP stdout. Records
+carry the span tree with parent links and monotonic start/end nanoseconds, a
+wall-clock/monotonic sync point, subprocess spans (`argv0` and exit code only),
+the outcome (`ok`, `rejected`, `error`; `action_performed` true/false/unknown;
+`focus_restored`; error type and a truncated reason), argument shape such as
+`text_len` or `condition_kind`, and response sizes, frame provenance, guard
+metrics and wait outcomes. Strings survive only under allowlisted keys, so typed
+text, key chords, titles, URLs, clipboard and accessibility content are never
+written. The file is capped at 64 MiB; further records increment a `dropped`
+counter and `desktop_state.trace.complete` becomes false. Recording is off
+unless the variable is set, and enabling it does not change any guard.
+
+`scripts/benchmark_latency.py` now rewrites its report after every trial with
+`status` `incomplete`, `complete`, or `failed` and the failure message, so an
+assertion never discards earlier samples. Wait trials persist the scheduled,
+applied, request and response monotonic timestamps; `after_change_ms` is the
+detection lag measured from the fixture's actual label update rather than from
+the scheduled delay. Each wait records the accessibility events it received and
+the checkout and published revisions the run used.
+
 ## Validation and measurement
 
 The first implementation run is recorded in

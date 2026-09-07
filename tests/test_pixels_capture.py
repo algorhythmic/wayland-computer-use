@@ -81,5 +81,21 @@ for line in sys.stdin:
             self.assertIsNone(capturer.process)
 
 
+    def test_fallback_reason_codes_and_lock_wait(self):
+        command=lambda *a,**kw:b'P6\n2 1\n255\nabcdef'
+        shot=Capturer(command=command, helper='/nonexistent').capture(MONITOR)
+        self.assertEqual(shot.fallback_reason,'helper_unavailable')
+        self.assertLessEqual(shot.requested_ns, shot.started_ns)
+        with tempfile.TemporaryDirectory() as folder:
+            helper=Path(folder)/'helper'
+            helper.write_text('#!/bin/sh\nexit 1\n')
+            helper.chmod(0o700)
+            capturer=Capturer(command=command, helper=helper)
+            self.addCleanup(capturer.close)
+            self.assertEqual(capturer.capture(dict(MONITOR,scale=2)).fallback_reason,'unsupported_output')
+            self.assertTrue(capturer.capture(MONITOR).fallback_reason.startswith('helper_failed: '))
+            self.assertTrue(capturer.capture(MONITOR).fallback_reason.startswith('helper_cooldown: '))
+
+
 if __name__ == '__main__':
     unittest.main()
