@@ -1,0 +1,497 @@
+{
+  "scope": "Offline artifact consistency audit plus mocked current-checkout timing-contract probes; no live task or raw private-log reconstruction.",
+  "source_sha256": {
+    "reports/2026-09-06-browser-obsidian/retrospective.md": "79cc447b4eef0423a7641730f71bcb32173b646c1fc1af3ad31349348af0e091",
+    "reports/2026-09-06-browser-obsidian/proposal.md": "869c258ce062db33bfad3a39525d02a05c104dfe0dab5a50cb69833c9a665d40",
+    "reports/2026-09-06-browser-obsidian/tool-calls.csv": "cdbf842ce221df2e7d768e2c9e7e18266334015d897cace29c1162c601ae6c30",
+    "reports/2026-09-06-browser-obsidian/metrics.json": "71158e409af60afd74db054477cb9d01b60122afe090b4eef71627ebd456fd9f",
+    "reports/2026-09-06-browser-obsidian/phases.csv": "4a8493074b6e87d50b699bcd34cf53b474a480df261155891f19aecd97d93e0d",
+    "scripts/server.py": "c78a8d6197bea860a55e605b3221502fb14952464514988db57704fe5a1d934a",
+    "scripts/benchmark_latency.py": "844fbe02bf5234ad66092124b8e7ffaf167b93f80b6a26557177602cdbd5aac3",
+    "scripts/dev_host.py": "482537a4e71f656903668d399e5b6b88b4bc81176796e047953547e951f94e4f",
+    "benchmarks/latency-20260906-031607.json": "9c31f8d190530fb67b4def156aab35f518c62f67ae37d085881ce45a46247d3c",
+    "scripts/cu/__init__.py": "85fc33c472a914f9f1d87dd924058b92954591406c39a4c396c0fde8e71761b9",
+    "scripts/cu/accessibility.py": "5167cc2c226b39d6abf40565a676faaf1a8dd4d530b67960cba40a570ddb0437",
+    "scripts/cu/accessibility_worker.py": "40f23457450c4becfa13a70a256ac3bc74af2bc059f5a7b275f5be5c717e46b4",
+    "scripts/cu/capture.py": "413e274a2b3f0593b53d57fe4841b1dbfb6e89e6db7ed6195ea3960043e95d37",
+    "scripts/cu/events.py": "4e3a2429bf8e551a79dca077a8b91f4024499f9927ad9d1a4c027fb8f7a9b67e",
+    "scripts/cu/observation.py": "29577f300433387c3b67bc3147c3e5511b8e38a7767cde9783293ddc42a9b86d",
+    "scripts/cu/pixels.py": "2a0c5179dcc1cd68b24ffa05885af427657697ce8b2242e56801da3091bdf5eb",
+    "scripts/cu/system.py": "88e0046407dcd43c08703498d018f241ac00970905c8d66389312cabb26ef72d",
+    "reports/2026-09-06-browser-obsidian/evaluate-observability.py": "c19cb9342757070335308078478e925836c754aee886ad1d226084ccc3131ed9"
+  },
+  "checks": [
+    {
+      "name": "outer_call_count",
+      "passed": true,
+      "actual": 47,
+      "expected": 47
+    },
+    {
+      "name": "unique_call_ids",
+      "passed": true,
+      "actual": 47,
+      "expected": 47
+    },
+    {
+      "name": "contiguous_call_numbers",
+      "passed": true,
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "name": "nested_operation_counts",
+      "passed": true,
+      "actual": {
+        "exec_command": 15,
+        "mcp__wayland__desktop_state": 2,
+        "mcp__wayland__focus_window": 3,
+        "mcp__wayland__press_key": 18,
+        "mcp__wayland__type_text": 9,
+        "mcp__wayland__pointer": 6,
+        "mcp__wayland__scroll": 1
+      },
+      "expected": {
+        "exec_command": 15,
+        "mcp__wayland__desktop_state": 2,
+        "mcp__wayland__focus_window": 3,
+        "mcp__wayland__press_key": 18,
+        "mcp__wayland__type_text": 9,
+        "mcp__wayland__pointer": 6,
+        "mcp__wayland__scroll": 1
+      }
+    },
+    {
+      "name": "ledger_sum_tool_s",
+      "passed": true,
+      "actual": 136.082,
+      "expected": 136.082
+    },
+    {
+      "name": "ledger_sum_observed_s",
+      "passed": true,
+      "actual": 145.05700016021729,
+      "expected": 145.05700016021729
+    },
+    {
+      "name": "ledger_sum_approval_s",
+      "passed": true,
+      "actual": 71.707,
+      "expected": 71.707
+    },
+    {
+      "name": "ledger_sum_image_png_bytes",
+      "passed": true,
+      "actual": 77346651.0,
+      "expected": 77346651
+    },
+    {
+      "name": "ledger_sum_image_base64_bytes",
+      "passed": true,
+      "actual": 103128916.0,
+      "expected": 103128916
+    },
+    {
+      "name": "ledger_sum_response_text_bytes",
+      "passed": true,
+      "actual": 147589.0,
+      "expected": 147589
+    },
+    {
+      "name": "ledger_sum_request_code_bytes",
+      "passed": true,
+      "actual": 18867.0,
+      "expected": 18867
+    },
+    {
+      "name": "image_bearing_calls",
+      "passed": true,
+      "actual": 37,
+      "expected": 37
+    },
+    {
+      "name": "rejections",
+      "passed": true,
+      "actual": 13,
+      "expected": 13
+    },
+    {
+      "name": "rejection_tool_s",
+      "passed": true,
+      "actual": 44.644,
+      "expected": 44.644
+    },
+    {
+      "name": "rejection_review_s",
+      "passed": true,
+      "actual": 25.842,
+      "expected": 25.842
+    },
+    {
+      "name": "rejection_image_bytes",
+      "passed": true,
+      "actual": 27380950.0,
+      "expected": 27380950
+    },
+    {
+      "name": "review_count",
+      "passed": true,
+      "actual": 26,
+      "expected": 26
+    },
+    {
+      "name": "review_entries_sum",
+      "passed": true,
+      "actual": 71.707,
+      "expected": 71.707
+    },
+    {
+      "name": "review_call_links",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "valid_envelopes",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "serial_outer_intervals",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "call_boundary_durations",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "gap_boundaries",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "phases_elapsed",
+      "passed": true,
+      "actual": 752.586,
+      "expected": 752.586
+    },
+    {
+      "name": "phase_continuity",
+      "passed": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "phase_call_count:Discovery and reinstall",
+      "passed": true,
+      "actual": 6,
+      "expected": 6
+    },
+    {
+      "name": "phase_tool_s:Discovery and reinstall",
+      "passed": true,
+      "actual": 4.273000000000001,
+      "expected": 4.273000000000001
+    },
+    {
+      "name": "phase_call_count:Browser and article navigation",
+      "passed": true,
+      "actual": 8,
+      "expected": 8
+    },
+    {
+      "name": "phase_tool_s:Browser and article navigation",
+      "passed": true,
+      "actual": 25.352,
+      "expected": 25.352
+    },
+    {
+      "name": "phase_call_count:Read and copy excerpt",
+      "passed": true,
+      "actual": 6,
+      "expected": 6
+    },
+    {
+      "name": "phase_tool_s:Read and copy excerpt",
+      "passed": true,
+      "actual": 19.229,
+      "expected": 19.229
+    },
+    {
+      "name": "phase_call_count:Launch and focus Obsidian",
+      "passed": true,
+      "actual": 11,
+      "expected": 11
+    },
+    {
+      "name": "phase_tool_s:Launch and focus Obsidian",
+      "passed": true,
+      "actual": 36.888999999999996,
+      "expected": 36.888999999999996
+    },
+    {
+      "name": "phase_call_count:Create, name, and paste note",
+      "passed": true,
+      "actual": 9,
+      "expected": 9
+    },
+    {
+      "name": "phase_tool_s:Create, name, and paste note",
+      "passed": true,
+      "actual": 32.697,
+      "expected": 32.697
+    },
+    {
+      "name": "phase_call_count:Enter source and reflections",
+      "passed": true,
+      "actual": 2,
+      "expected": 2
+    },
+    {
+      "name": "phase_tool_s:Enter source and reflections",
+      "passed": true,
+      "actual": 7.0280000000000005,
+      "expected": 7.0280000000000005
+    },
+    {
+      "name": "phase_call_count:Diagnose, repair, and verify",
+      "passed": true,
+      "actual": 5,
+      "expected": 5
+    },
+    {
+      "name": "phase_tool_s:Diagnose, repair, and verify",
+      "passed": true,
+      "actual": 10.614,
+      "expected": 10.614
+    },
+    {
+      "name": "phase_call_count:Final response",
+      "passed": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "name": "phase_tool_s:Final response",
+      "passed": true,
+      "actual": 0,
+      "expected": 0.0
+    },
+    {
+      "name": "phase_usage:input_tokens",
+      "passed": true,
+      "actual": 3777427.0,
+      "expected": 3777427
+    },
+    {
+      "name": "phase_usage:output_tokens",
+      "passed": true,
+      "actual": 10003.0,
+      "expected": 10003
+    },
+    {
+      "name": "top_level_partition",
+      "passed": true,
+      "actual": 752.586,
+      "expected": 752.586
+    },
+    {
+      "name": "model_overlap_arithmetic",
+      "passed": true,
+      "actual": 537.8641767501831,
+      "expected": 537.8641767501831
+    },
+    {
+      "name": "reject_to_next_call_s",
+      "passed": true,
+      "actual": 202.29699993133545,
+      "expected": 202.29699993133545
+    }
+  ],
+  "all_consistency_checks_passed": true,
+  "derived": {
+    "broad_envelope_coverage": 0.8955071935302851,
+    "underlying_operations": 54,
+    "multi_operation_wrappers": 6,
+    "input_attempts": 34,
+    "unitemized_nonapproval_tool_s": 64.375,
+    "host_client_unattributed_s": 78.63982324981691,
+    "boundary_difference_s": 8.975000160217284,
+    "image_boundary_difference_s": 8.955999994277954,
+    "image_boundary_difference_median_s": 0.23900003242492662,
+    "nonimage_boundary_difference_median_s": 0.002000056266784664,
+    "benchmark_collection_residuals": [
+      {
+        "unitemized_collection_ms": 35.45071000000001,
+        "collection_ms": 98.872555,
+        "share": 0.358549548962298
+      },
+      {
+        "unitemized_collection_ms": 34.53982200000001,
+        "collection_ms": 95.841266,
+        "share": 0.36038570275146414
+      },
+      {
+        "unitemized_collection_ms": 35.206424999999996,
+        "collection_ms": 100.207325,
+        "share": 0.35133584296357573
+      }
+    ]
+  },
+  "current_contract_probes": [
+    {
+      "scenario": "success",
+      "action_performed": true,
+      "returned_timing_fields": [
+        "capture_ms",
+        "encode_ms",
+        "guard_ms",
+        "input_ms",
+        "total_ms"
+      ],
+      "has_operation_total": true,
+      "retained_internal_timing_fields": [
+        "guard_ms",
+        "input_ms",
+        "total_ms"
+      ]
+    },
+    {
+      "scenario": "guard_rejection",
+      "action_performed": false,
+      "returned_timing_fields": [
+        "capture_ms",
+        "encode_ms"
+      ],
+      "has_operation_total": false,
+      "retained_internal_timing_fields": []
+    },
+    {
+      "scenario": "partial_input_failure",
+      "action_performed": "unknown",
+      "returned_timing_fields": [],
+      "has_operation_total": false,
+      "retained_internal_timing_fields": [
+        "guard_ms"
+      ]
+    },
+    {
+      "scenario": "post_input_capture_failure",
+      "action_performed": true,
+      "returned_timing_fields": [],
+      "has_operation_total": false,
+      "retained_internal_timing_fields": [
+        "guard_ms",
+        "input_ms"
+      ]
+    }
+  ],
+  "limits": [
+    "Model request intervals and overlap cannot be reconstructed from the aggregate model fields.",
+    "Boundary differences do not isolate client resizing or networking.",
+    "Synthetic probe durations are not performance measurements.",
+    "Passing consistency checks does not mean observability is sufficient."
+  ]
+}
