@@ -7,9 +7,13 @@ import threading
 import time
 
 
+WORKER = [sys.executable, str(Path(__file__).with_name('accessibility_worker.py'))]
+
+
 class Accessibility:
-    def __init__(self, wake=None):
+    def __init__(self, wake=None, command=None):
         self.wake = wake or (lambda: None)
+        self.command = command or WORKER
         self.cv = threading.Condition()
         self.request_lock = threading.Lock()
         self.process = None
@@ -17,7 +21,37 @@ class Accessibility:
         self.sequence = 0
         self.results = {}
         self.dead = False
+        self.watching = False
         self.event_count = 0
+
+    def _start(self):
+        if self.process is None:
+            self.dead = False
+            self.watching = False
+            self.process = subprocess.Popen(self.command, stdin=subprocess.PIPE,
+                                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            self.reader = threading.Thread(target=self._receive, args=(self.process,), daemon=True)
+            self.reader.start()
+
+    def warm(self):
+        """Start the worker so its GI import precedes the first probe. It reads nothing until asked."""
+        with self.request_lock:
+            try:
+                self._start()
+            except OSError:
+                self._stop()
+
+    def unwatch(self):
+        """Drop the application subscription but keep the imported worker for later probes."""
+        with self.request_lock:
+            if self.process is None or not self.watching:
+                return
+            try:
+                self.process.stdin.write(b'{"unwatch": true}\n')
+                self.process.stdin.flush()
+                self.watching = False
+            except OSError:
+                self._stop()
 
     def _receive(self, process):
         try:
@@ -52,6 +86,7 @@ class Accessibility:
                 self.reader.join(timeout=2)
             process.stdout.close()
         self.results.clear()
+        self.watching = False
 
     def close(self):
         with self.request_lock:
@@ -60,16 +95,12 @@ class Accessibility:
     def probe(self, pid, title, timeout=2):
         with self.request_lock:
             try:
-                if self.process is None:
-                    self.dead = False
-                    self.process = subprocess.Popen([sys.executable, str(Path(__file__).with_name('accessibility_worker.py'))],
-                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-                    self.reader = threading.Thread(target=self._receive, args=(self.process,), daemon=True)
-                    self.reader.start()
+                self._start()
                 self.sequence += 1
                 sequence = self.sequence
                 self.process.stdin.write((json.dumps({'id': sequence, 'pid': pid, 'title': title})+'\n').encode())
                 self.process.stdin.flush()
+                self.watching = True
                 end = time.monotonic()+timeout
                 with self.cv:
                     while sequence not in self.results and not self.dead:

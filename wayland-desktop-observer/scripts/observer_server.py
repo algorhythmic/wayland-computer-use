@@ -9,7 +9,8 @@ from cu.observation import Observer, TOOLS, validate
 
 
 def serve():
-    observer = None
+    observer = Observer()
+    observer.collector.accessibility.warm()  # GI import ahead of the first probe; reaped after 120 s idle.
     try:
         for line in sys.stdin:
             request = None
@@ -33,8 +34,6 @@ def serve():
                         params = request['params']
                         name, args = params['name'], params.get('arguments', {})
                         validate(name, args)
-                        if observer is None:
-                            observer = Observer()
                         content = observer.stop() if name == 'stop_observing' else observer.observe(**args, wait=name == 'wait_for_change')
                         result = {'content': content, 'isError': False}
                     except Exception as exc:

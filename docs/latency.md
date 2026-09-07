@@ -51,8 +51,11 @@ The persistent AT-SPI subprocess subscribes to the selected application and
 re-reads the bounded tree for each requested accessibility sample. A two-second
 deadline kills a stuck worker; the next request can start a new one. This retains
 process isolation for unresponsive applications without restarting Python/GI on
-every normal read. Selecting other channels or losing target focus closes the
-accessibility worker. Missing, protected and truncated evidence is explicit.
+every normal read. Each server starts the worker at launch so its GI import
+precedes the first probe; it reads nothing until a probe. Selecting other
+channels, losing target focus, or stopping observation unsubscribes it from
+the application but keeps the imported process, which exits after 120 seconds
+without an observation scope. Missing, protected and truncated evidence is explicit.
 
 ## Tool examples
 
@@ -253,3 +256,36 @@ worker) and the actionable-frame crop/encode/base64 step (about 23 ms) are the
 largest remaining local stages. A guarded input's four lock checks (about
 20 ms) can only be measured end to end with the input daemon installed. These
 are local stage timings; they do not predict model-driven task time.
+
+## Second pass, September 7, 2026
+
+Two more single-factor changes, found with the same tracing and measured
+offline and through the checkout server.
+
+1. **Pixel guard.** `pixel_difference` looped over every pixel in Python and
+   cost about 640 ms per guarded input on a 1261×688 crop, the largest local
+   stage by far and invisible in the retrospective because it sat inside the
+   undifferentiated guard envelope. It now detects changed pixels with byte
+   XOR, computes deltas only for changed pixels while the change count can
+   still be accepted, and otherwise computes the exact maximum channel delta
+   with 16-bit-lane arithmetic on one big integer. Every metric equals the
+   original loop; a randomized test checks 400 crops against the old code.
+2. **Accessibility worker lifecycle.** The 88 ms of a cold probe was the GI
+   import, not the tree read. The worker is now started when a server launches
+   and when an observation scope becomes active, unsubscribed rather than
+   killed on channel or focus changes and on stop, and reaped after 120 seconds
+   without a scope. Hung workers are still killed and replaced.
+
+| Measurement | Before | After |
+|---|---:|---:|
+| Guard pixel comparison, 1261×688, unchanged crop | 640 ms | <1 ms |
+| Guard pixel comparison, one changed pixel or an 18-pixel caret | 640 ms | 20 ms |
+| Guard pixel comparison, fully changed crop (rejected) | 640 ms | 77 ms |
+| First accessibility probe after server start | 95 ms | 12 ms |
+| Accessibility probe after a pixels-only observation | 95 ms | 9 ms |
+
+A guarded input performs one full-crop comparison and one action-region
+comparison, so the pixel change alone removes roughly 0.6 s from every input
+action's guard. The retrospective's 34 input attempts would have spent about
+20 s there. These remain local stage timings; an end-to-end guarded input
+measurement still needs the input daemon installed.

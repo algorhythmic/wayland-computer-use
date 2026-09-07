@@ -189,25 +189,83 @@ def result_summary(content):
     return summary
 
 
+LANE_CONSTANTS = {}
+LIGHT_PATH_PIXELS = 20000
+
+
+def lane_constants(count):
+    """Per-lane 0x8000 guard and 0x7fff mask for ``count`` 16-bit lanes, cached by size."""
+    if count not in LANE_CONSTANTS:
+        if len(LANE_CONSTANTS) >= 4:
+            LANE_CONSTANTS.pop(next(iter(LANE_CONSTANTS)))
+        LANE_CONSTANTS[count] = (int.from_bytes(b'\x80\x00'*count, 'big'), int.from_bytes(b'\x7f\xff'*count, 'big'))
+    return LANE_CONSTANTS[count]
+
+
+def max_channel_difference(first, second):
+    """Exact max |a-b| over all bytes using 16-bit lanes in one big integer; no per-byte loop."""
+    count = len(first)
+    guard, low = lane_constants(count)
+    lanes = bytearray(2*count)
+    lanes[1::2] = first
+    a = int.from_bytes(lanes, 'big')
+    lanes[1::2] = second
+    b = int.from_bytes(lanes, 'big')
+    d1 = (a | guard) - b                      # 0x8000 + (a-b) per lane; the guard bit prevents borrows
+    ge = ((d1 & guard) >> 15) * 0x7fff        # full-lane mask where a >= b
+    magnitude = d1 & low
+    absdiff = (magnitude & ge) | ((guard - magnitude) & ~ge & low)
+    deltas = absdiff.to_bytes(2*count, 'big')[1::2]
+    maximum, lo, hi = 0, 1, 255
+    while lo <= hi:                           # binary search with C-speed scans
+        mid = (lo+hi)//2
+        if deltas.translate(None, bytes(range(mid))):
+            maximum, lo = mid, mid+1
+        else:
+            hi = mid-1
+    return maximum
+
+
 def pixel_difference(before, after):
+    """Exact changed-pixel count, max channel delta and bbox without a Python per-pixel loop.
+
+    Change detection uses byte XOR; deltas are computed per changed pixel when few
+    pixels changed (the only case that can still be accepted) and with lane
+    arithmetic over the whole crop otherwise. Results equal the original loop.
+    """
     if before[:2] != after[:2]:
         return {"dimensions_changed": True, "before_size": before[:2], "after_size": after[:2]}
     width, height, first = before
     second = after[2]
     if len(first) != width * height * 3 or len(second) != len(first):
         raise ValueError("Invalid RGB crop")
-    count = maximum = 0
-    xmin, ymin, xmax, ymax = width, height, -1, -1
-    for offset in range(0, len(first), 3):
-        delta = max(abs(first[offset+c] - second[offset+c]) for c in range(3))
-        if delta:
-            count += 1
-            maximum = max(maximum, delta)
-            y, x = divmod(offset // 3, width)
-            xmin, ymin, xmax, ymax = min(xmin, x), min(ymin, y), max(xmax, x), max(ymax, y)
-    return {"dimensions_changed": False, "total_pixels": width * height,
-            "changed_pixels": count, "max_channel_difference": maximum,
-            "changed_bbox_xyxy": [xmin, ymin, xmax+1, ymax+1] if count else None}
+    pixels = width * height
+    result = {"dimensions_changed": False, "total_pixels": pixels}
+    if first == second:
+        return {**result, "changed_pixels": 0, "max_channel_difference": 0, "changed_bbox_xyxy": None}
+    xor = (int.from_bytes(first, 'big') ^ int.from_bytes(second, 'big')).to_bytes(len(first), 'big')
+    changed = (int.from_bytes(xor[0::3], 'big') | int.from_bytes(xor[1::3], 'big')
+               | int.from_bytes(xor[2::3], 'big')).to_bytes(pixels, 'big')
+    count = pixels - changed.count(0)
+    ymin = (pixels - len(changed.lstrip(b'\x00'))) // width
+    ymax = (len(changed.rstrip(b'\x00')) - 1) // width
+    xmin, xmax = width, -1
+    for y in range(ymin, ymax+1):
+        row = changed[y*width:(y+1)*width]
+        stripped = row.lstrip(b'\x00')
+        if stripped:
+            xmin = min(xmin, width - len(stripped))
+            xmax = max(xmax, len(row.rstrip(b'\x00')) - 1)
+    if count <= LIGHT_PATH_PIXELS:
+        maximum = 0
+        for match in re.finditer(rb'[^\x00]', changed):
+            offset = match.start()*3
+            maximum = max(maximum, abs(first[offset]-second[offset]), abs(first[offset+1]-second[offset+1]),
+                          abs(first[offset+2]-second[offset+2]))
+    else:
+        maximum = max_channel_difference(first, second)
+    return {**result, "changed_pixels": count, "max_channel_difference": maximum,
+            "changed_bbox_xyxy": [xmin, ymin, xmax+1, ymax+1]}
 
 
 def visual_guard(before, after, region=None):
@@ -297,6 +355,13 @@ class Desktop:
         if self.observer is None:
             self.observer = Observer(Collector(capturer=self.capturer))
         return self.observer
+
+    def warm(self):
+        """Start the accessibility worker so its GI import precedes the first probe.
+
+        It reads nothing until a probe and exits after 120 seconds without a scope.
+        """
+        self.observation_service().collector.accessibility.warm()
 
     def wait_focus(self, address, timeout=.4):
         end = time.monotonic()+timeout
@@ -842,6 +907,7 @@ def validate(name, args):
 def serve():
     session_env()
     desktop = Desktop()
+    desktop.warm()
     try:
         for line in sys.stdin.buffer:
             request = None

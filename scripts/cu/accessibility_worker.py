@@ -108,6 +108,12 @@ def serve():
                     subscribed.append(kind)
             except Exception:
                 pass  # Periodic scoped reads still reconcile unsupported event sources.
+    def unwatch():
+        nonlocal watched, subscribed
+        for kind in subscribed:
+            listener.deregister(kind)
+        subscribed = []
+        watched = None
     WATCH_APP = watch
     buffer = bytearray()
     os.set_blocking(sys.stdin.fileno(), False)
@@ -125,6 +131,9 @@ def serve():
                 line, _, rest = buffer.partition(b'\n')
                 buffer[:] = rest
                 request = json.loads(line)
+                if request.get('unwatch'):
+                    unwatch()
+                    continue
                 try:
                     result = probe(request['pid'], request['title'])
                 except Exception as exc:

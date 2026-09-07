@@ -69,6 +69,19 @@ class DevTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'dependency checksum'):
                 runtime.refresh()
 
+    def test_host_warms_runtime_desktop_when_supported(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            release(root, FIXTURE % 'one')
+            runtime = host.Runtime(root)
+            runtime.refresh()
+            self.assertFalse(hasattr(runtime.desktop, 'warmed'))  # Legacy bundles without warm still load.
+            warm = FIXTURE.replace("    def __init__(self): self.frames = {}",
+                                   "    def __init__(self): self.frames = {}; self.warmed = False\n    def warm(self): self.warmed = True")
+            release(root, warm % 'two')
+            runtime.refresh()
+            self.assertTrue(runtime.desktop.warmed)
+
     def test_reload_discards_frames_and_pins_tool_contract(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

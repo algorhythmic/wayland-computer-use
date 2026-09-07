@@ -95,6 +95,8 @@ class Runtime:
                 raise ValueError("Tool definitions changed; host/client rediscovery required")
             module.session_env()
             desktop = module.Desktop()
+            if hasattr(desktop, 'warm'):
+                desktop.warm()  # Pre-start the accessibility worker; legacy bundles lack this.
         except BaseException:
             forget(module.__name__)
             raise
@@ -139,6 +141,10 @@ class Runtime:
 
 def serve(root=None):
     runtime = Runtime(root or Path(__file__).resolve().parents[1])
+    try:
+        runtime.refresh()  # Load and warm at launch; a missing bundle still reports on the first request.
+    except Exception:
+        pass
     try:
         for line in sys.stdin.buffer:
             request = None

@@ -59,6 +59,11 @@ class Collector:
         self.capturer.close()
         self.accessibility.close()
 
+    def suspend(self):
+        """Scope ended: release the capturer, keep the imported worker unsubscribed until idle reap."""
+        self.capturer.close()
+        self.accessibility.unwatch()
+
     def collect(self, window, channels=DEFAULT_CHANNELS, wait_damage_ms=0):
         started, started_ns = time.time(), time.monotonic_ns()
         timings = {}
@@ -81,7 +86,7 @@ class Collector:
         requested = [('pixels', 'visual'), ('accessibility', 'accessibility')]
         reason = None
         if 'accessibility' not in channels:
-            self.accessibility.close()
+            self.accessibility.unwatch()
         if window and not target:
             reason = 'window_missing'
         elif target and (active.get('address') != window or not target['mapped']):
@@ -93,7 +98,7 @@ class Collector:
             if locked:
                 reason = 'desktop_locked'
         if reason:
-            self.accessibility.close()
+            self.accessibility.unwatch()
             for channel, key in requested:
                 if channel in channels:
                     state[key] = {'status': 'unavailable', 'reason': reason}
@@ -261,9 +266,10 @@ def matches(condition, sample, reference=None):
 
 class Observer:
     """One scope, six revisions, and a renewable 120-second observation lease."""
-    def __init__(self, collector=None, interval=1.0):
+    def __init__(self, collector=None, interval=1.0, idle_timeout=120):
         self.collector = collector or Collector()
         self.interval = interval
+        self.idle_timeout = idle_timeout
         self.cv = threading.Condition()
         self.requests = threading.Lock()
         self.wakeup = Wakeup()
@@ -284,8 +290,12 @@ class Observer:
     def connect_events(self):
         self.wakeup.connect()
 
+    def accessibility(self):
+        return getattr(self.collector, 'accessibility', None)
+
     def worker(self):
         collecting = False
+        idle_since = time.monotonic()
         try:
             while True:
                 with self.cv:
@@ -295,12 +305,19 @@ class Observer:
                     scope, generation = self.scope, self.generation
                 if not active:
                     if collecting:
-                        if hasattr(self.collector, 'close'):
+                        if hasattr(self.collector, 'suspend'):
+                            self.collector.suspend()
+                        elif hasattr(self.collector, 'close'):
                             self.collector.close()
                         self.wakeup.disconnect()
                         collecting = False
-                    self.wakeup.wait(120)
+                        idle_since = time.monotonic()
+                    elif self.accessibility() and time.monotonic()-idle_since >= self.idle_timeout:
+                        self.accessibility().close()  # Reap a pre-started worker nobody used.
+                    self.wakeup.wait(self.idle_timeout)
                     continue
+                if not collecting and self.accessibility():
+                    self.accessibility().warm()  # Import GI now, before any accessibility request.
                 collecting = True
                 self.wakeup.drain()
                 self.connect_events()  # Subscribe before sampling to close the startup gap.

@@ -153,6 +153,44 @@ class Tests(unittest.TestCase):
                 with self.assertRaises(server.ActionRejected):
                     d.prepare("pointer", args)
 
+    def test_pixel_difference_matches_reference_loop(self):
+        def reference(before, after):
+            width, height, first = before
+            second = after[2]
+            count = maximum = 0
+            xmin, ymin, xmax, ymax = width, height, -1, -1
+            for offset in range(0, len(first), 3):
+                delta = max(abs(first[offset+c] - second[offset+c]) for c in range(3))
+                if delta:
+                    count += 1
+                    maximum = max(maximum, delta)
+                    y, x = divmod(offset // 3, width)
+                    xmin, ymin, xmax, ymax = min(xmin, x), min(ymin, y), max(xmax, x), max(ymax, y)
+            return {"dimensions_changed": False, "total_pixels": width * height, "changed_pixels": count,
+                    "max_channel_difference": maximum, "changed_bbox_xyxy": [xmin, ymin, xmax+1, ymax+1] if count else None}
+        import random
+        rng = random.Random(2026)
+        for trial in range(400):
+            width, height = rng.randrange(1, 48), rng.randrange(1, 48)
+            first = bytes(rng.randrange(256) for _ in range(width*height*3))
+            second = bytearray(first)
+            mode = rng.random()
+            if mode < 0.5:
+                for _ in range(rng.randrange(0, 8)):
+                    second[rng.randrange(len(second))] = rng.randrange(256)
+            elif mode < 0.7:
+                second = bytearray(255-v for v in first)
+            elif mode < 0.9:
+                second = bytearray(rng.randrange(256) for _ in range(len(first)))
+            with patch.object(server, 'LIGHT_PATH_PIXELS', rng.choice([0, 3, 20000])):
+                self.assertEqual(server.pixel_difference((width, height, first), (width, height, bytes(second))),
+                                 reference((width, height, first), (width, height, bytes(second))), trial)
+        # Both paths agree on every delta value, including bytes that are regex/ASCII specials.
+        first = bytes(range(256))*3
+        for value in (1, 2, 6, 7, 45, 91, 92, 93, 94, 128, 254, 255):
+            second = bytes((v+value) % 256 for v in first)
+            self.assertEqual(server.max_channel_difference(first, second), reference((256, 3, first), (256, 3, second))['max_channel_difference'])
+
     def test_pixel_metrics_include_tiny_changes_and_exclusive_bbox(self):
         before = (3, 2, bytes(18))
         after = bytearray(18)
