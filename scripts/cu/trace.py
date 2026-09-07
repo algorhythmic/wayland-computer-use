@@ -20,7 +20,7 @@ DEFAULT_LIMIT_BYTES = 64*1024*1024
 ENVIRONMENT = 'WAYLAND_CU_TRACE_DIR'
 # Only these keys may carry strings; everything else must be numeric/boolean/None.
 TEXT_KEYS = {'kind', 'trace_id', 'tool', 'status', 'action_performed', 'error_type', 'reason',
-             'name', 'argv0', 'backend', 'capture_backend', 'fallback_reason', 'condition_kind', 'python', 'boot_id',
+             'name', 'query', 'argv0', 'backend', 'capture_backend', 'fallback_reason', 'condition_kind', 'python', 'boot_id',
              'source_sha256', 'clock', 'path', 'monitor'}
 REASON_LIMIT = 200
 _local = threading.local()

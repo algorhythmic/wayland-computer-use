@@ -1,8 +1,38 @@
 """Bounded RGB buffers. Encode only at the MCP delivery boundary."""
+import os
 import struct
+import threading
 import zlib
 
 MAX_PIXELS = 16_000_000
+PARALLEL_MIN_BYTES = 2_000_000  # Below this, thread start-up outweighs the deflate split.
+PARALLEL_STREAMS = max(1, min(4, os.cpu_count() or 1))
+
+
+def deflate(data, level=1, streams=PARALLEL_STREAMS):
+    """One valid zlib stream built from independent raw-deflate members (as pigz does).
+
+    Each member compresses its own slice and ends on a byte boundary with a sync
+    flush; the last member finishes the stream. zlib releases the GIL, so members
+    compress concurrently. Output is lossless and decodes with any inflater.
+    """
+    if streams <= 1 or len(data) < PARALLEL_MIN_BYTES:
+        return zlib.compress(data, level)
+    bounds = [(i*len(data)//streams, (i+1)*len(data)//streams) for i in range(streams)]
+    members = [None]*streams
+    def compress(index):
+        start, end = bounds[index]
+        compressor = zlib.compressobj(level, zlib.DEFLATED, -15)
+        members[index] = compressor.compress(data[start:end]) + \
+            compressor.flush(zlib.Z_FINISH if index == streams-1 else zlib.Z_SYNC_FLUSH)
+    threads = [threading.Thread(target=compress, args=(i,)) for i in range(1, streams)]
+    for thread in threads:
+        thread.start()
+    compress(0)
+    for thread in threads:
+        thread.join()
+    header = b'\x78\x01' if level < 2 else b'\x78\x9c'
+    return header + b''.join(members) + struct.pack('!I', zlib.adler32(data) & 0xffffffff)
 
 
 def parse_ppm(data):
@@ -48,7 +78,7 @@ def png_rgb(width, height, rgb):
         return struct.pack('!I', len(data)) + kind + data + struct.pack('!I', zlib.crc32(kind+data))
     rows = b''.join(b'\0'+rgb[y*width*3:(y+1)*width*3] for y in range(height))
     return (b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('!2I5B', width, height, 8, 2, 0, 0, 0))
-            + chunk(b'IDAT', zlib.compress(rows, 1)) + chunk(b'IEND', b''))
+            + chunk(b'IDAT', deflate(rows, 1)) + chunk(b'IEND', b''))
 
 
 def crop(rgb, width, box):

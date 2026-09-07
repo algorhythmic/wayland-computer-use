@@ -23,6 +23,7 @@ if __package__:
     from .cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from .cu import observation
     from .cu import trace
+    from .cu.system import desktop_locked, hypr_query
 else:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from cu.capture import Capturer
@@ -30,6 +31,7 @@ else:
     from cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from cu import observation
     from cu import trace
+    from cu.system import desktop_locked, hypr_query
 
 
 def run(args, data=None, timeout=15):
@@ -309,7 +311,7 @@ class Desktop:
             raise RuntimeError("No unambiguous Hyprland session could be discovered. "
                                "Set HYPRLAND_INSTANCE_SIGNATURE and WAYLAND_DISPLAY for the MCP server. "
                                "Session sockets must be accessible to this process.")
-        return json.loads(run(["hyprctl", "-j", command]))
+        return hypr_query(command)
 
     def dispatch(self, command, arg):
         # Hyprland's Lua config mode requires a dispatcher expression, not
@@ -351,7 +353,7 @@ class Desktop:
         active = self.hypr("activewindow")
         before = active.get("address")
         target = self.target_record(active) if active.get("mapped") and active.get("monitor") == m.get("id") else None
-        if subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0:
+        if desktop_locked():
             raise RuntimeError('Desktop is locked')
         capture = self.capturer.capture(m)
         current = self.hypr("activewindow")
@@ -360,7 +362,7 @@ class Desktop:
             raise RuntimeError("Desktop changed during capture; take another screenshot")
         if target and self.target_record(current) != target:
             raise RuntimeError("Target changed during capture; take another screenshot")
-        if subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0:
+        if desktop_locked():
             raise RuntimeError('Desktop locked during capture')
         return self.capture_content(capture, m, target, self.layout(monitors), after)
 
@@ -467,7 +469,7 @@ class Desktop:
         raise ActionRejected(message, content)
 
     def check_target(self, frame):
-        if subprocess.run(["pgrep", "-x", "hyprlock"], stdout=subprocess.DEVNULL).returncode == 0:
+        if desktop_locked():
             raise ValueError("Desktop is locked")
         if self.layout(self.hypr("monitors")) != frame["layout"]:
             raise ValueError("Monitor layout changed")
@@ -555,7 +557,7 @@ class Desktop:
         if self.hypr("activewindow").get("address") != frame["active"]:
             raise ValueError("Active window changed; take a fresh screenshot")
         # Omarchy uses hyprlock. This check supplements, not replaces, compositor isolation.
-        if subprocess.run(["pgrep", "-x", "hyprlock"], stdout=subprocess.DEVNULL).returncode == 0:
+        if desktop_locked():
             raise RuntimeError("Desktop is locked")
         return frame
 

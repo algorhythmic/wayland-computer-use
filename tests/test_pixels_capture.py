@@ -37,6 +37,20 @@ class PixelTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             crop(rgb,85,[-1,0,1,1])
 
+    def test_parallel_deflate_is_lossless_and_decodes_as_png(self):
+        from cu import pixels
+        import random, zlib
+        width, height = 1200, 700  # 2.52 MB of rows: above the parallel threshold.
+        rng = random.Random(7)
+        rgb = bytes(rng.randrange(256) if x % 5 == 0 else 0 for x in range(width*height*3))
+        rows = b''.join(b'\0'+rgb[y*width*3:(y+1)*width*3] for y in range(height))
+        self.assertGreaterEqual(len(rows), pixels.PARALLEL_MIN_BYTES)
+        for streams in (1, 2, 4):
+            self.assertEqual(zlib.decompress(pixels.deflate(rows, 1, streams=streams)), rows)
+        png = png_rgb(width, height, rgb)
+        decoded = subprocess.check_output(['magick', 'png:-', '-alpha', 'off', '-depth', '8', 'rgb:-'], input=png)
+        self.assertEqual(decoded, rgb)
+
     def test_raw_fallback_is_single_command_and_validates_region(self):
         commands=[]
         def command(args, **kwargs):
@@ -80,6 +94,60 @@ for line in sys.stdin:
             self.assertIn('timeout',shot.fallback_reason)
             self.assertIsNone(capturer.process)
 
+
+    def test_hypr_query_uses_owned_socket_and_falls_back_to_hyprctl(self):
+        import socket, threading
+        from cu import system, trace
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)/'hypr'/'sig'
+            root.mkdir(parents=True)
+            server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            server.bind(str(root/'.socket.sock'))
+            server.listen(1)
+            self.addCleanup(server.close)
+            requests = []
+            def serve():
+                conn, _ = server.accept()
+                with conn:
+                    requests.append(conn.recv(1024))
+                    conn.sendall(b'[{"name":"DP-1"}]')
+            thread = threading.Thread(target=serve, daemon=True)
+            thread.start()
+            calls = []
+            with patch.dict(os.environ, {'XDG_RUNTIME_DIR': folder, 'HYPRLAND_INSTANCE_SIGNATURE': 'sig'}), \
+                    patch.object(system, 'run', side_effect=lambda args, **kw: calls.append(args) or b'{"fallback":true}'):
+                t = trace.Trace('request')
+                previous = trace.activate(t)
+                try:
+                    self.assertEqual(system.hypr_query('monitors'), [{'name': 'DP-1'}])
+                finally:
+                    trace.activate(previous)
+                thread.join(timeout=2)
+                self.assertEqual(requests, [b'j/monitors'])
+                self.assertEqual(calls, [])
+                self.assertEqual((t.spans[-1]['name'], t.spans[-1]['attrs']['query']), ('ipc', 'monitors'))
+                with self.assertRaises(ValueError):
+                    system.hypr_query('monitors; rm')
+                server.close()
+                os.unlink(root/'.socket.sock')
+                self.assertEqual(system.hypr_query('clients'), {'fallback': True})
+                self.assertEqual(calls, [['hyprctl', '-j', 'clients']])
+
+    def test_lock_predicate_reads_proc_and_fails_closed(self):
+        from cu import system, trace
+        self.assertFalse(system.desktop_locked(names=frozenset({b'no-such-process-name'})))
+        me = Path(f'/proc/{os.getpid()}/comm').read_bytes().rstrip(b'\n')
+        self.assertTrue(system.desktop_locked(names=frozenset({me})))
+        with patch.object(system.os, 'listdir', side_effect=OSError('proc unavailable')):
+            self.assertTrue(system.desktop_locked())
+        t = trace.Trace('request')
+        previous = trace.activate(t)
+        try:
+            system.desktop_locked()
+        finally:
+            trace.activate(previous)
+        self.assertEqual(t.spans[-1]['name'], 'lock_check')
+        self.assertIn('locked', t.spans[-1]['attrs'])
 
     def test_fallback_reason_codes_and_lock_wait(self):
         command=lambda *a,**kw:b'P6\n2 1\n255\nabcdef'

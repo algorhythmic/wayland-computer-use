@@ -1,0 +1,284 @@
+{
+  "scope": "Local capture/encode and deterministic wait timings; no model or approval latency.",
+  "status": "complete",
+  "error": null,
+  "started_at": 1788809219.5507898,
+  "provenance": {
+    "python": "3.14.7",
+    "runs": "checkout source, not the published or installed bundle",
+    "capture_helper_present": true,
+    "checkout_git_revision": "389f56c68a489f61e8c7a7874f11cc2c369d32ab",
+    "published_revision": "89e81e90d4614504336078b5eaeecdf37f318ca3bf6c0594cae2ffab90c1699c",
+    "clock": "CLOCK_MONOTONIC; fixture timestamps use perf_counter in the same domain on Linux",
+    "source_sha256": {
+      "scripts/benchmark_latency.py": "969747447673a398f56a554c9af1663ba6f4cc55ea9d1ccf136b1d62194e32cb",
+      "scripts/server.py": "5790a185712ac503a3948c2fd6bf330d62246864195f176f983f8450ed39778b",
+      "scripts/cu/__init__.py": "85fc33c472a914f9f1d87dd924058b92954591406c39a4c396c0fde8e71761b9",
+      "scripts/cu/accessibility.py": "5167cc2c226b39d6abf40565a676faaf1a8dd4d530b67960cba40a570ddb0437",
+      "scripts/cu/accessibility_worker.py": "40f23457450c4becfa13a70a256ac3bc74af2bc059f5a7b275f5be5c717e46b4",
+      "scripts/cu/capture.py": "df27d253cd74c218e8d699c08f70619e0866d1595dd9461507aefb185cf10b39",
+      "scripts/cu/events.py": "4e3a2429bf8e551a79dca077a8b91f4024499f9927ad9d1a4c027fb8f7a9b67e",
+      "scripts/cu/observation.py": "aa3b8d277a3aaa637453444db1a1a19ec9c19ccf4401ea05c37b01b9b3a70a53",
+      "scripts/cu/pixels.py": "2a0c5179dcc1cd68b24ffa05885af427657697ce8b2242e56801da3091bdf5eb",
+      "scripts/cu/system.py": "2207faf865793238fbf800984d9dec91aabd7aff9d58852627c7788d162be156",
+      "scripts/cu/trace.py": "7e91e6394ab97f3c0b9692507970bb2e02e674a7add61635c06914e53701dcfb",
+      "native/capture.c": "9eca0349915dfe8a5df30e27a91eaf6cdc0a1122ee153403f01489c9a9a5cbff",
+      "wayland-desktop-observer/scripts/benchmark.py": "0370936864ecdbe4ceb33af602cc165f01e42a4863322edf80960bab18789e7d"
+    }
+  },
+  "focus_fixture": true,
+  "capture": [
+    {
+      "trial": 0,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 15.831996,
+      "capture_encode_ms": 19.36293,
+      "lock_wait_ms": 0.000715,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": null
+    },
+    {
+      "trial": 0,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 9.00364,
+      "capture_encode_ms": 12.295363,
+      "lock_wait_ms": 0.000852,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 1,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 23.306026,
+      "capture_encode_ms": 26.590727,
+      "lock_wait_ms": 0.000686,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 1,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 9.242023,
+      "capture_encode_ms": 12.556471,
+      "lock_wait_ms": 0.000665,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 2,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 24.941709,
+      "capture_encode_ms": 28.376357,
+      "lock_wait_ms": 0.00083,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 2,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 9.644241,
+      "capture_encode_ms": 12.97221,
+      "lock_wait_ms": 0.000652,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 3,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 24.257685,
+      "capture_encode_ms": 27.554153,
+      "lock_wait_ms": 0.001041,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 3,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 9.402084,
+      "capture_encode_ms": 12.757788,
+      "lock_wait_ms": 0.000892,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 4,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 24.5078,
+      "capture_encode_ms": 27.723767,
+      "lock_wait_ms": 0.000667,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 4,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 9.498245,
+      "capture_encode_ms": 12.768136,
+      "lock_wait_ms": 0.000662,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 5,
+      "method": "native",
+      "backend": "grim-ppm",
+      "capture_ms": 24.370599,
+      "capture_encode_ms": 27.558529,
+      "lock_wait_ms": 0.00058,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    },
+    {
+      "trial": 5,
+      "method": "grim-ppm",
+      "backend": "grim-ppm",
+      "capture_ms": 9.182496,
+      "capture_encode_ms": 12.456682,
+      "lock_wait_ms": 0.000722,
+      "png_bytes": 71811,
+      "fallback_reason": "unsupported_output",
+      "rgb_matches_previous": true
+    }
+  ],
+  "waits": [
+    {
+      "trial": 0,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 192515856998083,
+      "applied_ns": 192516057349012,
+      "request_started_ns": 192515857153168,
+      "response_ns": 192516076223357,
+      "request_ms": 219.070189,
+      "schedule_to_applied_ms": 200.350929,
+      "after_change_ms": 18.874345,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 0.661204,
+        "lock_check_ms": 5.08146,
+        "accessibility_ms": 5.920507,
+        "validation_ms": 5.680816,
+        "collection_ms": 17.35364,
+        "response_ms": 0.012654,
+        "request_ms": 218.889177
+      }
+    },
+    {
+      "trial": 1,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 192516102135883,
+      "applied_ns": 192516302383682,
+      "request_started_ns": 192516102149409,
+      "response_ns": 192516320730261,
+      "request_ms": 218.580852,
+      "schedule_to_applied_ms": 200.247799,
+      "after_change_ms": 18.346579,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 1.315697,
+        "lock_check_ms": 5.121853,
+        "accessibility_ms": 5.617416,
+        "validation_ms": 5.454618,
+        "collection_ms": 17.522527,
+        "response_ms": 0.010166,
+        "request_ms": 218.40461
+      }
+    },
+    {
+      "trial": 2,
+      "scheduled_delay_ms": 200,
+      "scheduled_ns": 192516343148498,
+      "applied_ns": 192516543487529,
+      "request_started_ns": 192516343159630,
+      "response_ns": 192516562230150,
+      "request_ms": 219.07052,
+      "schedule_to_applied_ms": 200.339031,
+      "after_change_ms": 18.742621,
+      "status": "matched",
+      "condition_met": true,
+      "matched_expected_text": true,
+      "events_received": 1,
+      "timings_ms": {
+        "metadata_ms": 1.210783,
+        "lock_check_ms": 5.047038,
+        "accessibility_ms": 6.236007,
+        "validation_ms": 5.393384,
+        "collection_ms": 17.896241,
+        "response_ms": 0.009866,
+        "request_ms": 218.891262
+      }
+    }
+  ],
+  "saved_at": 1788809222.6369228,
+  "capture_dimensions": [
+    321,
+    345
+  ],
+  "damage_wait": {
+    "backend": "grim-ppm",
+    "elapsed_ms": 24.967021,
+    "fallback_reason": "unsupported_output"
+  },
+  "accessibility_events_received": 4,
+  "shared_capture": {
+    "actionable": true,
+    "image_count": 1,
+    "capture_backend": "grim-ppm",
+    "fallback_reason": "unsupported_output",
+    "timings_ms": {
+      "metadata_ms": 0.625317,
+      "lock_check_ms": 5.101221,
+      "capture_ms": 10.62988,
+      "accessibility_ms": 93.975794,
+      "validation_ms": 7.516414,
+      "collection_ms": 117.859064,
+      "response_ms": 0.010454,
+      "request_ms": 118.310057,
+      "observe_ms": 122.384201,
+      "total_ms": 122.43227
+    }
+  },
+  "summary": {
+    "grim-ppm": {
+      "capture_ms": 12.62,
+      "capture_encode_ms": 16.06,
+      "png_bytes": 71811.0
+    },
+    "native": {
+      "capture_ms": 16.48,
+      "capture_encode_ms": 19.78,
+      "png_bytes": 71811.0
+    },
+    "after_change_ms": [
+      18.87,
+      18.35,
+      18.74
+    ]
+  }
+}

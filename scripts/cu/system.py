@@ -14,8 +14,11 @@ import sys
 import time
 import tempfile
 import uuid
+import socket
 
 from . import trace
+
+QUERY_LIMIT = 16*1024*1024
 
 
 def run(args, data=None, timeout=15):
@@ -31,6 +34,71 @@ def run(args, data=None, timeout=15):
         detail = result.stderr or result.stdout
         raise RuntimeError(detail.decode(errors="replace")[:1200] or "Command failed")
     return result.stdout
+
+
+def desktop_locked(names=frozenset({b'hyprlock'})):
+    """Same predicate as ``pgrep -x hyprlock``, read from /proc without a subprocess.
+
+    Fails closed: if process names cannot be read, a lock cannot be ruled out.
+    """
+    started_ns = time.monotonic_ns()
+    locked = True
+    try:
+        entries = os.listdir('/proc')
+    except OSError:
+        entries = None
+    if entries is not None:
+        locked = False
+        for entry in entries:
+            if entry.isdigit():
+                try:
+                    with open(f'/proc/{entry}/comm', 'rb') as file:
+                        if file.read().rstrip(b'\n') in names:
+                            locked = True
+                            break
+                except OSError:
+                    continue
+    current = trace.current()
+    if current is not None:
+        current.record('lock_check', started_ns, locked=locked)
+    return locked
+
+
+def hypr_query(name, timeout=3):
+    """Read-only Hyprland query over the owned session socket: identical to ``hyprctl -j``.
+
+    Falls back to spawning hyprctl when the socket is missing or the read fails.
+    Dispatch (mutation) and instance discovery keep using hyprctl.
+    """
+    if not re.fullmatch(r'[a-z]+', name or ''):
+        raise ValueError('Unsupported query')
+    started_ns = time.monotonic_ns()
+    path = Path(os.environ.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}'))/'hypr'/ \
+        os.environ.get('HYPRLAND_INSTANCE_SIGNATURE', '')/'.socket.sock'
+    current = trace.current()
+    if os.environ.get('HYPRLAND_INSTANCE_SIGNATURE') and owned_socket(path):
+        try:
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+                client.settimeout(timeout)
+                client.connect(str(path))
+                client.sendall(b'j/'+name.encode())
+                chunks, size = [], 0
+                while True:
+                    block = client.recv(65536)
+                    if not block:
+                        break
+                    size += len(block)
+                    if size > QUERY_LIMIT:
+                        raise ValueError('Query response exceeds limit')
+                    chunks.append(block)
+            result = json.loads(b''.join(chunks))
+            if current is not None:
+                current.record('ipc', started_ns, query=name, bytes=size)
+            return result
+        except (OSError, ValueError) as exc:
+            if current is not None:
+                current.record('ipc', started_ns, query=name, error_type=type(exc).__name__)
+    return json.loads(run(['hyprctl', '-j', name]))
 
 
 def owned_socket(path):

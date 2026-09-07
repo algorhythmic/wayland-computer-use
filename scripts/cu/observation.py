@@ -10,6 +10,7 @@ import time
 import uuid
 
 from . import system as baseline
+from .system import desktop_locked, hypr_query
 from .capture import Capturer
 from .accessibility import Accessibility
 from .events import Wakeup
@@ -52,7 +53,7 @@ class Collector:
         self.accessibility = accessibility or Accessibility()
 
     def hypr(self, name):
-        return json.loads(command(['hyprctl', '-j', name]))
+        return hypr_query(name)
 
     def close(self):
         self.capturer.close()
@@ -87,7 +88,7 @@ class Collector:
             reason = 'target_not_focused'
         elif target:
             tick = time.monotonic_ns()
-            locked = subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0
+            locked = desktop_locked()
             timings['lock_check_ms'] = (time.monotonic_ns()-tick)/1e6
             if locked:
                 reason = 'desktop_locked'
@@ -118,7 +119,7 @@ class Collector:
             tick = time.monotonic_ns()
             current = window_record(self.hypr('activewindow'))
             layout = [{k: m.get(k) for k in state['monitors'][0]} for m in self.hypr('monitors')] if monitors else []
-            locked = subprocess.run(['pgrep', '-x', 'hyprlock'], stdout=subprocess.DEVNULL).returncode == 0
+            locked = desktop_locked()
             if current != {k: v for k, v in target.items() if k != 'id'} or layout != state['monitors'] or locked:
                 rgb = capture = None
                 for channel, key in requested:

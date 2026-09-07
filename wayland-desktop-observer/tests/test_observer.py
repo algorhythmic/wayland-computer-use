@@ -94,6 +94,9 @@ class HistoryTests(unittest.TestCase):
 
 class CollectorTests(unittest.TestCase):
     def setUp(self):
+        patcher = patch.object(m, 'desktop_locked', return_value=False)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         with patch.object(m.baseline, 'session_env'):
             self.c = m.Collector()
         self.addCleanup(self.c.close)
@@ -119,6 +122,13 @@ class CollectorTests(unittest.TestCase):
             probe.reset_mock()
             self.c.collect('0xa',channels=['metadata'])
             probe.assert_not_called();capture.assert_not_called()
+
+    def test_locked_desktop_reports_reason_without_capture(self):
+        with patch.object(m, 'desktop_locked', return_value=True), \
+                patch.object(self.c.capturer, 'capture', side_effect=AssertionError('captured while locked')):
+            s = self.c.collect('0xa')
+        self.assertEqual(s['state']['visual']['reason'], 'desktop_locked')
+        self.assertIn('lock_check_ms', s['timings_ms'])
 
     def test_unfocused_or_missing_window_does_not_capture(self):
         for address, reason in [('0xa','target_not_focused'),('0xb','window_missing')]:

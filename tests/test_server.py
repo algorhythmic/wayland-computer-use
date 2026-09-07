@@ -24,6 +24,28 @@ def frame(monitor=None):
 
 
 class Tests(unittest.TestCase):
+    def setUp(self):
+        # Deterministic lock state regardless of the test machine; fail-closed paths are tested explicitly.
+        patcher = patch.object(server, 'desktop_locked', return_value=False)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_locked_desktop_blocks_capture_and_input_without_subprocess(self):
+        d, f, state, args = self.approval_desktop()
+        state['active'] = '0x123'
+        with patch.object(server, 'desktop_locked', return_value=True), \
+                patch.object(server.subprocess, 'run', side_effect=AssertionError('no subprocess')), \
+                patch.object(d, 'screenshot', return_value=[]):
+            with self.assertRaisesRegex(RuntimeError, 'locked'):
+                d.guard('token')
+            with self.assertRaisesRegex(ValueError, 'locked'):
+                d.check_target(f)
+            with self.assertRaises(server.ActionRejected):
+                d.prepare('scroll', args)
+        with patch.object(server, 'desktop_locked', return_value=True):
+            with self.assertRaisesRegex(RuntimeError, 'locked'):
+                d.screenshot()
+
     def approval_desktop(self):
         d = server.Desktop()
         f = frame()

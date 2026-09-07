@@ -209,3 +209,47 @@ Next measurements should include full model-driven tasks and p50/p95 latency,
 approval time, false wakeups/rejections, and background CPU. Current timing spans
 already separate metadata, capture, accessibility, validation, encoding, input,
 wait, and request time. Do not remove validation to improve a timing result.
+
+## Optimization pass, September 7, 2026
+
+Three single-factor changes, each measured with the tracing above before the
+next was applied. All guards, checks and validation order are unchanged; only
+the mechanism behind each check changed. Benchmarks:
+[`latency-20260907-121059.json`](../benchmarks/latency-20260907-121059.json)
+(baseline), [`-122446`](../benchmarks/latency-20260907-122446.json) (lock
+check), [`-122659`](../benchmarks/latency-20260907-122659.json) (IPC queries),
+[`-122846`](../benchmarks/latency-20260907-122846.json) (parallel deflate).
+
+1. **Lock check.** `pgrep -x hyprlock` cost 38–41 ms per call and ran up to six
+   times per input action. `cu.system.desktop_locked` reads `/proc/*/comm` for
+   the same predicate in about 5 ms, without a subprocess, and fails closed when
+   `/proc` cannot be read. It records a `lock_check` span.
+2. **Compositor queries.** Read-only `monitors`, `activewindow` and `clients`
+   queries go over the owned Hyprland IPC socket (`cu.system.hypr_query`),
+   returning byte-identical JSON in about 0.05 ms instead of 4.1 ms per
+   `hyprctl` spawn. Dispatch and instance discovery still use `hyprctl`; a socket
+   failure falls back to it. Recorded as `ipc` spans.
+3. **PNG encoding.** Row data at or above 2 MB is deflated as up to four
+   independent members joined into one zlib stream, the technique pigz uses.
+   Output stays lossless, decodes with any inflater, and grows by about 0.01%.
+
+| Measurement (DP-1, 2560×1440 unless noted) | Before | After |
+|---|---:|---:|
+| Compositor-lock probe per call | 38–41 ms | 5 ms |
+| Compositor query per call | 4.1 ms | 0.05 ms |
+| Full-monitor PNG encode | 95–98 ms | 29 ms |
+| `screenshot` tool total | 229 ms | 71 ms |
+| `desktop_state` total | 13 ms | 1.2 ms |
+| Observation validation stage | 46 ms | 5–9 ms |
+| Native fixture capture plus encode (1261×688) | 27.8 ms | 14.8 ms |
+| Detection after label update, accessibility wait | 102–105 ms | 17–19 ms |
+
+Rejected after measurement: zlib `Z_RLE`/`Z_HUFFMAN_ONLY` were 7–10 ms faster
+but 35–44% larger; a pure-Python PNG Sub filter cost about 685 ms per frame.
+The IPC-run benchmark opened its fixture on the rotated monitor, so its capture
+rows report `unsupported_output` and are excluded from the capture comparison;
+its wait rows are valid. The accessibility cold probe (95–102 ms for a new
+worker) and the actionable-frame crop/encode/base64 step (about 23 ms) are the
+largest remaining local stages. A guarded input's four lock checks (about
+20 ms) can only be measured end to end with the input daemon installed. These
+are local stage timings; they do not predict model-driven task time.
