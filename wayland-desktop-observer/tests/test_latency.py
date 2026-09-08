@@ -152,6 +152,22 @@ class ConditionTests(unittest.TestCase):
             finally:
                 observer.close()
 
+    def test_window_condition_prefix_and_focus(self):
+        windows = [{'address': '0xa', 'title': 'Untitled - Vault - Obsidian 1.13', 'class': 'md.obsidian.Obsidian', 'mapped': True},
+                   {'address': '0xb', 'title': 'Untitled document', 'class': 'gedit', 'mapped': True}]
+        state = {'windows': windows, 'active_window': '0xb'}
+        sample = {'state': state}
+        self.assertFalse(m.matches({'kind': 'window', 'title_prefix': 'Untitled'}, sample))  # two matches: not unique
+        self.assertTrue(m.matches({'kind': 'window', 'title_prefix': 'Untitled -'}, sample))
+        self.assertTrue(m.matches({'kind': 'window', 'class': 'md.obsidian.Obsidian', 'title_prefix': 'Untitled'}, sample))
+        self.assertFalse(m.matches({'kind': 'window', 'class': 'md.obsidian.Obsidian', 'focused': True}, sample))
+        self.assertTrue(m.matches({'kind': 'window', 'class': 'gedit', 'focused': True}, sample))
+        m.validate_condition({'kind': 'window', 'title_prefix': 'x', 'focused': True})
+        with self.assertRaises(ValueError):
+            m.validate_condition({'kind': 'window', 'focused': True})
+        with self.assertRaises(ValueError):
+            m.validate_condition({'kind': 'window', 'class': 'x', 'focused': 'yes'})
+
     def test_nested_schema_rejects_invalid_or_executable_conditions(self):
         for args in ({'condition':{'kind':'eval','code':'anything'}},
                      {'condition':{'kind':'accessible','name':'Ready','value':float('nan')}},

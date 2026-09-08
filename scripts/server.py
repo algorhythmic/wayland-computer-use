@@ -687,6 +687,7 @@ class Desktop:
         self.action_started, self.action_completed_ns, self.focus_restored, self.timings = False, None, False, {}
         self.text_segments = None
         self.result_retried = False
+        self.input_started = False
         previous = trace.activate(self.trace)
         try:
             validate(name, a)
@@ -749,6 +750,8 @@ class Desktop:
         if name == "screenshot":
             with self.span('result'):
                 return self.screenshot(a.get("monitor"))
+        if name == 'run_steps':
+            return self.run_steps(a)
         if name == "focus_window":
             address = a["address"]
             if address not in [w["address"] for w in self.hypr("clients") if w.get("mapped")]:
@@ -783,7 +786,6 @@ class Desktop:
                 raise ValueError('Accessible outcome wait requires a screenshot with a focused target')
         with self.span('guard'):
             frame = self.prepare(name, a)
-        started = False
         def recheck():
             if a.get("restore_focus", False) or frame.get('shared_observation'):
                 try:
@@ -791,73 +793,11 @@ class Desktop:
                     if self.hypr("activewindow").get("address") != frame["active"]:
                         raise ValueError("Focus changed before input; action stopped")
                 except ValueError as exc:
-                    if not started:
+                    if not self.input_started:
                         self.reject(str(exc), frame["monitor"]["name"])
                     raise ValueError("Input interrupted after partial execution; inspect before retrying: " + str(exc))
-        # Validate every argument before the first input event.
         with self.span('input'):
-            if name == "pointer":
-                point = self.point(frame, a["x"], a["y"])
-                button = a.get("button", "left")
-                code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
-                count = integer(a.get("count", 1), 1, 3)
-                self.frames.clear()
-                self.action_started = True
-                self.move(point)
-                recheck()
-                if code:
-                    started = True
-                    self.mouse("click", "--repeat", str(count), "--next-delay", "100", code)
-            elif name == "type_text":
-                value = a["text"]
-                if not isinstance(value, str) or len(value) > 8000 or "\x00" in value:
-                    raise ValueError("Text must contain at most 8000 characters and no NUL")
-                self.frames.clear()
-                recheck()
-                started = True
-                self.action_started = True
-                segments = text_segments(value)
-                self.note(text_segments=len(segments))
-                for segment in segments:
-                    run(["wtype", "-"], segment.encode())
-                self.text_segments = len(segments)
-            elif name == "press_key":
-                args = key_args(a["key"])
-                self.frames.clear()
-                recheck()
-                started = True
-                self.action_started = True
-                run(["wtype", *args])
-            elif name == "scroll":
-                point = self.point(frame, a["x"], a["y"])
-                steps = integer(a["steps"], -20, 20)
-                axis = a.get("axis", "vertical")
-                dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
-                self.frames.clear()
-                self.action_started = True
-                self.move(point)
-                recheck()
-                started = True
-                self.mouse("mousemove", "--wheel", "--", str(dx), str(dy))
-            elif name == "drag":
-                start = self.point(frame, a["x"], a["y"])
-                end = self.point(frame, a["end_x"], a["end_y"])
-                self.frames.clear()
-                self.action_started = True
-                self.move(start)
-                try:
-                    recheck()
-                    started = True
-                    self.mouse("click", "0x40")
-                    for i in range(1, 21):
-                        recheck()
-                        self.move(tuple(round(s + (e-s)*i/20) for s, e in zip(start, end)))
-                        time.sleep(.015)
-                finally:
-                    self.mouse("click", "0x80")
-            else:
-                raise ValueError("Unknown tool")
-            self.action_completed_ns = time.monotonic_ns()
+            self.perform(name, a, frame, recheck)
         if 'after' in a:
             condition = a['after']['condition']
             window = None if condition['kind'] == 'window' else (frame.get('target') or {}).get('address')
@@ -871,6 +811,228 @@ class Desktop:
         with self.span('result'):
             return self.result_capture(frame["monitor"]["name"])
 
+    def perform(self, name, a, frame, recheck):
+        """Inject one validated input. ``recheck`` runs immediately before the first event."""
+        self.input_started = False
+        if True:
+            if name == "pointer":
+                point = self.point(frame, a["x"], a["y"])
+                button = a.get("button", "left")
+                code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
+                count = integer(a.get("count", 1), 1, 3)
+                self.frames.clear()
+                self.action_started = True
+                self.move(point)
+                recheck()
+                if code:
+                    self.input_started = True
+                    self.mouse("click", "--repeat", str(count), "--next-delay", "100", code)
+            elif name == "type_text":
+                value = a["text"]
+                if not isinstance(value, str) or len(value) > 8000 or "\x00" in value:
+                    raise ValueError("Text must contain at most 8000 characters and no NUL")
+                self.frames.clear()
+                recheck()
+                self.input_started = True
+                self.action_started = True
+                segments = text_segments(value)
+                self.note(text_segments=len(segments))
+                for segment in segments:
+                    run(["wtype", "-"], segment.encode())
+                self.text_segments = len(segments)
+            elif name == "press_key":
+                args = key_args(a["key"])
+                self.frames.clear()
+                recheck()
+                self.input_started = True
+                self.action_started = True
+                run(["wtype", *args])
+            elif name == "scroll":
+                point = self.point(frame, a["x"], a["y"])
+                steps = integer(a["steps"], -20, 20)
+                axis = a.get("axis", "vertical")
+                dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
+                self.frames.clear()
+                self.action_started = True
+                self.move(point)
+                recheck()
+                self.input_started = True
+                self.mouse("mousemove", "--wheel", "--", str(dx), str(dy))
+            elif name == "drag":
+                start = self.point(frame, a["x"], a["y"])
+                end = self.point(frame, a["end_x"], a["end_y"])
+                self.frames.clear()
+                self.action_started = True
+                self.move(start)
+                try:
+                    recheck()
+                    self.input_started = True
+                    self.mouse("click", "0x40")
+                    for i in range(1, 21):
+                        recheck()
+                        self.move(tuple(round(s + (e-s)*i/20) for s, e in zip(start, end)))
+                        time.sleep(.015)
+                finally:
+                    self.mouse("click", "0x80")
+            else:
+                raise ValueError("Unknown tool")
+            self.action_completed_ns = time.monotonic_ns()
+
+    # ----- Deterministic sequences -------------------------------------------------
+    STEP_ACTIONS = ('press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll')
+    STEP_KEYS = {'action', 'key', 'text', 'address', 'x', 'y', 'button', 'count', 'steps', 'axis',
+                 'expect', 'expect_timeout_ms', 'after'}
+
+    def validate_steps(self, steps):
+        if not isinstance(steps, list) or not 1 <= len(steps) <= 12:
+            raise ValueError('steps must be a list of 1 to 12 steps')
+        for index, step in enumerate(steps):
+            if not isinstance(step, dict) or set(step)-self.STEP_KEYS or step.get('action') not in self.STEP_ACTIONS:
+                raise ValueError(f'Invalid step {index}')
+            action = step['action']
+            if action in ('pointer', 'scroll') and index != 0:
+                raise ValueError('Coordinate actions are only allowed as the first step, on the reviewed frame')
+            if action == 'press_key':
+                key_args(step.get('key'))
+            if action == 'type_text' and (not isinstance(step.get('text'), str) or not step['text'] or len(step['text']) > 8000 or '\x00' in step['text']):
+                raise ValueError(f'Step {index}: text must be 1 to 8000 characters without NUL')
+            if action == 'focus_window' and not re.fullmatch(r'0x[0-9a-fA-F]+', str(step.get('address', ''))):
+                raise ValueError(f'Step {index}: focus_window requires a window address')
+            if action == 'wait' and 'after' not in step:
+                raise ValueError(f'Step {index}: wait requires after')
+            if action == 'scroll':
+                integer(step.get('steps'), -20, 20)
+            if action == 'pointer':
+                integer(step.get('count', 1), 1, 3)
+            for key in ('expect',):
+                if key in step:
+                    validate_condition(step[key])
+                    if step[key]['kind'] == 'region_changed':
+                        raise ValueError(f'Step {index}: expect cannot be a region condition')
+            if 'expect_timeout_ms' in step:
+                integer(step['expect_timeout_ms'], 1, 30000)
+            if 'after' in step:
+                if not isinstance(step['after'], dict) or set(step['after'])-{'condition', 'timeout_ms'} or 'condition' not in step['after']:
+                    raise ValueError(f'Step {index}: invalid after')
+                validate_condition(step['after']['condition'])
+                if step['after']['condition']['kind'] == 'region_changed':
+                    raise ValueError(f'Step {index}: after cannot be a region condition')
+                if 'timeout_ms' in step['after']:
+                    integer(step['after']['timeout_ms'], 1, 30000)
+
+    def await_condition(self, condition, timeout_ms, after_action=None):
+        """Wait for a window or accessible condition using metadata (and accessibility) only."""
+        args = {'condition': condition, 'timeout_ms': timeout_ms}
+        if after_action is not None:
+            args['after_action'] = after_action
+        if condition['kind'] == 'accessible':
+            args['window'] = self.hypr('activewindow').get('address')
+            args['channels'] = ['metadata', 'accessibility']
+        else:
+            args['channels'] = ['metadata']
+        body = json.loads(self.observation_content(args)[0]['text'])
+        return body.get('status'), bool(body.get('condition_met'))
+
+    def run_steps(self, a):
+        """Execute a deterministic sequence under one approval, verifying between steps.
+
+        The first step is guarded by the reviewed frame exactly like a single
+        action. Later steps act only after their ``expect`` condition holds or,
+        without one, only while the active window is unchanged. Execution stops
+        at the first unmet condition or timeout and reports every step's outcome.
+        Nothing is retried.
+        """
+        steps = a['steps']
+        self.validate_steps(steps)
+        report = []
+        stop_reason = None
+        first = steps[0]
+        first_args = {k: v for k, v in first.items() if k not in ('action', 'expect', 'expect_timeout_ms', 'after')}
+        first_args['frame_id'] = a['frame_id']
+        for key in ('restore_focus', 'target_window', 'target_title'):
+            if key in a:
+                first_args[key] = a[key]
+        if first['action'] in ('wait', 'focus_window'):
+            frame = self.guard(a['frame_id'])
+        else:
+            with self.span('guard'):
+                frame = self.prepare(first['action'], first_args)
+        monitor = frame['monitor']['name']
+        active = frame['active']
+        for index, step in enumerate(steps):
+            action = step['action']
+            entry = {'index': index, 'action': action, 'status': 'pending'}
+            report.append(entry)
+            with self.span('step', index=index, action=action):
+                # Precondition: an explicit condition, or an unchanged active window.
+                tick = time.monotonic_ns()
+                if 'expect' in step:
+                    status, met = self.await_condition(step['expect'], step.get('expect_timeout_ms', 5000), self.action_completed_ns)
+                    entry['expect_ms'] = (time.monotonic_ns()-tick)/1e6
+                    if not met:
+                        entry['status'] = 'precondition_failed'
+                        entry['expect_status'] = status
+                        stop_reason = f'step {index}: expect not met ({status})'
+                        break
+                    active = self.hypr('activewindow').get('address')
+                elif index > 0:
+                    current = self.hypr('activewindow').get('address')
+                    if desktop_locked() or current != active:
+                        entry['status'] = 'precondition_failed'
+                        entry['expect_status'] = 'active_window_changed'
+                        stop_reason = f'step {index}: active window changed'
+                        break
+                # Input.
+                tick = time.monotonic_ns()
+                try:
+                    if action == 'focus_window':
+                        address = step['address']
+                        if address not in [w['address'] for w in self.hypr('clients') if w.get('mapped')]:
+                            raise ValueError('Unknown window address')
+                        self.frames.clear()
+                        self.action_started = True
+                        self.dispatch('focuswindow', 'address:'+address)
+                        self.wait_focus(address)
+                        self.action_completed_ns = time.monotonic_ns()
+                        active = address
+                    elif action == 'wait':
+                        pass
+                    else:
+                        step_args = {k: v for k, v in step.items() if k not in ('action', 'expect', 'expect_timeout_ms', 'after')}
+                        def recheck():
+                            if desktop_locked() or self.hypr('activewindow').get('address') != active:
+                                raise ValueError('Active window changed before input')
+                        self.perform(action, step_args, frame, recheck)
+                except ValueError as exc:
+                    if self.input_started:
+                        raise
+                    entry['status'] = 'precondition_failed'
+                    entry['expect_status'] = str(exc)[:200]
+                    stop_reason = f'step {index}: {str(exc)[:120]}'
+                    break
+                entry['input_ms'] = (time.monotonic_ns()-tick)/1e6
+                entry['status'] = 'done'
+                # Outcome wait.
+                if 'after' in step:
+                    tick = time.monotonic_ns()
+                    status, met = self.await_condition(step['after']['condition'], step['after'].get('timeout_ms', 5000), self.action_completed_ns)
+                    entry['after_ms'] = (time.monotonic_ns()-tick)/1e6
+                    entry['after_status'] = status
+                    if not met:
+                        entry['status'] = 'after_timeout'
+                        stop_reason = f'step {index}: after condition not met ({status})'
+                        break
+                    active = self.hypr('activewindow').get('address')
+        completed = sum(1 for e in report if e['status'] == 'done')
+        summary = {'steps_total': len(steps), 'steps_completed': completed, 'stopped': stop_reason is not None,
+                   'stop_reason': stop_reason, 'steps': report}
+        with self.span('result'):
+            content = self.result_capture(monitor)
+        metadata = json.loads(content[0]['text'])
+        metadata['sequence'] = summary
+        content[0] = text_content(metadata)
+        return content
+
 
 S = {"type": "string"}
 I = {"type": "integer"}
@@ -883,6 +1045,14 @@ FRAME = {"frame_id": S,
          "target_window": {"type": "string", "description": "Required with restore_focus: screenshot target_window.address."},
          "target_title": {"type": "string", "description": "Required with restore_focus: screenshot target_window.title, displayed as the intended approval target."}}
 XY = {"x": I, "y": I}
+STEP = {'type': 'object', 'required': ['action'], 'additionalProperties': False, 'properties': {
+    'action': {'type': 'string', 'enum': ['press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll']},
+    'key': S, 'text': S, 'address': S, **XY, 'button': {'type': 'string', 'enum': ['left', 'right', 'middle', 'move']},
+    'count': I, 'steps': I, 'axis': {'type': 'string', 'enum': ['vertical', 'horizontal']},
+    'expect': {**CONDITION_SCHEMA, 'description': 'Window or accessible condition that must hold before this step acts; waited for up to expect_timeout_ms.'},
+    'expect_timeout_ms': TIMEOUT,
+    'after': {'type': 'object', 'properties': {'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT}, 'required': ['condition'],
+              'additionalProperties': False, 'description': 'Condition waited for after this step; the sequence stops if it times out.'}}}
 
 
 def tool(name, description, props, required, read=False):
@@ -913,6 +1083,10 @@ TOOLS = [
          ["frame_id", "x", "y", "steps"]),
     tool("drag", "Left-button drag between two points in one screenshot; release even on failure.",
          {**FRAME, **XY, "end_x": I, "end_y": I}, ["frame_id", "x", "y", "end_x", "end_y"]),
+    tool('run_steps', 'Execute a deterministic sequence of inputs under one approval, verifying a window or accessible condition between steps. '
+         'The first step is guarded by the reviewed frame; coordinate actions are allowed only as that first step. Later steps require their expect condition or an unchanged active window. '
+         'Stops at the first unmet condition and reports every step. Returns one final screenshot. Not for sequences whose next action depends on reading results.',
+         {**FRAME, 'steps': {'type': 'array', 'minItems': 1, 'maxItems': 12, 'items': STEP}}, ['frame_id', 'steps']),
     tool('observe_window', 'Observe an exact focused window. Returns a full crop and guarded frame from the same capture when pixels are available. Channel selection controls collection.',
          {k: v for k, v in COMMON.items() if k != 'images'}, ['window'], True),
     tool('wait_for', 'Wait locally for an exact accessible name, unique window, or changed crop region. Returns outcome evidence and a guarded frame when pixels are available. No input.',
@@ -937,6 +1111,8 @@ def validate(name, args):
     for k, v in args.items():
         p = spec["properties"][k]
         if (p["type"] == "string" and not isinstance(v, str)) or (p["type"] == "integer" and type(v) is not int):
+            raise ValueError("Invalid argument type: " + k)
+        if p["type"] == "array" and not isinstance(v, list):
             raise ValueError("Invalid argument type: " + k)
         if p["type"] == "boolean" and type(v) is not bool:
             raise ValueError("Invalid argument type: " + k)

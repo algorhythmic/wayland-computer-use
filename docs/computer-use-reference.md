@@ -121,6 +121,16 @@ explicit dropped-record counter reported by `desktop_state`. Records contain no
 typed text, key names, titles, URLs or screen contents. See
 [latency.md](latency.md#tracing-and-attribution).
 
+`run_steps` executes a deterministic sequence of up to twelve inputs under one
+approval. The first step is guarded by the reviewed frame like any single
+action; later steps act only after their `expect` window or accessible
+condition holds, or while the active window is unchanged, and an `after`
+condition can be waited for per step. Coordinate actions are only allowed as
+the first step. The sequence stops at the first unmet condition, reports every
+step's outcome and timing in `sequence`, and returns one screenshot. Window
+conditions accept `title_prefix` and `focused` in addition to exact `title`
+and `class`. Recipes for Omarchy hotkeys and Obsidian are in the skill document.
+
 `type_text` sends literal text in consecutive `wtype` invocations of at most
 40 characters because the virtual-keyboard path stops applying keymap updates
 after roughly 90 keystrokes in one process; responses report `text_segments`.

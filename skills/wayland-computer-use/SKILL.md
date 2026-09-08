@@ -43,6 +43,43 @@ the input response's local `action_completed_ns` watermark; `max_age_ms` allows
 explicitly bounded cached evidence. Check `freshness_satisfied` and `status`.
 `stop_observing` clears observation history and stops the bounded local lease.
 
+## Deterministic sequences
+
+A step belongs in one `run_steps` call when its success can be checked without
+looking at pixels: a window of a known class appears or becomes focused, a
+title changes, an accessible control appears. Reading search results, a
+dialog, or a page whose content decides the next action is a model decision
+and ends the sequence. Give each step an `expect` condition (waited for before
+acting) or an `after` condition (waited for afterwards); a step without
+`expect` acts only if the active window is unchanged. The sequence stops at
+the first unmet condition and reports every step; nothing is retried.
+Coordinate actions may only be the first step, on the reviewed frame.
+
+Omarchy launches by compositor hotkey, so a launch has a checkable outcome:
+`SUPER+Return` terminal, `SUPER+SHIFT+Return` or `SUPER+SHIFT+B` browser,
+`SUPER+SHIFT+O` Obsidian. Verify bindings with `desktop_state` or the user's
+configuration before relying on them.
+
+Obsidian, new note with a title and body, after focusing its window:
+
+```json
+{"frame_id": "reviewed", "steps": [
+  {"action": "press_key", "key": "CTRL+n",
+   "after": {"condition": {"kind": "window", "class": "md.obsidian.Obsidian", "title_prefix": "Untitled", "focused": true}, "timeout_ms": 3000}},
+  {"action": "type_text", "text": "Note name"},
+  {"action": "press_key", "key": "Return",
+   "after": {"condition": {"kind": "window", "class": "md.obsidian.Obsidian", "title_prefix": "Note name -", "focused": true}, "timeout_ms": 3000}},
+  {"action": "type_text", "text": "Body text..."}
+]}
+```
+
+Launching Obsidian from any window is `{"action": "press_key", "key": "SUPER+SHIFT+o",
+"after": {"condition": {"kind": "window", "class": "md.obsidian.Obsidian", "focused": true}, "timeout_ms": 8000}}`
+as the first step. Copying a selection then switching apps is
+`press_key CTRL+c`, then `focus_window` with the address from `desktop_state`
+and `expect` on that window being focused. Verify the result once at the end
+from the returned screenshot, or by a read-only check the task allows.
+
 ## Approval dialogs and focus
 
 When approval requires interacting with another window, request the input with

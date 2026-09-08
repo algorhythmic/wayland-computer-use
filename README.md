@@ -93,8 +93,8 @@ is not equivalent to a complete model-driven acceptance test.
 ## Behavior and boundaries
 
 Computer Use exposes `desktop_state`, `screenshot`, `focus_window`, `pointer`,
-`type_text`, `press_key`, `scroll`, `drag`, `observe_window`, `wait_for`, and
-`stop_observing`. Input returns the next screenshot, optionally after a bounded
+`type_text`, `press_key`, `scroll`, `drag`, `run_steps`, `observe_window`,
+`wait_for`, and `stop_observing`. Input returns the next screenshot, optionally after a bounded
 `after` condition. There is no unconditional 200 ms post-input sleep. A screenshot
 alone does not establish task completion; use an explicit outcome condition.
 Captures use raw RGB internally and encode lossless PNG at delivery. The optional

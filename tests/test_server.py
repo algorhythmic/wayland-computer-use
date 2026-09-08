@@ -533,6 +533,116 @@ class Tests(unittest.TestCase):
             self.assertIn('total_ms', failed['timings_ms'])
             self.assertTrue(d.recorder.status()['complete'])
 
+    def sequence_desktop(self):
+        d = server.Desktop()
+        f = frame()
+        d.frames['token'] = f
+        state = {'active': '0x123', 'locked': False}
+        d.hypr = lambda cmd: ([f['monitor']] if cmd == 'monitors' else
+                             [{'address': '0x123', 'mapped': True}, {'address': '0x777', 'mapped': True}] if cmd == 'clients' else
+                             {'address': state['active']})
+        d.dispatch = lambda cmd, arg: state.update(active=arg.split(':')[1])
+        return d, f, state
+
+    def test_run_steps_validation(self):
+        d = server.Desktop()
+        bad = [[], [{'action': 'nope'}], [{'action': 'press_key', 'key': 'Return'}, {'action': 'pointer', 'x': 1, 'y': 1}],
+               [{'action': 'wait'}], [{'action': 'focus_window', 'address': 'rm -rf'}],
+               [{'action': 'press_key', 'key': 'Return', 'expect': {'kind': 'region_changed', 'box': [0, 0, 1, 1]}}],
+               [{'action': 'type_text', 'text': ''}], [{'action': 'press_key', 'key': 'Return', 'bogus': 1}]]
+        for steps in bad:
+            with self.assertRaises(ValueError, msg=str(steps)):
+                d.validate_steps(steps)
+        d.validate_steps([{'action': 'pointer', 'x': 1, 'y': 1}, {'action': 'press_key', 'key': 'CTRL+n',
+                          'after': {'condition': {'kind': 'window', 'title_prefix': 'Untitled', 'focused': True}, 'timeout_ms': 100}},
+                          {'action': 'type_text', 'text': 'x'}, {'action': 'wait', 'after': {'condition': {'kind': 'window', 'class': 'a'}}}])
+
+    def test_run_steps_executes_in_order_with_conditions(self):
+        d, f, state = self.sequence_desktop()
+        waits = []
+        def observation(args):
+            waits.append(args)
+            return [server.text_content({'status': 'matched', 'condition_met': True})]
+        steps = [{'action': 'press_key', 'key': 'CTRL+c'},
+                 {'action': 'focus_window', 'address': '0x777', 'expect': {'kind': 'window', 'class': 'md.obsidian.Obsidian', 'focused': True}},
+                 {'action': 'press_key', 'key': 'CTRL+n', 'after': {'condition': {'kind': 'window', 'title_prefix': 'Untitled', 'focused': True}, 'timeout_ms': 500}},
+                 {'action': 'type_text', 'text': 'name'},
+                 {'action': 'press_key', 'key': 'Return'}]
+        with patch.object(server, 'run') as run, patch.object(d, 'observation_content', side_effect=observation), \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]) as shot, \
+                patch.object(server.time, 'sleep'):
+            meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
+        self.assertEqual(meta['frame_id'], 'final')
+        self.assertEqual(shot.call_count, 1)
+        seq = meta['sequence']
+        self.assertEqual((seq['steps_total'], seq['steps_completed'], seq['stopped']), (5, 5, False))
+        self.assertEqual([s['status'] for s in seq['steps']], ['done']*5)
+        self.assertEqual([c.args[0][:2] for c in run.call_args_list], [['wtype', '-M'], ['wtype', '-M'], ['wtype', '-'], ['wtype', '-k']])
+        self.assertEqual(state['active'], '0x777')
+        self.assertEqual([w['condition']['kind'] for w in waits], ['window', 'window'])
+        self.assertEqual(waits[0]['channels'], ['metadata'])
+        self.assertIn('after_action', waits[1])
+        self.assertTrue(meta['action_performed'])
+
+    def test_run_steps_stops_at_unmet_precondition_without_later_input(self):
+        d, f, state = self.sequence_desktop()
+        def observation(args):
+            return [server.text_content({'status': 'timeout', 'condition_met': False})]
+        steps = [{'action': 'press_key', 'key': 'CTRL+n'},
+                 {'action': 'type_text', 'text': 'never', 'expect': {'kind': 'window', 'title_prefix': 'Untitled'}, 'expect_timeout_ms': 10},
+                 {'action': 'press_key', 'key': 'Return'}]
+        with patch.object(server, 'run') as run, patch.object(d, 'observation_content', side_effect=observation), \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+            meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
+        seq = meta['sequence']
+        self.assertEqual((seq['steps_completed'], seq['stopped']), (1, True))
+        self.assertEqual([s['status'] for s in seq['steps']], ['done', 'precondition_failed'])
+        self.assertEqual(run.call_count, 1)
+        self.assertIn('expect not met', seq['stop_reason'])
+
+    def test_run_steps_stops_when_active_window_changes(self):
+        d, f, state = self.sequence_desktop()
+        def run(args, data=None, **kw):
+            state['active'] = '0x999'  # The first key press moved focus elsewhere.
+        steps = [{'action': 'press_key', 'key': 'CTRL+n'}, {'action': 'type_text', 'text': 'never'}]
+        with patch.object(server, 'run', side_effect=run) as runner, \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+            meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
+        self.assertEqual(meta['sequence']['steps'][1]['expect_status'], 'active_window_changed')
+        self.assertEqual(runner.call_count, 1)
+
+    def test_run_steps_after_timeout_stops_and_reports_input_done(self):
+        d, f, state = self.sequence_desktop()
+        steps = [{'action': 'press_key', 'key': 'CTRL+n', 'after': {'condition': {'kind': 'window', 'title_prefix': 'Untitled'}, 'timeout_ms': 10}},
+                 {'action': 'type_text', 'text': 'never'}]
+        with patch.object(server, 'run') as run, \
+                patch.object(d, 'observation_content', return_value=[server.text_content({'status': 'timeout', 'condition_met': False})]), \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+            meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
+        seq = meta['sequence']
+        self.assertEqual([s['status'] for s in seq['steps']], ['after_timeout'])
+        self.assertEqual(run.call_count, 1)
+        self.assertTrue(meta['action_performed'])
+
+    def test_run_steps_input_failure_is_partial_execution(self):
+        d, f, state = self.sequence_desktop()
+        steps = [{'action': 'press_key', 'key': 'CTRL+n'}, {'action': 'type_text', 'text': 'x'}]
+        with patch.object(server, 'run', side_effect=[None, RuntimeError('backend down')]), \
+                patch.object(d, 'screenshot', return_value=[]):
+            with self.assertRaises(server.ActionRejected) as error:
+                d.call('run_steps', {'frame_id': 'token', 'steps': steps})
+        body = json.loads(error.exception.content[0]['text'])
+        self.assertIn(body['action_performed'], (True, 'unknown'))
+        self.assertTrue(body['requires_review'])
+
+    def test_run_steps_first_step_uses_the_reviewed_frame_guard(self):
+        d, f, state = self.sequence_desktop()
+        d.frames['token']['time'] -= 121
+        with patch.object(server, 'run') as run:
+            with self.assertRaises(ValueError):
+                d.call('run_steps', {'frame_id': 'token', 'steps': [{'action': 'press_key', 'key': 'CTRL+n'}]})
+        run.assert_not_called()
+
     def test_mcp_handshake_and_validation(self):
         requests = [
             {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18"}},
@@ -547,7 +657,7 @@ class Tests(unittest.TestCase):
         responses = [json.loads(line) for line in stdout.getvalue().splitlines()]
         self.assertEqual(len(responses), 3)
         self.assertEqual(responses[0]["result"]["protocolVersion"], "2025-06-18")
-        self.assertEqual(len(responses[1]["result"]["tools"]), 11)
+        self.assertEqual(len(responses[1]["result"]["tools"]), 12)
         self.assertTrue(responses[2]["result"]["isError"])
 
 

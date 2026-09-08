@@ -208,10 +208,12 @@ CONDITION_SCHEMA = {'type': 'object', 'properties': {
     'name': {'type': 'string', 'maxLength': 160}, 'role': {'type': 'string', 'maxLength': 80},
     'state': {'type': 'string', 'enum': ['visible', 'showing', 'enabled', 'sensitive', 'focused', 'checked', 'selected', 'editable']},
     'value': {'type': 'number'}, 'title': {'type': 'string', 'maxLength': 256},
+    'title_prefix': {'type': 'string', 'maxLength': 256, 'description': 'Window title must start with this.'},
+    'focused': {'type': 'boolean', 'description': 'Window condition also requires the matched window to be active.'},
     'class': {'type': 'string', 'maxLength': 128},
     'box': {'type': 'array', 'items': {'type': 'integer', 'minimum': 0}, 'minItems': 4, 'maxItems': 4}},
     'required': ['kind'], 'additionalProperties': False,
-    'description': 'Exact accessible name (optional role/state/value), unique mapped window title/class, or changed crop box [left,top,right,bottom] relative to since_revision. No expressions.'}
+    'description': 'Exact accessible name (optional role/state/value), unique mapped window by title/title_prefix/class (optionally focused), or changed crop box [left,top,right,bottom] relative to since_revision. No expressions.'}
 
 
 def validate_condition(condition):
@@ -219,13 +221,15 @@ def validate_condition(condition):
         raise ValueError('condition must be an object')
     kind = condition.get('kind')
     allowed = {'accessible': {'kind', 'name', 'role', 'state', 'value'},
-               'window': {'kind', 'title', 'class'}, 'region_changed': {'kind', 'box'}}
+               'window': {'kind', 'title', 'title_prefix', 'class', 'focused'}, 'region_changed': {'kind', 'box'}}
     if type(kind) is not str or kind not in allowed or set(condition)-allowed[kind]:
         raise ValueError('Invalid condition fields')
     if kind == 'accessible' and 'name' not in condition:
         raise ValueError('Accessible condition requires exact name')
-    if kind == 'window' and not ({'title', 'class'} & set(condition)):
-        raise ValueError('Window condition requires title or class')
+    if kind == 'window' and not ({'title', 'title_prefix', 'class'} & set(condition)):
+        raise ValueError('Window condition requires title, title_prefix or class')
+    if kind == 'window' and 'focused' in condition and type(condition['focused']) is not bool:
+        raise ValueError('focused must be a boolean')
     if kind == 'region_changed':
         box = condition.get('box')
         if not isinstance(box, list) or len(box) != 4 or any(type(x) is not int or x < 0 for x in box) or box[0] >= box[2] or box[1] >= box[3]:
@@ -244,7 +248,10 @@ def matches(condition, sample, reference=None):
     state, kind = sample['state'], condition['kind']
     if kind == 'window':
         found = [w for w in state.get('windows', []) if w.get('mapped') and
-                 all(w.get(k) == v for k, v in condition.items() if k != 'kind')]
+                 all(w.get(k) == v for k, v in condition.items() if k in ('title', 'class')) and
+                 str(w.get('title', '')).startswith(condition.get('title_prefix', ''))]
+        if condition.get('focused') and found:
+            found = [w for w in found if w.get('address') == state.get('active_window')]
         return len(found) == 1
     if kind == 'accessible':
         evidence = state.get('accessibility', {})
