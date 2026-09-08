@@ -37,6 +37,33 @@ class PixelTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             crop(rgb,85,[-1,0,1,1])
 
+    def test_changed_box_matches_full_tile_comparison(self):
+        from cu.pixels import changed_box
+        import random
+        def reference(before, after, width, height, tile):
+            if before == after:
+                return None
+            changed = []
+            for y in range(0, height, tile):
+                for x in range(0, width, tile):
+                    right, bottom = min(x+tile, width), min(y+tile, height)
+                    if any(before[(row*width+x)*3:(row*width+right)*3] != after[(row*width+x)*3:(row*width+right)*3]
+                           for row in range(y, bottom)):
+                        changed.append((x, y, right, bottom))
+            return [min(r[0] for r in changed), min(r[1] for r in changed), max(r[2] for r in changed), max(r[3] for r in changed)]
+        rng = random.Random(9)
+        for trial in range(400):
+            width, height, tile = rng.randrange(1, 30), rng.randrange(1, 30), rng.choice([1, 3, 4, 7, 64])
+            before = bytes(rng.randrange(256) for _ in range(width*height*3))
+            after = bytearray(before)
+            for _ in range(rng.randrange(0, 5)):
+                after[rng.randrange(len(after))] ^= rng.randrange(1, 256)
+            if rng.random() < 0.1:
+                after = bytearray(rng.randrange(256) for _ in range(len(before)))
+            self.assertEqual(changed_box(before, bytes(after), width, height, tile), reference(before, bytes(after), width, height, tile), trial)
+        with self.assertRaises(ValueError):
+            changed_box(b'abc', b'abcdef', 1, 1)
+
     def test_parallel_deflate_is_lossless_and_decodes_as_png(self):
         from cu import pixels
         import random, zlib

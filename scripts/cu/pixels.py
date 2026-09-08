@@ -90,16 +90,38 @@ def crop(rgb, width, box):
 
 
 def changed_box(before, after, width, height, tile=64):
+    """Tile-aligned bounding box of changed pixels, or None when identical.
+
+    Rows are compared whole first (one memcmp each); only differing rows are
+    tiled, scanning from each side for the outermost changed tile. The result
+    equals a full per-tile comparison.
+    """
     if len(before) != len(after) or len(after) != width*height*3:
         raise ValueError('Incompatible pixel buffers')
     if before == after:
         return None
-    changed = []
-    for y in range(0, height, tile):
-        for x in range(0, width, tile):
-            right, bottom = min(x+tile, width), min(y+tile, height)
-            if any(before[(row*width+x)*3:(row*width+right)*3] !=
-                   after[(row*width+x)*3:(row*width+right)*3] for row in range(y, bottom)):
-                changed.append((x, y, right, bottom))
-    return [min(r[0] for r in changed), min(r[1] for r in changed),
-            max(r[2] for r in changed), max(r[3] for r in changed)]
+    stride = width*3
+    edges = list(range(0, width, tile))
+    xmin, ymin, xmax, ymax = width, height, 0, 0
+    for y in range(height):
+        first, second = before[y*stride:(y+1)*stride], after[y*stride:(y+1)*stride]
+        if first == second:
+            continue
+        top = y-y % tile
+        ymin, ymax = min(ymin, top), max(ymax, min(top+tile, height))
+        if xmin > 0:
+            for x in edges:
+                if x >= xmin:
+                    break
+                if first[x*3:min(x+tile, width)*3] != second[x*3:min(x+tile, width)*3]:
+                    xmin = x
+                    break
+        if xmax < width:
+            for x in reversed(edges):
+                right = min(x+tile, width)
+                if right <= xmax:
+                    break
+                if first[x*3:right*3] != second[x*3:right*3]:
+                    xmax = right
+                    break
+    return [xmin, ymin, xmax, ymax]

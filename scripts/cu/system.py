@@ -52,12 +52,18 @@ def desktop_locked(names=frozenset({b'hyprlock'})):
         for entry in entries:
             if entry.isdigit():
                 try:
-                    with open(f'/proc/{entry}/comm', 'rb') as file:
-                        if file.read().rstrip(b'\n') in names:
-                            locked = True
-                            break
+                    fd = os.open(f'/proc/{entry}/comm', os.O_RDONLY)
+                except OSError:
+                    continue  # Process exited between listing and read.
+                try:
+                    comm = os.read(fd, 32)
                 except OSError:
                     continue
+                finally:
+                    os.close(fd)
+                if comm.rstrip(b'\n') in names:
+                    locked = True
+                    break
     current = trace.current()
     if current is not None:
         current.record('lock_check', started_ns, locked=locked)
