@@ -78,3 +78,21 @@ Fixed conditions per trial:
 3. Confirm the operator is present: the desktop is live and shared, input
    goes to whatever window is focused, and a stray click lands on real
    applications.
+
+## Batched variant (trials 5 and 6)
+
+Same task, current build, with the mechanical run after the copy expressed as
+one `run_steps` call instead of seven separate actions. Calls per trial are
+the primary measure; wall time and tool time are secondary. The sequence:
+
+1. `press_key CTRL+c`
+2. `focus_window <obsidian>` with `expect` the Obsidian window focused
+3. `press_key CTRL+n` with `after` title prefix `Untitled`, focused
+4. `type_text ab-trial-<n>`
+5. `press_key Return` with `after` title prefix `ab-trial-<n> -`, focused
+6. `press_key CTRL+v`
+7. `type_text` the source line
+
+Decision turns are unchanged: reading the page to place the drag, and the
+final verification. Expected calls per trial: `desktop_state`, `focus_window`,
+`drag`, `run_steps`, `desktop_state`.

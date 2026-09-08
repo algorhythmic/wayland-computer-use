@@ -116,3 +116,46 @@ Details in `docs/latency.md`, "Typed text: the keystroke cutoff and its fix".
 
 Trial notes remain in the vault at `/home/david/Documents/Omacron/ab-trial-*.md`
 and were copied here; they can be deleted from the vault.
+
+## Batched trials 5 and 6 (current build, `run_steps`)
+
+Same task, same session, same wording. The seven mechanical steps after the
+copy ran as one `run_steps` call with window-title conditions between steps
+(protocol, "Batched variant"). Chromium had been navigated away in the
+meantime, so the article was restored first as setup, itself a three-step
+sequence, and excluded from the trial counts.
+
+| Trial | Calls | Screenshots | Response bytes | Tool time | Wall, first to last call | Note |
+|---|---:|---:|---:|---:|---:|---|
+| 1, unbatched | 14 | 10 | 27.2 MB | 2.28 s | 171 s | corrupted line |
+| 4, unbatched | 14 | 10 | 27.3 MB | 2.25 s | 295 s | corrupted line |
+| 5, batched | 5 | 3 | 7.7 MB | 1.88 s | 71 s | exact |
+| 6, batched | 4 | 3 | 7.8 MB | 1.85 s | 68 s | exact |
+
+Trial 6 shares its start marker with trial 5's end, as trials 2 and 3 did.
+The sequence itself took 1.27 s and 1.23 s for all seven steps; every `after`
+condition matched, the Obsidian title changes arriving 50 to 92 ms after the
+key. No step was retried and no screenshot was taken between steps. Both
+notes are byte-identical in body to trial 1 and exact in the source line:
+the first fully correct notes of the day, since the 40-character `wtype`
+segmentation is also in this build.
+
+What changed and what did not:
+
+- **Calls per task fell from 14 to 4 or 5**, and wall time by 2.5 to 4×.
+  Every removed call was a model turn spent reading a screenshot of a state
+  the sequence could verify itself.
+- **Response payload fell from 27 MB to under 8 MB per task**, three images
+  instead of ten, which also shrinks every later turn's context.
+- **Tool time barely moved** (2.3 s to 1.9 s). The plugin was already fast;
+  the turns were the cost. This is the pilot's first conclusion, now acted on.
+- **The title-change race disappeared** because the title change became the
+  condition between steps instead of an obstacle to the result capture.
+- **Decision turns are unchanged.** Placing the drag still needed a
+  screenshot, and the article restoration showed the limit of title
+  conditions: the tab's title matched about 390 ms after Enter while the page
+  was still painting, so a title is readiness of the window, not of its
+  content. The drag waited for a fresh screenshot for that reason.
+
+The setup sequence (new tab, type URL, Enter with a title condition) ran in
+836 ms and is the shape of a browser-navigation recipe.

@@ -358,3 +358,16 @@ characters, each a fresh virtual keyboard, and reports `text_segments`.
 Acceptance: 24 of 24 trials across eight corpora exact, then 100 consecutive
 insertions of the proposal corpus, all exact
 (`benchmarks/text-entry-20260907-165710.json`).
+
+## Deterministic sequences, September 7, 2026
+
+`run_steps` executes a list of inputs under one approval with a window or
+accessible condition verified between steps, so the mechanical middle of a
+task costs one model turn instead of one per step. Rerunning the pilot task
+with the seven post-copy steps as one sequence cut calls per task from 14 to
+4 or 5, wall time from 171–295 s to 68–71 s, and response payload from 27 MB
+to under 8 MB, with both notes exact
+([results](../reports/2026-09-07-browser-obsidian-ab/results.md), trials 5
+and 6). Tool time was unchanged at about 2 s: the turns were the cost. Title
+conditions prove a window's state, not its content; a step whose next action
+depends on reading the screen still ends the sequence.

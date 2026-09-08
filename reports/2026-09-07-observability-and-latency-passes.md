@@ -445,3 +445,32 @@ Three results for the explainer:
    characters are dropped. `type_text` now sends at most 40 characters per
    invocation; 100 of 100 consecutive proposal-corpus insertions were exact.
    The post-action capture also retries once on a mid-capture title change.
+
+## 12. Deterministic sequences (evening)
+
+The pilot's conclusion that turns, not tool time, dominate led to a batch
+tool. `run_steps` takes up to twelve inputs; the first is guarded by the
+reviewed frame like any single action, later steps act only after their
+`expect` window or accessible condition holds or while the active window is
+unchanged, each may wait on an `after` condition, and the sequence stops at
+the first unmet condition and reports every step. Window conditions gained
+`title_prefix` and `focused`. The skill document states the rule, a step
+belongs in a sequence when its success can be checked without pixels, and
+gives recipes for this machine's launch hotkeys and Obsidian.
+
+Rerunning the pilot task with the seven post-copy steps as one sequence:
+
+| | Trials 1 and 4, unbatched | Trials 5 and 6, batched |
+|---|---:|---:|
+| Calls per task | 14 | 4–5 |
+| Screenshots | 10 | 3 |
+| Response bytes | 27 MB | 7.7 MB |
+| Tool time | 2.3 s | 1.9 s |
+| Wall time | 171–295 s | 68–71 s |
+| Text exact | no | yes |
+
+Every removed call was a model turn reading a state the sequence could verify
+itself; the title-change race vanished because the title change became the
+between-step condition. A title proves the window's state, not its content:
+the setup navigation matched its title 390 ms after Enter while the page was
+still painting, so the drag still waited for a screenshot.
