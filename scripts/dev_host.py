@@ -11,8 +11,44 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import sys
+import time
 import types
+
+
+class HostTrace:
+    """Optional host-side envelope per tools/call, written as JSON lines to WAYLAND_CU_TRACE_DIR.
+
+    Measures request-received to response-flushed in the host, identically for
+    every runtime revision, so legacy bundles without timing fields can be
+    compared with current ones. Records tool names, sizes, outcome and revision
+    only; no arguments, screen contents or text.
+    """
+    def __init__(self):
+        self.file = None
+        location = os.environ.get('WAYLAND_CU_TRACE_DIR')
+        if not location:
+            return
+        try:
+            root = Path(location)
+            info = root.lstat()
+            if not root.is_absolute() or not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
+                return
+            path = root/f"host-{time.strftime('%Y%m%d-%H%M%S')}-{os.getpid()}.jsonl"
+            self.file = os.fdopen(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), 'w')
+        except OSError:
+            self.file = None
+
+    def write(self, record):
+        if self.file is None:
+            return
+        try:
+            self.file.write(json.dumps({'kind': 'host', 'schema': 1, 'pid': os.getpid(),
+                                        'wall_s': time.time(), **record})+'\n')
+            self.file.flush()
+        except OSError:
+            self.file = None
 
 
 class VerifiedImports(importlib.abc.MetaPathFinder, importlib.abc.Loader):
@@ -141,6 +177,7 @@ class Runtime:
 
 def serve(root=None):
     runtime = Runtime(root or Path(__file__).resolve().parents[1])
+    host_trace = HostTrace()
     try:
         runtime.refresh()  # Load and warm at launch; a missing bundle still reports on the first request.
     except Exception:
@@ -148,6 +185,7 @@ def serve(root=None):
     try:
         for line in sys.stdin.buffer:
             request = None
+            received_ns = time.monotonic_ns()
             try:
                 request = json.loads(line)
                 if not isinstance(request, dict):
@@ -168,7 +206,15 @@ def serve(root=None):
             except Exception as exc:
                 reply = {"jsonrpc": "2.0", "id": request.get("id") if isinstance(request, dict) else None,
                          "error": {"code": -32603, "message": str(exc)[:1400]}}
-            print(json.dumps(reply), flush=True)
+            encoded = json.dumps(reply)
+            print(encoded, flush=True)
+            if isinstance(request, dict) and request.get("method") == "tools/call":
+                content = reply.get("result", {}).get("content", []) if "result" in reply else []
+                host_trace.write({"tool": str(request.get("params", {}).get("name", ""))[:40],
+                                  "revision": runtime.revision, "received_ns": received_ns,
+                                  "flushed_ns": time.monotonic_ns(), "is_error": bool(reply.get("result", {}).get("isError")) or "error" in reply,
+                                  "images": sum(1 for c in content if c.get("type") == "image"),
+                                  "response_bytes": len(encoded)})
     finally:
         if runtime.desktop and hasattr(runtime.desktop, "close"):
             runtime.desktop.close()

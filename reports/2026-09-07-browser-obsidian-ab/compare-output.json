@@ -1,0 +1,164 @@
+{
+  "builds": {
+    "6abf769e1c92": {
+      "calls": 28,
+      "errors": 4,
+      "images": 20,
+      "response_bytes": 54434769,
+      "first_to_last_call_s": 1650.765,
+      "tools": {
+        "desktop_state": {
+          "n": 4,
+          "errors": 0,
+          "images": 0,
+          "bytes": 28680,
+          "median_ms": 2.9,
+          "p95_ms": 3.5
+        },
+        "drag": {
+          "n": 2,
+          "errors": 0,
+          "images": 2,
+          "bytes": 4726702,
+          "median_ms": 528.4,
+          "p95_ms": 536.8
+        },
+        "focus_window": {
+          "n": 4,
+          "errors": 0,
+          "images": 4,
+          "bytes": 10566390,
+          "median_ms": 106.1,
+          "p95_ms": 119.5
+        },
+        "press_key": {
+          "n": 8,
+          "errors": 4,
+          "images": 4,
+          "bytes": 10418410,
+          "median_ms": 81.0,
+          "p95_ms": 103.2
+        },
+        "screenshot": {
+          "n": 6,
+          "errors": 0,
+          "images": 6,
+          "bytes": 17183648,
+          "median_ms": 72.9,
+          "p95_ms": 74.1
+        },
+        "type_text": {
+          "n": 4,
+          "errors": 0,
+          "images": 4,
+          "bytes": 11510939,
+          "median_ms": 488.2,
+          "p95_ms": 832.0
+        }
+      }
+    },
+    "d58ff2a66460": {
+      "calls": 21,
+      "errors": 1,
+      "images": 18,
+      "response_bytes": 44952551,
+      "first_to_last_call_s": 364.652,
+      "tools": {
+        "desktop_state": {
+          "n": 3,
+          "errors": 1,
+          "images": 0,
+          "bytes": 13972,
+          "median_ms": 16.1,
+          "p95_ms": 33.0
+        },
+        "drag": {
+          "n": 2,
+          "errors": 0,
+          "images": 2,
+          "bytes": 4317273,
+          "median_ms": 905.0,
+          "p95_ms": 906.3
+        },
+        "focus_window": {
+          "n": 4,
+          "errors": 0,
+          "images": 4,
+          "bytes": 9739530,
+          "median_ms": 433.5,
+          "p95_ms": 434.5
+        },
+        "press_key": {
+          "n": 8,
+          "errors": 0,
+          "images": 8,
+          "bytes": 20217249,
+          "median_ms": 489.0,
+          "p95_ms": 507.0
+        },
+        "type_text": {
+          "n": 4,
+          "errors": 0,
+          "images": 4,
+          "bytes": 10664527,
+          "median_ms": 872.7,
+          "p95_ms": 1206.5
+        }
+      }
+    }
+  },
+  "runtime_by_tool": {
+    "desktop_state": {
+      "n": 4,
+      "rejected": 0,
+      "error": 0,
+      "total_ms": 1.2,
+      "guard_ms": null,
+      "input_ms": null
+    },
+    "drag": {
+      "n": 2,
+      "rejected": 0,
+      "error": 0,
+      "total_ms": 518.1,
+      "guard_ms": 3.4,
+      "input_ms": 451.5
+    },
+    "focus_window": {
+      "n": 4,
+      "rejected": 0,
+      "error": 0,
+      "total_ms": 96.5,
+      "guard_ms": null,
+      "input_ms": null
+    },
+    "press_key": {
+      "n": 8,
+      "rejected": 0,
+      "error": 4,
+      "total_ms": 74.9,
+      "guard_ms": 3.5,
+      "input_ms": 17.7
+    },
+    "screenshot": {
+      "n": 6,
+      "rejected": 0,
+      "error": 0,
+      "total_ms": 62.8,
+      "guard_ms": null,
+      "input_ms": null
+    },
+    "type_text": {
+      "n": 4,
+      "rejected": 0,
+      "error": 0,
+      "total_ms": 478.9,
+      "guard_ms": 3.4,
+      "input_ms": 408.0
+    }
+  },
+  "limits": [
+    "Host envelope excludes model time, approval and client image handling.",
+    "Absolute times are for this session only; compare builds against each other."
+  ]
+}
