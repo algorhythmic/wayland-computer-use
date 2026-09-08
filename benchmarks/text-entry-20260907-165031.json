@@ -1,0 +1,29 @@
+{
+  "scope": "Live typed-text fidelity through the type_text tool path into a GTK text view; metrics only.",
+  "split_limit": 0,
+  "started_at": 1788825029.1126344,
+  "trials": [
+    {
+      "corpus": "newline_small",
+      "trial": 0,
+      "input_ms": 78.425448,
+      "call_ms": 142.837525,
+      "wtype_calls": 1,
+      "exact": true,
+      "expected_len": 14,
+      "actual_len": 14,
+      "dropped_count": 0,
+      "inserted_count": 0,
+      "dropped_positions": [],
+      "dropped_ranks": [],
+      "min_dropped_rank": null,
+      "distinct_in_corpus": 12
+    }
+  ],
+  "status": "complete",
+  "summary": {
+    "trials": 1,
+    "exact": 1,
+    "min_dropped_rank": null
+  }
+}

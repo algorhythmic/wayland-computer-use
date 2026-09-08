@@ -289,3 +289,72 @@ comparison, so the pixel change alone removes roughly 0.6 s from every input
 action's guard. The retrospective's 34 input attempts would have spent about
 20 s there. These remain local stage timings; an end-to-end guarded input
 measurement still needs the input daemon installed.
+
+## Remaining candidates, September 7, 2026
+
+Measured after the second pass. Two were worth changing; two were not.
+
+- **Lock scan.** Reading `/proc/*/comm` through raw descriptors instead of file
+  objects halves the check from 4.3 ms to 2.1 ms. A guarded input runs it four
+  times.
+- **Changed-region tiling.** `changed_box` compared every 64-pixel tile row by
+  row, 13 ms on a 1261×1390 crop with one changed pixel. It now compares whole
+  rows first and tiles only rows that differ, scanning from each edge for the
+  outermost changed tile: 1.2 ms for one pixel, a band, or a full change, with
+  the same tile-aligned result. A randomized test checks 400 crops and tile
+  sizes against the full comparison.
+- **Actionable-frame construction** after an observation is about 10 ms on a
+  1261×1390 crop and is almost entirely the parallel PNG deflate. No change.
+- **First-probe subscription** on a warm worker is about 12 ms of AT-SPI event
+  registration with the application. No change.
+
+Local stages are now small enough that the next evidence should come from the
+paired browser-to-Obsidian rerun described in the reports, with the input
+daemon installed, rather than from further fixture timings.
+
+## End-to-end pilot, September 7, 2026
+
+Two pairs of a browser-to-Obsidian task, old build against current build,
+same model and host, are recorded in
+[`reports/2026-09-07-browser-obsidian-ab/results.md`](../reports/2026-09-07-browser-obsidian-ab/results.md).
+Per-call host envelopes fell 4 to 6× for key presses and focus changes and
+about 2.4× for the task's total tool time, but tool time is 1 to 4% of wall
+time, which the model dominates. Removing the fixed post-action sleep exposed
+a title-change race that cost an extra round trip; the post-action capture now
+retries once when the target changed mid-capture and reports `result_retried`.
+The typed-text corruption reproduced in all four trials on both builds.
+
+## Typed text: the keystroke cutoff and its fix
+
+`tests/live_text_entry.py` opens a disposable GTK text view, types fixed
+corpora through the real `type_text` path, reads the buffer back through the
+fixture's stdin protocol, and reports dropped characters with their
+distinct-character rank. It focuses only the window it created and aborts on
+any later focus change. Baseline runs with `--no-split` established the
+mechanism by elimination (`benchmarks/text-entry-20260907-16*.json`):
+
+| Corpus | Result without splitting |
+|---|---|
+| 40 distinct alphanumerics | exact |
+| 62 distinct alphanumerics | exact |
+| 32 punctuation characters with long keysym names | exact |
+| Tiny text with newlines | exact |
+| 120 × `a` then ` bcdefghij` | every character after the run dropped, including the space |
+| 80 × `a` then new characters | exact |
+| 100 × `a` then new characters | new characters dropped |
+| 40 keys at 15 ms delay, then new characters (0.9 s) | exact |
+| 20 keys at 40 ms delay, then new characters (1.2 s) | exact |
+| Proposal corpus, 300 characters, 64 distinct | 68 characters dropped from the 30th distinct on |
+
+So the cutoff is a keystroke count between 86 and 100 within one `wtype`
+process, independent of elapsed time, newlines, keysym-name length or the
+number of distinct keys. After it, keymap updates for newly introduced
+characters are no longer applied, while previously introduced characters keep
+working. GTK4 and Electron clients behave identically on Hyprland. The
+September 6 corruption (62 characters lost from a 933-character body) and the
+pilot's four identical corruptions are the same defect. `type_text` now sends
+text in consecutive `wtype` invocations of at most `TEXT_SEGMENT_CHARS` (40)
+characters, each a fresh virtual keyboard, and reports `text_segments`.
+Acceptance: 24 of 24 trials across eight corpora exact, then 100 consecutive
+insertions of the proposal corpus, all exact
+(`benchmarks/text-entry-20260907-165710.json`).

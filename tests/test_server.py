@@ -329,6 +329,46 @@ class Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             d.guard("token")
 
+    def test_text_segments_bound_characters_per_invocation(self):
+        self.assertEqual(server.text_segments('', 3), [])
+        self.assertEqual(server.text_segments('abc', 3), ['abc'])
+        self.assertEqual(server.text_segments('abcdefg', 3), ['abc', 'def', 'g'])
+        self.assertEqual(server.text_segments('abcdef', 0), ['abcdef'])
+        text = ('x'*120)+' bcdef\n'+'y'*50
+        segments = server.text_segments(text)
+        self.assertEqual(''.join(segments), text)
+        self.assertTrue(all(len(seg) <= server.TEXT_SEGMENT_CHARS for seg in segments))
+        self.assertLess(server.TEXT_SEGMENT_CHARS, 80)  # Measured cutoff is between 86 and 100 keystrokes.
+
+    def test_long_text_is_typed_in_bounded_invocations(self):
+        d = server.Desktop()
+        text = 'a'*120+' bcdefghij'
+        with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run') as run, \
+                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'n'})]):
+            meta = json.loads(d.call('type_text', {'frame_id': 'token', 'text': text})[0]['text'])
+        self.assertEqual([c.args[1].decode() for c in run.call_args_list], server.text_segments(text))
+        self.assertEqual(''.join(c.args[1].decode() for c in run.call_args_list), text)
+        self.assertEqual(meta['text_segments'], 4)
+
+    def test_result_capture_retries_once_on_mid_capture_change(self):
+        d = server.Desktop()
+        with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), patch.object(server.time, 'sleep'), \
+                patch.object(d, 'screenshot', side_effect=[RuntimeError('Target changed during capture; take another screenshot'),
+                                                           [server.text_content({'frame_id': 'second'})]]) as shot:
+            meta = json.loads(d.call('press_key', {'frame_id': 'token', 'key': 'Return'})[0]['text'])
+        self.assertEqual((meta['frame_id'], meta['result_retried'], meta['action_performed'], shot.call_count), ('second', True, True, 2))
+        with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), patch.object(server.time, 'sleep'), \
+                patch.object(d, 'screenshot', side_effect=RuntimeError('Target changed during capture; take another screenshot')) as shot:
+            with self.assertRaises(server.ActionRejected) as error:
+                d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
+        self.assertEqual(shot.call_count, 2)
+        self.assertTrue(json.loads(error.exception.content[0]['text'])['action_performed'])
+        with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), \
+                patch.object(d, 'screenshot', side_effect=RuntimeError('capture unavailable')) as shot:
+            with self.assertRaises(server.ActionRejected):
+                d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
+        self.assertEqual(shot.call_count, 1)
+
     def test_literal_text_uses_stdin_and_consumes_frame(self):
         d = server.Desktop()
         d.frames["token"] = frame()

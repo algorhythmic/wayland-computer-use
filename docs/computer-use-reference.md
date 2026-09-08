@@ -121,6 +121,13 @@ explicit dropped-record counter reported by `desktop_state`. Records contain no
 typed text, key names, titles, URLs or screen contents. See
 [latency.md](latency.md#tracing-and-attribution).
 
+`type_text` sends literal text in consecutive `wtype` invocations of at most
+40 characters because the virtual-keyboard path stops applying keymap updates
+after roughly 90 keystrokes in one process; responses report `text_segments`.
+The post-action screenshot retries once when the target window changed mid
+capture, for example when an application retitles after Enter, and reports
+`result_retried`. See [latency.md](latency.md#typed-text-the-keystroke-cutoff-and-its-fix).
+
 Expired frames require renewed review rather than extending their lifetime.
 Pre-input revalidation failures return `action_performed: false`, `requires_review`,
 and a fresh screenshot when available. Focus restoration may already have occurred.

@@ -133,6 +133,25 @@ def text_content(value):
     return {"type": "text", "text": json.dumps(value, ensure_ascii=False)}
 
 
+# Each wtype process extends its virtual-keyboard keymap when it meets a new
+# character. Measured on Hyprland with GTK4 and Electron clients: after roughly
+# 90 keystrokes in one process, every character introduced afterwards is
+# dropped, regardless of timing, newlines or how many distinct keys exist
+# (tests/live_text_entry.py). Bound each invocation well under that count.
+TEXT_SEGMENT_CHARS = 40
+TEXT_KEYSYM_LIMIT = TEXT_SEGMENT_CHARS  # Name kept for the live test's --no-split switch.
+
+
+def text_segments(text, limit=None):
+    """Split text into consecutive segments of at most ``limit`` characters."""
+    limit = TEXT_KEYSYM_LIMIT if limit is None else limit
+    if not text:
+        return []
+    if limit <= 0:
+        return [text]
+    return [text[i:i+limit] for i in range(0, len(text), limit)]
+
+
 class ActionRejected(ValueError):
     def __init__(self, message, content):
         super().__init__(message)
@@ -407,6 +426,23 @@ class Desktop:
         return [(m["name"], m["x"], m["y"], m["width"], m["height"], m["scale"], m["transform"])
                 for m in monitors]
 
+    def result_capture(self, monitor=None):
+        """Post-action capture. Retry once when the target retitled or refocused mid-capture.
+
+        Applications such as Obsidian change their window title right after an
+        action; without a retry the agent must spend a round trip on a second
+        screenshot. The retry is read-only and reported as ``result_retried``.
+        """
+        try:
+            return self.screenshot(monitor)
+        except RuntimeError as exc:
+            if 'changed during capture' not in str(exc):
+                raise
+            self.result_retried = True
+            self.note(result_retry=True)
+            time.sleep(.05)
+            return self.screenshot(monitor)
+
     def screenshot(self, monitor=None):
         monitors = self.hypr("monitors")
         if not monitors:
@@ -649,6 +685,8 @@ class Desktop:
         self.calls += 1
         self.trace = trace.Trace('request', tool=str(name)[:40], seq=self.calls, **argument_shape(name, a))
         self.action_started, self.action_completed_ns, self.focus_restored, self.timings = False, None, False, {}
+        self.text_segments = None
+        self.result_retried = False
         previous = trace.activate(self.trace)
         try:
             validate(name, a)
@@ -680,6 +718,10 @@ class Desktop:
             metadata = json.loads(content[0]['text'])
             if status == 'ok' and performed is True:
                 metadata.update(action_performed=True, action_completed_ns=self.action_completed_ns)
+                if self.text_segments:
+                    metadata['text_segments'] = self.text_segments
+                if self.result_retried:
+                    metadata['result_retried'] = True
             metadata['timings_ms'] = {**metadata.get('timings_ms', {}), **self.timings}
             content[0] = text_content(metadata)
         elif content is not None and performed is True:
@@ -717,7 +759,7 @@ class Desktop:
             self.wait_focus(address)
             self.action_completed_ns = time.monotonic_ns()
             with self.span('result'):
-                return self.screenshot()
+                return self.result_capture()
         # Validate all action arguments before restoration, which is itself a mutation.
         validate(name, a)
         if name == "press_key":
@@ -774,7 +816,11 @@ class Desktop:
                 recheck()
                 started = True
                 self.action_started = True
-                run(["wtype", "-"], value.encode())
+                segments = text_segments(value)
+                self.note(text_segments=len(segments))
+                for segment in segments:
+                    run(["wtype", "-"], segment.encode())
+                self.text_segments = len(segments)
             elif name == "press_key":
                 args = key_args(a["key"])
                 self.frames.clear()
@@ -820,10 +866,10 @@ class Desktop:
                     'timeout_ms': a['after'].get('timeout_ms', 5000), 'after_action': self.action_completed_ns})
             if not any(block['type'] == 'image' for block in result):
                 with self.span('result'):
-                    result += self.screenshot(frame['monitor']['name'])
+                    result += self.result_capture(frame['monitor']['name'])
             return result
         with self.span('result'):
-            return self.screenshot(frame["monitor"]["name"])
+            return self.result_capture(frame["monitor"]["name"])
 
 
 S = {"type": "string"}
