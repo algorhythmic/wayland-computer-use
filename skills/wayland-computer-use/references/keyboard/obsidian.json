@@ -1,0 +1,277 @@
+{
+  "schema": 1,
+  "environment": "obsidian",
+  "version": "1.13.7",
+  "evidence": "source_defaults",
+  "coverage": "All 34 assigned application-command hotkey declarations in installed app.js, expanded for Linux and numbered tabs. Not a live command registry. Excludes editor-engine keymaps, modal handlers and dynamically registered community-plugin commands; vault overrides are merged by keyboard_context.py.",
+  "sources": [
+    {
+      "path": "/usr/lib/obsidian/obsidian.asar!app.js",
+      "sha256": "8efbf581e259cabef4f9c9a34814cfe3c02863757377e56b3603933c50e89898",
+      "declarations": 34
+    },
+    {
+      "url": "https://obsidian.md/help/hotkeys"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "CTRL+SHIFT+F",
+      "command": "global-search:open",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+G",
+      "command": "graph:open",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+S",
+      "command": "editor:save-file",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "ALT+Return",
+      "command": "editor:follow-link",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+Return",
+      "command": "editor:open-link-in-new-leaf",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+ALT+SHIFT+Return",
+      "command": "editor:open-link-in-new-window",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+ALT+Return",
+      "command": "editor:open-link-in-new-split",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "F2",
+      "command": "workspace:edit-file-title",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+T",
+      "command": "workspace:undo-close-pane",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+Tab",
+      "command": "workspace:next-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+Page_Down",
+      "command": "workspace:next-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+1",
+      "command": "workspace:goto-tab-1",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+2",
+      "command": "workspace:goto-tab-2",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+3",
+      "command": "workspace:goto-tab-3",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+4",
+      "command": "workspace:goto-tab-4",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+5",
+      "command": "workspace:goto-tab-5",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+6",
+      "command": "workspace:goto-tab-6",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+7",
+      "command": "workspace:goto-tab-7",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+8",
+      "command": "workspace:goto-tab-8",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+9",
+      "command": "workspace:goto-last-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Tab",
+      "command": "workspace:previous-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+Page_Up",
+      "command": "workspace:previous-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+T",
+      "command": "workspace:new-tab",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+W",
+      "command": "workspace:close",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+W",
+      "command": "workspace:close-window",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+P",
+      "command": "command-palette:open",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+O",
+      "command": "switcher:open",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+ALT+Left",
+      "command": "app:go-back",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+ALT+Right",
+      "command": "app:go-forward",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+comma",
+      "command": "app:open-settings",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+E",
+      "command": "markdown:toggle-preview",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+semicolon",
+      "command": "markdown:add-metadata-property",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "F1",
+      "command": "app:open-help",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+N",
+      "command": "file-explorer:new-file",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+N",
+      "command": "file-explorer:new-file-in-new-pane",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+F",
+      "command": "editor:open-search",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+H",
+      "command": "editor:open-search-replace",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+K",
+      "command": "editor:insert-link",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+B",
+      "command": "editor:toggle-bold",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+I",
+      "command": "editor:toggle-italics",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+slash",
+      "command": "editor:toggle-comments",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+L",
+      "command": "editor:toggle-checklist-status",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    },
+    {
+      "shortcut": "CTRL+D",
+      "command": "editor:delete-paragraph",
+      "context": "Obsidian application command",
+      "condition": "Command must be enabled and applicable; vault overrides take precedence."
+    }
+  ]
+}

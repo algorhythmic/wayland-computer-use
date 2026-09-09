@@ -1,0 +1,3600 @@
+{
+  "scope": "Deterministic desktop task E2E through fresh MCP; excludes model inference and approvals",
+  "status": "complete",
+  "trials": [
+    {
+      "task": "form",
+      "trial": 0,
+      "variant": "single_monitor",
+      "elapsed_ms": 684.029638,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 4,
+      "image_count": 4,
+      "delivered_png_bytes": 12209168,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 193.698676,
+          "response_bytes": 5388794,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4040197,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1673840839524
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 163.667792,
+          "response_bytes": 5388438,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4039965,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1674020456994
+              }
+            ]
+          }
+        },
+        {
+          "tool": "type_text",
+          "elapsed_ms": 168.99091,
+          "response_bytes": 5388207,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4039752,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1674227921248
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 79.260675,
+          "response_bytes": 129425,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89254,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1674408847407
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 0,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 436.154376,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4026723,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 409.231289,
+          "response_bytes": 5371697,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4026723,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1674860048855
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1674889948147
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1674922212406
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1674950799859,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 0,
+      "variant": "sequence_target",
+      "elapsed_ms": 299.68192,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 89726,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 298.64876,
+          "response_bytes": 122416,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89726,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1675604595119
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1675630193039
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1675668991116
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1675691085960,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 1,
+      "variant": "sequence_target",
+      "elapsed_ms": 311.146348,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 89895,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 310.147374,
+          "response_bytes": 122632,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89895,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1676225513545
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1676245580955
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1676283495847
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1676306186651,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 1,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 415.758614,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4023151,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 388.96529,
+          "response_bytes": 5366933,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4023151,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1676861410181
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1676884516036
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1676914087779
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1676935284065,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 1,
+      "variant": "single_monitor",
+      "elapsed_ms": 648.574208,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 4,
+      "image_count": 4,
+      "delivered_png_bytes": 12153055,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 177.449479,
+          "response_bytes": 5362653,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020592,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1677566354213
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 152.998092,
+          "response_bytes": 5363830,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4021508,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1677733462089
+              }
+            ]
+          }
+        },
+        {
+          "tool": "type_text",
+          "elapsed_ms": 157.434433,
+          "response_bytes": 5364175,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4021726,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1677922224033
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 79.008026,
+          "response_bytes": 129395,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89229,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1678099461848
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 2,
+      "variant": "single_monitor",
+      "elapsed_ms": 658.393594,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 4,
+      "image_count": 4,
+      "delivered_png_bytes": 12150185,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 186.459111,
+          "response_bytes": 5361769,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4019930,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1678544625079
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 155.19778,
+          "response_bytes": 5362496,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020495,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1678728841545
+              }
+            ]
+          }
+        },
+        {
+          "tool": "type_text",
+          "elapsed_ms": 161.306777,
+          "response_bytes": 5362552,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020508,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1678914754508
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 74.334197,
+          "response_bytes": 130886,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89252,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1679084296565
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 2,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 414.742968,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4021626,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 387.837494,
+          "response_bytes": 5364900,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4021626,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1679515574314
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1679537393234
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1679573204743
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1679594360918,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "form",
+      "trial": 2,
+      "variant": "sequence_target",
+      "elapsed_ms": 332.429462,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 89851,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 331.408533,
+          "response_bytes": 122575,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 89851,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1680225944135
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1680248574728
+              },
+              {
+                "index": 2,
+                "action": "type_text",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 1,
+                "action_completed_ns": 1680279853283
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1680300639562,
+                "after_status": "matched"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 0,
+      "variant": "single_monitor",
+      "elapsed_ms": 824.630209,
+      "artifact_verified": true,
+      "tool_calls": 8,
+      "input_tool_calls": 5,
+      "image_count": 7,
+      "delivered_png_bytes": 12323982,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 138.416633,
+          "response_bytes": 5313659,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3983906,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1680835977926
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 138.661363,
+          "response_bytes": 5308031,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3979669,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1680996227797
+              }
+            ]
+          }
+        },
+        {
+          "tool": "focus_window",
+          "elapsed_ms": 145.52562,
+          "response_bytes": 5356418,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4015979,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1681153382996
+              }
+            ]
+          }
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 41.523532,
+          "response_bytes": 118395,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 85.606307,
+          "response_bytes": 118179,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1681409578479
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 18.647107,
+          "response_bytes": 6857,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 43.451368,
+          "response_bytes": 125098,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 130.241041,
+          "response_bytes": 126120,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1681558368239
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 0,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 443.106033,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 4193814,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 249.555564,
+          "response_bytes": 5361293,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4018943,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1681968726820
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1681991135374
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1682004935515,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682065754201
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 18.604618,
+          "response_bytes": 7408,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 30.817953,
+          "response_bytes": 125098,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 115.649112,
+          "response_bytes": 126124,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682329069959
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 0,
+      "variant": "sequence_target",
+      "elapsed_ms": 355.290706,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 257211,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 144.68987,
+          "response_bytes": 112526,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682723704170
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682743831541
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1682757836376,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682812676165
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 21.928339,
+          "response_bytes": 6855,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 54.988349,
+          "response_bytes": 125097,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 131.127673,
+          "response_bytes": 126144,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1682975509243
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 1,
+      "variant": "sequence_target",
+      "elapsed_ms": 338.137791,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 257211,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 144.41435,
+          "response_bytes": 112536,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1683390429077
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1683409867647
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1683423486279,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1683477565781
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 22.847659,
+          "response_bytes": 6857,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 38.139691,
+          "response_bytes": 125101,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 130.223169,
+          "response_bytes": 126131,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1683629833374
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 1,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 420.674229,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 4194687,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 242.135018,
+          "response_bytes": 5362456,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4019816,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684042895513
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684064162736
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1684077701010,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684136574095
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 20.403004,
+          "response_bytes": 7407,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 31.318381,
+          "response_bytes": 125098,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 98.226212,
+          "response_bytes": 126133,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684378244822
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 1,
+      "variant": "single_monitor",
+      "elapsed_ms": 787.979793,
+      "artifact_verified": true,
+      "tool_calls": 8,
+      "input_tool_calls": 5,
+      "image_count": 7,
+      "delivered_png_bytes": 12327670,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 133.845436,
+          "response_bytes": 5314715,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3984699,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684773034497
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 141.43317,
+          "response_bytes": 5310291,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3981372,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1684932906272
+              }
+            ]
+          }
+        },
+        {
+          "tool": "focus_window",
+          "elapsed_ms": 126.147154,
+          "response_bytes": 5358007,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4017171,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1685083715709
+              }
+            ]
+          }
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 39.933833,
+          "response_bytes": 119886,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 89.19283,
+          "response_bytes": 118190,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1685327634116
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 18.687765,
+          "response_bytes": 6859,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 58.284665,
+          "response_bytes": 125099,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 98.154584,
+          "response_bytes": 126121,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1685479345530
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 2,
+      "variant": "single_monitor",
+      "elapsed_ms": 836.471922,
+      "artifact_verified": true,
+      "tool_calls": 8,
+      "input_tool_calls": 5,
+      "image_count": 7,
+      "delivered_png_bytes": 12328358,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 137.584133,
+          "response_bytes": 5315046,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3984939,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1685872322965
+              }
+            ]
+          }
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 135.962938,
+          "response_bytes": 5310299,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 3981377,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1686039184810
+              }
+            ]
+          }
+        },
+        {
+          "tool": "focus_window",
+          "elapsed_ms": 145.470945,
+          "response_bytes": 5358591,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4017614,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1686188103118
+              }
+            ]
+          }
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 37.723295,
+          "response_bytes": 119888,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 123.255983,
+          "response_bytes": 118182,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1686450691907
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 27.807833,
+          "response_bytes": 6858,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 32.078873,
+          "response_bytes": 125095,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 114.126866,
+          "response_bytes": 126126,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1686628201115
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 2,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 436.992953,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 4193577,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 243.227074,
+          "response_bytes": 5360976,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4018706,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687028296061
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687047956629
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1687062079824,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687121045849
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 23.572195,
+          "response_bytes": 7545,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 43.312359,
+          "response_bytes": 125097,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 98.201198,
+          "response_bytes": 126130,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687381944692
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "note",
+      "trial": 2,
+      "variant": "sequence_target",
+      "elapsed_ms": 303.959875,
+      "artifact_verified": true,
+      "tool_calls": 4,
+      "input_tool_calls": 2,
+      "image_count": 3,
+      "delivered_png_bytes": 256774,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 162.141051,
+          "response_bytes": 112545,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 82340,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 4,
+            "steps_completed": 4,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 3,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687778646707
+              },
+              {
+                "index": 1,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687799098572
+              },
+              {
+                "index": 2,
+                "action": "focus_window",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "expect_status": "matched",
+                "action_completed_ns": 1687813850798,
+                "after_status": "matched"
+              },
+              {
+                "index": 3,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1687866808519
+              }
+            ]
+          }
+        },
+        {
+          "tool": "observe_window",
+          "elapsed_ms": 18.346637,
+          "response_bytes": 6855,
+          "images": [],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "wait_for",
+          "elapsed_ms": 40.184001,
+          "response_bytes": 125098,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        },
+        {
+          "tool": "press_key",
+          "elapsed_ms": 80.746937,
+          "response_bytes": 125541,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 87217,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "matched",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1688027757061
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 0,
+      "variant": "single_monitor",
+      "elapsed_ms": 179.803495,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4020873,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 152.872977,
+          "response_bytes": 5362999,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020873,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1688407837273
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 0,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 183.446957,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4020985,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 156.585723,
+          "response_bytes": 5363132,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020985,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1688904035414
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 0,
+      "variant": "sequence_target",
+      "elapsed_ms": 64.205979,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 88112,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 63.258053,
+          "response_bytes": 119347,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 88112,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1689394064777
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 1,
+      "variant": "sequence_target",
+      "elapsed_ms": 59.991867,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 88112,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 59.067921,
+          "response_bytes": 119338,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 88112,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1689781945530
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 1,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 167.573295,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4021171,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 140.513154,
+          "response_bytes": 5363387,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4021171,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1690140126539
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 1,
+      "variant": "single_monitor",
+      "elapsed_ms": 171.724301,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4021170,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 144.776407,
+          "response_bytes": 5363386,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4021170,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1690621454556
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 2,
+      "variant": "single_monitor",
+      "elapsed_ms": 167.019707,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4020688,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "press_key",
+          "elapsed_ms": 140.1812,
+          "response_bytes": 5362745,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020688,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1691103533222
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 2,
+      "variant": "sequence_monitor",
+      "elapsed_ms": 170.896511,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 4020654,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 143.917962,
+          "response_bytes": 5362687,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4020654,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1691576879054
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "canvas",
+      "trial": 2,
+      "variant": "sequence_target",
+      "elapsed_ms": 65.680197,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 1,
+      "delivered_png_bytes": 88112,
+      "guard_rejections": 0,
+      "calls": [
+        {
+          "tool": "run_steps",
+          "elapsed_ms": 64.727593,
+          "response_bytes": 119337,
+          "images": [
+            {
+              "width": 409,
+              "height": 340,
+              "png_bytes": 88112,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": false,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 1,
+            "stopped": false,
+            "stop_reason": null,
+            "last_completed_action": 0,
+            "interrupted_step": null,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "press_key",
+                "status": "done",
+                "injection": "submitted",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "action_completed_ns": 1692057535833
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "current",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 40,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 539.042973,
+          "response_bytes": 5415036,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059804,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 2,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "current",
+      "trial": 1,
+      "target_characters": 40,
+      "decoy_characters": 40,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 541.664045,
+          "response_bytes": 5414328,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059271,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 2,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "current",
+      "trial": 2,
+      "target_characters": 40,
+      "decoy_characters": 40,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 537.949735,
+          "response_bytes": 5414928,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059729,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 2,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "baseline",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 541.070287,
+          "response_bytes": 5414467,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059980,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "baseline",
+      "trial": 1,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 542.250736,
+          "response_bytes": 5414384,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059911,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "baseline",
+      "trial": 2,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 543.522146,
+          "response_bytes": 5414708,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4060154,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "current",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 0,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 372.99688,
+          "response_bytes": 5416059,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4060577,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "current",
+      "trial": 1,
+      "target_characters": 40,
+      "decoy_characters": 0,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 355.710441,
+          "response_bytes": 5416050,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4060571,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "current",
+      "trial": 2,
+      "target_characters": 40,
+      "decoy_characters": 0,
+      "guard_rejected": true,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 375.969133,
+          "response_bytes": 5415589,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4060231,
+              "detail_hint": "original"
+            }
+          ],
+          "is_error": true,
+          "sequence": {
+            "steps_total": 1,
+            "steps_completed": 0,
+            "stopped": true,
+            "stop_reason": "ValueError",
+            "last_completed_action": null,
+            "interrupted_step": 0,
+            "unattempted_steps": [],
+            "steps": [
+              {
+                "index": 0,
+                "action": "type_text",
+                "status": "interrupted",
+                "injection": "partial",
+                "verification": "not_requested",
+                "submitted_segments": 1,
+                "in_flight_unknown": false,
+                "application_accepted": "unverified",
+                "segments_total": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "baseline",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 625.878317,
+          "response_bytes": 5413593,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059326,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "baseline",
+      "trial": 1,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 608.266234,
+          "response_bytes": 5414374,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059910,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "baseline",
+      "trial": 2,
+      "target_characters": 40,
+      "decoy_characters": 41,
+      "guard_rejected": false,
+      "calls": [
+        {
+          "tool": "type_text",
+          "elapsed_ms": 625.205587,
+          "response_bytes": 5413751,
+          "images": [
+            {
+              "width": 2560,
+              "height": 1440,
+              "png_bytes": 4059445,
+              "detail_hint": null
+            }
+          ],
+          "is_error": false,
+          "sequence": null
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "source": {
+    "connected_runtime": {
+      "identity": {
+        "kind": "published_bundle",
+        "revision": "6bfc5c5c72b861a8b163ede300595386f07a4a6d21665d1c0d15714a08aed452",
+        "source_sha256": {
+          "server.py": "c245aa4ef5e0b9a9972da9a2df400640eb75cff0d3649cca7f0b06b8d4663475",
+          "cu/__init__.py": "85fc33c472a914f9f1d87dd924058b92954591406c39a4c396c0fde8e71761b9",
+          "cu/accessibility.py": "10a8ece30ac9a8c8c3ce73a13bd2773ee35be2407921d0c903e8ff0ccc86702f",
+          "cu/accessibility_worker.py": "403b2d15f8ab5f2960b386a0a2189cc0bb479f15dff8e2743b31f721b2a5c087",
+          "cu/braid_client.py": "4fe3694723a0619b71820f42efd5919c97d4c888c256ad53a8c7c56315c25618",
+          "cu/capture-helper": "6cc6e3327d49010b3037e580b2390099bd71c4a51a330d67521ed7cbebad16a9",
+          "cu/capture.py": "f0160867ed266537391f57ef395b50301b3348f7da34953549e2f2b0c698fd3b",
+          "cu/context_records.py": "c4bbc28a0a64ee4bb30a89a461fe6a8d70b6f19e3a43b6f0d2cbb87c3f06cd4d",
+          "cu/context_retrieval.py": "d031581c889700015b8d864974458bde6beb9ef9a15cbed32e489d5db231ad0c",
+          "cu/events.py": "4e3a2429bf8e551a79dca077a8b91f4024499f9927ad9d1a4c027fb8f7a9b67e",
+          "cu/execution.py": "e688adfaef3031c3f7e083b95b32c8c07935dda84ecb629dba60132dc98b0dcc",
+          "cu/observation.py": "a78da69f08e30652e487e0b56d0781c7c03c75fecdd44df9826eb2c7a2df60f1",
+          "cu/pixels.py": "d78c4156a0cbcb3cd5770462c7442bff1674e0eb552c35a921280ab5f4abf0ac",
+          "cu/recipes.py": "a5a716087666057ed0b629a0ad86438bdc79c527de1cc3cd161f4637228d0336",
+          "cu/system.py": "66080461da2f823f25b9d142c8b19d92d6c40ef1b462bae191ff79daacbfc101",
+          "cu/trace.py": "7e91e6394ab97f3c0b9692507970bb2e02e674a7add61635c06914e53701dcfb"
+        },
+        "published_skill_sha256": "b1bb77b49d09948340babaa9603962d27195eec86615728b26feede6e5c345bf",
+        "published_skill_files_sha256": {
+          "SKILL.md": "b1bb77b49d09948340babaa9603962d27195eec86615728b26feede6e5c345bf",
+          "references/environment-context.md": "2cb6372b3975c2e109a22bdcd32aa5019ba3d278ce43c898be3c9479b47ec8c8",
+          "references/execution-and-context.md": "4e8616057f9e8f3e57734d275293b3131e2122aaf61ee7d0e8b83643b4f407c3",
+          "references/keyboard/chromium-LICENSE.txt": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+          "references/keyboard/chromium.json": "4babc871d1683cdca82ab674bf4464258c44116c176d85316e85a0b38efa1d91",
+          "references/keyboard/herdr-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "references/keyboard/herdr.json": "ba015b24f6588a874bb2691385ce77b973b449c74e20393fc7ca0102b5159abc",
+          "references/keyboard/lazyvim-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "references/keyboard/lazyvim.json": "0da5a4fad48eeb5a26f4592da78dc73a2c1805c51294470f36a285c552aec690",
+          "references/keyboard/nautilus.json": "661119030bca1a77bdbc5a5da1c1371c5f58851dce66019602cd269b6eb33746",
+          "references/keyboard/neovim-NOTICE.md": "70b1302ac8b5471ec90b6ec18224c9dcd1a172b944386e393735a8f75a69a91a",
+          "references/keyboard/neovim.json": "27d842bc1ac6e5c2df4cc6b085a2208ad022b282e382db13b7da50ca7292ed11",
+          "references/keyboard/obs.json": "ace72c5ba27392839ea6d726a0d47ed81b263bad2d3553dface51b7ed87884dc",
+          "references/keyboard/obsidian-editor.json": "a01cb72ea36d7022dae9a1e723916b8ae85cd1347498da3d3e37b8b82e2e4557",
+          "references/keyboard/obsidian.json": "7701c1769fdc2f9d29b61707af85c841ff20169f118523220e1ed02470820e19"
+        }
+      },
+      "tool_contract_version": "wcu-tools-2",
+      "tool_contract_sha256": "54be0e40cf370eff0a211388bbf526ae3023b2580872c70220dd3baefedce63b",
+      "context_schema": 1,
+      "context_contract": "wcu-context-1",
+      "observer_version": "a78da69f08e30652e487e0b56d0781c7c03c75fecdd44df9826eb2c7a2df60f1",
+      "client_loaded_skill_revision": null,
+      "capabilities": [
+        "guarded_sequences",
+        "segment_guards",
+        "execution_ledger",
+        "shared_deadline",
+        "context_for_task",
+        "explicit_window_transitions",
+        "scoped_accessibility",
+        "bounded_text_readback",
+        "readiness_conditions",
+        "result_views",
+        "original_image_detail"
+      ],
+      "unsupported": [
+        "focus_until",
+        "semantic_activation",
+        "arbitrary_code",
+        "asynchronous_input"
+      ]
+    },
+    "published_revision": "6bfc5c5c72b861a8b163ede300595386f07a4a6d21665d1c0d15714a08aed452",
+    "harness_skill_sha256": "b1bb77b49d09948340babaa9603962d27195eec86615728b26feede6e5c345bf",
+    "skill_loading": "Harness records the current skill file; this is not evidence of rediscovery in the existing chat",
+    "checkout": "10d40219f1d02b8ec425da497017bbd406df1331",
+    "tools": [
+      "context_for_task",
+      "desktop_state",
+      "screenshot",
+      "focus_window",
+      "pointer",
+      "type_text",
+      "press_key",
+      "scroll",
+      "drag",
+      "run_steps",
+      "observe_window",
+      "wait_for",
+      "stop_observing"
+    ],
+    "baseline_server_sha256": "2726f3f7fad2638f0359e875522364c0e904fd6277826644f0e662fe21f091fc"
+  },
+  "started_at": 1788854041.650395,
+  "summary": {
+    "form": {
+      "single_monitor": {
+        "elapsed_ms": 658.393594,
+        "tool_calls": 4,
+        "input_tool_calls": 4,
+        "delivered_png_bytes": 12153055,
+        "image_count": 4
+      },
+      "sequence_monitor": {
+        "elapsed_ms": 415.758614,
+        "tool_calls": 1,
+        "input_tool_calls": 1,
+        "delivered_png_bytes": 4023151,
+        "image_count": 1
+      },
+      "sequence_target": {
+        "elapsed_ms": 311.146348,
+        "tool_calls": 1,
+        "input_tool_calls": 1,
+        "delivered_png_bytes": 89851,
+        "image_count": 1
+      }
+    },
+    "note": {
+      "single_monitor": {
+        "elapsed_ms": 824.630209,
+        "tool_calls": 8,
+        "input_tool_calls": 5,
+        "delivered_png_bytes": 12327670,
+        "image_count": 7
+      },
+      "sequence_monitor": {
+        "elapsed_ms": 436.992953,
+        "tool_calls": 4,
+        "input_tool_calls": 2,
+        "delivered_png_bytes": 4193814,
+        "image_count": 3
+      },
+      "sequence_target": {
+        "elapsed_ms": 338.137791,
+        "tool_calls": 4,
+        "input_tool_calls": 2,
+        "delivered_png_bytes": 257211,
+        "image_count": 3
+      }
+    },
+    "canvas": {
+      "single_monitor": {
+        "elapsed_ms": 171.724301,
+        "tool_calls": 1,
+        "input_tool_calls": 1,
+        "delivered_png_bytes": 4020873,
+        "image_count": 1
+      },
+      "sequence_monitor": {
+        "elapsed_ms": 170.896511,
+        "tool_calls": 1,
+        "input_tool_calls": 1,
+        "delivered_png_bytes": 4020985,
+        "image_count": 1
+      },
+      "sequence_target": {
+        "elapsed_ms": 64.205979,
+        "tool_calls": 1,
+        "input_tool_calls": 1,
+        "delivered_png_bytes": 88112,
+        "image_count": 1
+      }
+    }
+  }
+}

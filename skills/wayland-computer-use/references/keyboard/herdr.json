@@ -1,0 +1,1128 @@
+{
+  "schema": 1,
+  "environment": "herdr",
+  "version": "0.8.2",
+  "evidence": "source_defaults",
+  "coverage": "All 59 KeysConfig scalar/action defaults, including unassigned actions and expanded indexed keys, plus navigation and copy-mode controls from version-matched handlers. Other modal dialogs, resize-mode internals and plugin-added bindings are outside this catalog. Refresh merges declared user keys; Herdr validates collisions itself, so config evidence is not a live resolved keymap.",
+  "sources": [
+    {
+      "url": "https://github.com/herdrdev/herdr/blob/v0.8.2/src/config/model.rs",
+      "sha256": "495d184382b9a47a235b4cc372a4ba6563055b235619fd813ee603ca246cb97d"
+    },
+    {
+      "url": "https://github.com/herdrdev/herdr/blob/v0.8.2/src/config/keybinds.rs",
+      "sha256": "89aac99352d9f8d7efc873960225134084172c59e05aebece7aa40d828236bb5"
+    },
+    {
+      "url": "https://github.com/herdrdev/herdr/blob/v0.8.2/src/ui/keybind_help.rs",
+      "sha256": "9acc30e1d2677c3598ffd8da0cc6de9ff4f3d28877737e9278dd32715958c136"
+    },
+    {
+      "url": "https://github.com/herdrdev/herdr/blob/v0.8.2/src/app/input/copy_mode.rs",
+      "sha256": "61fc2525cf05ec261a1a1d51867fc87c76f80dcc58f6c88aa499a01a65616b0d"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "Escape",
+      "command": "back",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Left",
+      "command": "focus-left",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Right",
+      "command": "focus-right",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Tab",
+      "command": "cycle-pane-next",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+Tab",
+      "command": "cycle-pane-previous",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Return",
+      "command": "open-workspace",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "1",
+      "command": "switch-workspace-1",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "2",
+      "command": "switch-workspace-2",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "3",
+      "command": "switch-workspace-3",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "4",
+      "command": "switch-workspace-4",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "5",
+      "command": "switch-workspace-5",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "6",
+      "command": "switch-workspace-6",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "7",
+      "command": "switch-workspace-7",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "8",
+      "command": "switch-workspace-8",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "9",
+      "command": "switch-workspace-9",
+      "context": "Herdr navigate mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Escape",
+      "command": "clear-selection-or-search-then-exit",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Return",
+      "command": "copy-selection-and-exit",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Left",
+      "command": "cursor-left",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Down",
+      "command": "cursor-down",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Up",
+      "command": "cursor-up",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Right",
+      "command": "cursor-right",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Page_Up",
+      "command": "page-up",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Page_Down",
+      "command": "page-down",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Home",
+      "command": "line-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "End",
+      "command": "line-end",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "CTRL+B",
+      "command": "page-up",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "CTRL+F",
+      "command": "page-down",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "CTRL+U",
+      "command": "half-page-up",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "CTRL+D",
+      "command": "half-page-down",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "q",
+      "command": "exit",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "y",
+      "command": "copy-selection-and-exit",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "v",
+      "command": "begin-selection",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "space",
+      "command": "begin-selection",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+V",
+      "command": "select-line",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "h",
+      "command": "cursor-left",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "j",
+      "command": "cursor-down",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "k",
+      "command": "cursor-up",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "l",
+      "command": "cursor-right",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "g",
+      "command": "history-top",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+G",
+      "command": "history-bottom",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "0",
+      "command": "line-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "$",
+      "command": "line-end",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "^",
+      "command": "first-nonblank",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "/",
+      "command": "search-forward",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "?",
+      "command": "search-backward",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "n",
+      "command": "repeat-search",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+N",
+      "command": "reverse-search",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "w",
+      "command": "next-word-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "b",
+      "command": "previous-word-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "e",
+      "command": "next-word-end",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+W",
+      "command": "next-WORD-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+B",
+      "command": "previous-WORD-start",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "SHIFT+E",
+      "command": "next-WORD-end",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "{",
+      "command": "previous-paragraph",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "}",
+      "command": "next-paragraph",
+      "context": "Herdr copy mode",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Escape",
+      "command": "cancel-search",
+      "context": "Herdr copy-mode search prompt",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "Return",
+      "command": "accept-search",
+      "context": "Herdr copy-mode search prompt",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "BackSpace",
+      "command": "delete-search-character",
+      "context": "Herdr copy-mode search prompt",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "CTRL+U",
+      "command": "clear-search",
+      "context": "Herdr copy-mode search prompt",
+      "condition": "Only in the stated Herdr mode; terminal delivery and current selection affect the result."
+    },
+    {
+      "shortcut": "ctrl+b",
+      "strokes": [
+        "ctrl+b"
+      ],
+      "command": "prefix",
+      "config_key": "prefix",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then ?",
+      "strokes": [
+        "ctrl+b",
+        "?"
+      ],
+      "command": "help",
+      "config_key": "help",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then s",
+      "strokes": [
+        "ctrl+b",
+        "s"
+      ],
+      "command": "settings",
+      "config_key": "settings",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+n",
+      "strokes": [
+        "ctrl+b",
+        "shift+n"
+      ],
+      "command": "new_workspace",
+      "config_key": "new_workspace",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+g",
+      "strokes": [
+        "ctrl+b",
+        "shift+g"
+      ],
+      "command": "new_worktree",
+      "config_key": "new_worktree",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+w",
+      "strokes": [
+        "ctrl+b",
+        "shift+w"
+      ],
+      "command": "rename_workspace",
+      "config_key": "rename_workspace",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+d",
+      "strokes": [
+        "ctrl+b",
+        "shift+d"
+      ],
+      "command": "close_workspace",
+      "config_key": "close_workspace",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then w",
+      "strokes": [
+        "ctrl+b",
+        "w"
+      ],
+      "command": "workspace_picker",
+      "config_key": "workspace_picker",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then g",
+      "strokes": [
+        "ctrl+b",
+        "g"
+      ],
+      "command": "goto",
+      "config_key": "goto",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "up",
+      "strokes": [
+        "up"
+      ],
+      "command": "navigate_workspace_up",
+      "config_key": "navigate_workspace_up",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "down",
+      "strokes": [
+        "down"
+      ],
+      "command": "navigate_workspace_down",
+      "config_key": "navigate_workspace_down",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "h",
+      "strokes": [
+        "h"
+      ],
+      "command": "navigate_pane_left",
+      "config_key": "navigate_pane_left",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "j",
+      "strokes": [
+        "j"
+      ],
+      "command": "navigate_pane_down",
+      "config_key": "navigate_pane_down",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "k",
+      "strokes": [
+        "k"
+      ],
+      "command": "navigate_pane_up",
+      "config_key": "navigate_pane_up",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "l",
+      "strokes": [
+        "l"
+      ],
+      "command": "navigate_pane_right",
+      "config_key": "navigate_pane_right",
+      "context": "Herdr navigate mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then q",
+      "strokes": [
+        "ctrl+b",
+        "q"
+      ],
+      "command": "detach",
+      "config_key": "detach",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+r",
+      "strokes": [
+        "ctrl+b",
+        "shift+r"
+      ],
+      "command": "reload_config",
+      "config_key": "reload_config",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then o",
+      "strokes": [
+        "ctrl+b",
+        "o"
+      ],
+      "command": "open_notification_target",
+      "config_key": "open_notification_target",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+v",
+      "strokes": [
+        "ctrl+v"
+      ],
+      "command": "remote_image_paste",
+      "config_key": "remote_image_paste",
+      "context": "Herdr remote client with clipboard image",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then c",
+      "strokes": [
+        "ctrl+b",
+        "c"
+      ],
+      "command": "new_tab",
+      "config_key": "new_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+t",
+      "strokes": [
+        "ctrl+b",
+        "shift+t"
+      ],
+      "command": "rename_tab",
+      "config_key": "rename_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then p",
+      "strokes": [
+        "ctrl+b",
+        "p"
+      ],
+      "command": "previous_tab",
+      "config_key": "previous_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then n",
+      "strokes": [
+        "ctrl+b",
+        "n"
+      ],
+      "command": "next_tab",
+      "config_key": "next_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 1",
+      "strokes": [
+        "ctrl+b",
+        "1"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 2",
+      "strokes": [
+        "ctrl+b",
+        "2"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 3",
+      "strokes": [
+        "ctrl+b",
+        "3"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 4",
+      "strokes": [
+        "ctrl+b",
+        "4"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 5",
+      "strokes": [
+        "ctrl+b",
+        "5"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 6",
+      "strokes": [
+        "ctrl+b",
+        "6"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 7",
+      "strokes": [
+        "ctrl+b",
+        "7"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 8",
+      "strokes": [
+        "ctrl+b",
+        "8"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then 9",
+      "strokes": [
+        "ctrl+b",
+        "9"
+      ],
+      "command": "switch_tab",
+      "config_key": "switch_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+x",
+      "strokes": [
+        "ctrl+b",
+        "shift+x"
+      ],
+      "command": "close_tab",
+      "config_key": "close_tab",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+p",
+      "strokes": [
+        "ctrl+b",
+        "shift+p"
+      ],
+      "command": "rename_pane",
+      "config_key": "rename_pane",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then e",
+      "strokes": [
+        "ctrl+b",
+        "e"
+      ],
+      "command": "edit_scrollback",
+      "config_key": "edit_scrollback",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then [",
+      "strokes": [
+        "ctrl+b",
+        "["
+      ],
+      "command": "copy_mode",
+      "config_key": "copy_mode",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then h",
+      "strokes": [
+        "ctrl+b",
+        "h"
+      ],
+      "command": "focus_pane_left",
+      "config_key": "focus_pane_left",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then j",
+      "strokes": [
+        "ctrl+b",
+        "j"
+      ],
+      "command": "focus_pane_down",
+      "config_key": "focus_pane_down",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then k",
+      "strokes": [
+        "ctrl+b",
+        "k"
+      ],
+      "command": "focus_pane_up",
+      "config_key": "focus_pane_up",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then l",
+      "strokes": [
+        "ctrl+b",
+        "l"
+      ],
+      "command": "focus_pane_right",
+      "config_key": "focus_pane_right",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+h",
+      "strokes": [
+        "ctrl+b",
+        "shift+h"
+      ],
+      "command": "swap_pane_left",
+      "config_key": "swap_pane_left",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+j",
+      "strokes": [
+        "ctrl+b",
+        "shift+j"
+      ],
+      "command": "swap_pane_down",
+      "config_key": "swap_pane_down",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+k",
+      "strokes": [
+        "ctrl+b",
+        "shift+k"
+      ],
+      "command": "swap_pane_up",
+      "config_key": "swap_pane_up",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+l",
+      "strokes": [
+        "ctrl+b",
+        "shift+l"
+      ],
+      "command": "swap_pane_right",
+      "config_key": "swap_pane_right",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then tab",
+      "strokes": [
+        "ctrl+b",
+        "tab"
+      ],
+      "command": "cycle_pane_next",
+      "config_key": "cycle_pane_next",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then shift+tab",
+      "strokes": [
+        "ctrl+b",
+        "shift+tab"
+      ],
+      "command": "cycle_pane_previous",
+      "config_key": "cycle_pane_previous",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then v",
+      "strokes": [
+        "ctrl+b",
+        "v"
+      ],
+      "command": "split_vertical",
+      "config_key": "split_vertical",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then minus",
+      "strokes": [
+        "ctrl+b",
+        "minus"
+      ],
+      "command": "split_horizontal",
+      "config_key": "split_horizontal",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then x",
+      "strokes": [
+        "ctrl+b",
+        "x"
+      ],
+      "command": "close_pane",
+      "config_key": "close_pane",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then z",
+      "strokes": [
+        "ctrl+b",
+        "z"
+      ],
+      "command": "zoom",
+      "config_key": "zoom",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then r",
+      "strokes": [
+        "ctrl+b",
+        "r"
+      ],
+      "command": "resize_mode",
+      "config_key": "resize_mode",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    },
+    {
+      "shortcut": "ctrl+b then b",
+      "strokes": [
+        "ctrl+b",
+        "b"
+      ],
+      "command": "toggle_sidebar",
+      "config_key": "toggle_sidebar",
+      "context": "Herdr terminal mode",
+      "evidence": "source_default",
+      "condition": "Declared configuration; current Herdr help resolves validation, collisions and remote-client overrides.",
+      "same_sequence_candidates": []
+    }
+  ],
+  "default_keys": {
+    "prefix": "ctrl+b",
+    "help": "prefix+?",
+    "settings": "prefix+s",
+    "new_workspace": "prefix+shift+n",
+    "new_worktree": "prefix+shift+g",
+    "open_worktree": "",
+    "remove_worktree": "",
+    "rename_workspace": "prefix+shift+w",
+    "close_workspace": "prefix+shift+d",
+    "workspace_picker": "prefix+w",
+    "goto": "prefix+g",
+    "navigate_workspace_up": "up",
+    "navigate_workspace_down": "down",
+    "navigate_pane_left": "h",
+    "navigate_pane_down": "j",
+    "navigate_pane_up": "k",
+    "navigate_pane_right": "l",
+    "detach": "prefix+q",
+    "reload_config": "prefix+shift+r",
+    "open_notification_target": "prefix+o",
+    "previous_workspace": "",
+    "next_workspace": "",
+    "previous_agent": "",
+    "next_agent": "",
+    "focus_agent": "",
+    "remote_image_paste": "ctrl+v",
+    "new_tab": "prefix+c",
+    "rename_tab": "prefix+shift+t",
+    "previous_tab": "prefix+p",
+    "next_tab": "prefix+n",
+    "move_tab_previous": "",
+    "move_tab_next": "",
+    "switch_tab": "prefix+1..9",
+    "switch_workspace": "",
+    "close_tab": "prefix+shift+x",
+    "rename_pane": "prefix+shift+p",
+    "edit_scrollback": "prefix+e",
+    "copy_mode": "prefix+[",
+    "focus_pane_left": "prefix+h",
+    "focus_pane_down": "prefix+j",
+    "focus_pane_up": "prefix+k",
+    "focus_pane_right": "prefix+l",
+    "swap_pane_left": "prefix+shift+h",
+    "swap_pane_down": "prefix+shift+j",
+    "swap_pane_up": "prefix+shift+k",
+    "swap_pane_right": "prefix+shift+l",
+    "cycle_pane_next": "prefix+tab",
+    "cycle_pane_previous": "prefix+shift+tab",
+    "last_pane": "",
+    "split_vertical": "prefix+v",
+    "split_horizontal": "prefix+minus",
+    "close_pane": "prefix+x",
+    "zoom": "prefix+z",
+    "resize_mode": "prefix+r",
+    "resize_pane_left": "",
+    "resize_pane_down": "",
+    "resize_pane_up": "",
+    "resize_pane_right": "",
+    "toggle_sidebar": "prefix+b"
+  },
+  "unassigned_commands": [
+    "open_worktree",
+    "remove_worktree",
+    "previous_workspace",
+    "next_workspace",
+    "previous_agent",
+    "next_agent",
+    "focus_agent",
+    "move_tab_previous",
+    "move_tab_next",
+    "switch_workspace",
+    "last_pane",
+    "resize_pane_left",
+    "resize_pane_down",
+    "resize_pane_up",
+    "resize_pane_right"
+  ],
+  "prefix": "ctrl+b"
+}

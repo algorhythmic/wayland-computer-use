@@ -1,0 +1,3885 @@
+{
+  "schema": 1,
+  "environment": "davinci-resolve",
+  "profile_id": "davinci-resolve-default-linux-21.1",
+  "version": "21.1",
+  "version_kind": "documentation_snapshot",
+  "evidence": "source_defaults",
+  "platform": "Linux",
+  "reviewed_at": "2026-09-08",
+  "coverage": "248 reviewed Linux bindings from the 21.1 manual: project/media, Edit playback/tracks, multicam angles 1-9, Photo, and selected Fusion/Color/Fairlight commands. Core subset; excludes user/NLE presets, ambiguous Delete keys, held gestures, hardware panels and undocumented ranges. Version, active preset and focused panel are unverified. See row page locators and davinci-resolve.md.",
+  "translation": "Manual pp. 54 and 68 specify Command -> CTRL and Option -> ALT on Linux. Chords use XKB key names (slash, backslash, bracketleft, bracketright, equal, minus, grave), lowercase letter keysyms and explicit SHIFT. No physical-key or keyboard-layout mapping is inferred.",
+  "custom_mappings_resolved": false,
+  "sources": [
+    {
+      "url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf",
+      "title": "DaVinci Resolve 21.1 Reference Manual",
+      "sha256": "5dad6e417159ade62b69e9c38295b80cac3f33a7381b6d29c21fba0e47fe4224",
+      "pages": [
+        21,
+        23,
+        54,
+        68,
+        69,
+        85,
+        89,
+        122,
+        123,
+        379,
+        393,
+        410,
+        617,
+        654,
+        655,
+        826,
+        830,
+        839,
+        852,
+        864,
+        870,
+        871,
+        872,
+        889,
+        890,
+        902,
+        909,
+        943,
+        950,
+        953,
+        967,
+        1043,
+        1044,
+        1074,
+        1382,
+        1383,
+        1386,
+        1390,
+        1391,
+        1393,
+        1406,
+        1408,
+        3048,
+        3049,
+        3072,
+        3076,
+        3084,
+        3085,
+        3086,
+        3093,
+        3129,
+        3823,
+        3824,
+        3861,
+        3863,
+        3866,
+        3875,
+        3876,
+        3877,
+        3890
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "CTRL+s",
+      "command": "File > Save Project",
+      "context": "DaVinci Resolve application; 21.1 manual p. 85",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The intended project must be open; Save As opens a naming dialog.",
+      "source_page": 85,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=85",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+s"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+s",
+      "command": "File > Save Project As",
+      "context": "DaVinci Resolve application; 21.1 manual p. 85",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The intended project must be open; Save As opens a naming dialog.",
+      "source_page": 85,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=85",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+s"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+s",
+      "command": "File > Create Timeline Backup",
+      "context": "DaVinci Resolve application; 21.1 manual p. 89",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the current timeline before creating its backup.",
+      "source_page": 89,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=89",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+s"
+      ]
+    },
+    {
+      "shortcut": "CTRL+z",
+      "command": "Edit > Undo",
+      "context": "DaVinci Resolve application; 21.1 manual p. 69",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The Color and Fusion pages have separate per-clip undo histories; verify the relevant page and clip.",
+      "source_page": 69,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=69",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+z"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+z",
+      "command": "Edit > Redo",
+      "context": "DaVinci Resolve application; 21.1 manual p. 69",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The Color and Fusion pages have separate per-clip undo histories; verify the relevant page and clip.",
+      "source_page": 69,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=69",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+z"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+1",
+      "command": "File > Project Manager",
+      "context": "DaVinci Resolve application; 21.1 manual p. 21",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect the window or panel opened by this shortcut.",
+      "source_page": 21,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=21",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+1"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+9",
+      "command": "File > Project Settings",
+      "context": "DaVinci Resolve application; 21.1 manual p. 21",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect the window or panel opened by this shortcut.",
+      "source_page": 21,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=21",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+9"
+      ]
+    },
+    {
+      "shortcut": "CTRL+f",
+      "command": "Workspace > Viewer Mode > Cinema Viewer",
+      "context": "DaVinci Resolve viewer; 21.1 manual p. 23",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Toggles the active viewer; confirm its identity and current display mode.",
+      "source_page": 23,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=23",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+f"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+w",
+      "command": "Workspace > Video Scopes > On/Off",
+      "context": "DaVinci Resolve Edit page; 21.1 manual p. 830",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Toggles scopes; inspect whether they opened or closed.",
+      "source_page": 830,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=830",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+w"
+      ],
+      "modes": [
+        "edit"
+      ]
+    },
+    {
+      "shortcut": "CTRL+i",
+      "command": "File > Import > Media",
+      "context": "DaVinci Resolve Cut page; 21.1 manual p. 654",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Opens the media selection dialog; inspect it before choosing files.",
+      "source_page": 654,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=654",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+i"
+      ],
+      "modes": [
+        "cut"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+n",
+      "command": "File > New Bin",
+      "context": "DaVinci Resolve Cut media pool; 21.1 manual p. 655",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the intended parent bin before creating a bin.",
+      "source_page": 655,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=655",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+n"
+      ],
+      "modes": [
+        "cut-media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+n",
+      "command": "File > New Timeline",
+      "context": "DaVinci Resolve Edit page; 21.1 manual p. 839",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Opens the timeline creation dialog; verify the intended project.",
+      "source_page": 839,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=839",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+n"
+      ],
+      "modes": [
+        "edit"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+i",
+      "command": "File > Import > Timeline",
+      "context": "DaVinci Resolve media pool; 21.1 manual p. 379",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the project and timeline; inspect the import or export dialog.",
+      "source_page": 379,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=379",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+i"
+      ],
+      "modes": [
+        "media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+o",
+      "command": "File > Export > Export AAF, XML, DRT",
+      "context": "DaVinci Resolve media pool; 21.1 manual p. 379",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the project and timeline; inspect the import or export dialog.",
+      "source_page": 379,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=379",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+o"
+      ],
+      "modes": [
+        "media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+t",
+      "command": "Media Pool > New Bin Tab",
+      "context": "DaVinci Resolve media pool bin tabs; 21.1 manual p. 393",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The bin tab bar must be the intended target; CTRL+w has different meanings on other pages.",
+      "source_page": 393,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=393",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+t"
+      ],
+      "modes": [
+        "media-pool-bin-tabs"
+      ]
+    },
+    {
+      "shortcut": "CTRL+w",
+      "command": "Media Pool > Close Bin Tab",
+      "context": "DaVinci Resolve media pool bin tabs; 21.1 manual p. 393",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The bin tab bar must be the intended target; CTRL+w has different meanings on other pages.",
+      "source_page": 393,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=393",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+w"
+      ],
+      "modes": [
+        "media-pool-bin-tabs"
+      ]
+    },
+    {
+      "shortcut": "Tab",
+      "command": "Media Pool > Navigate Editable Metadata Cells (Tab)",
+      "context": "DaVinci Resolve media pool list view metadata cell; 21.1 manual p. 410",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. An editable cell must be active. The manual does not specify the row/column direction of each key; observe the destination and learn navigation before batching. Return may commit the edit.",
+      "source_page": 410,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=410",
+      "notation": "chord",
+      "strokes": [
+        "Tab"
+      ],
+      "modes": [
+        "media-pool-metadata-cell"
+      ]
+    },
+    {
+      "shortcut": "Return",
+      "command": "Media Pool > Navigate Editable Metadata Cells (Enter)",
+      "context": "DaVinci Resolve media pool list view metadata cell; 21.1 manual p. 410",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. An editable cell must be active. The manual does not specify the row/column direction of each key; observe the destination and learn navigation before batching. Return may commit the edit.",
+      "source_page": 410,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=410",
+      "notation": "chord",
+      "strokes": [
+        "Return"
+      ],
+      "modes": [
+        "media-pool-metadata-cell"
+      ]
+    },
+    {
+      "shortcut": "Left",
+      "command": "Media Pool > Navigate Selection Left",
+      "context": "DaVinci Resolve Edit media pool bin list or browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Left/Right also close/open bins in the bin list. Check which part of the media pool is active.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Left"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "Right",
+      "command": "Media Pool > Navigate Selection Right",
+      "context": "DaVinci Resolve Edit media pool bin list or browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Left/Right also close/open bins in the bin list. Check which part of the media pool is active.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Right"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "Up",
+      "command": "Media Pool > Navigate Selection Up",
+      "context": "DaVinci Resolve Edit media pool bin list or browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Left/Right also close/open bins in the bin list. Check which part of the media pool is active.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Up"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "Down",
+      "command": "Media Pool > Navigate Selection Down",
+      "context": "DaVinci Resolve Edit media pool bin list or browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Left/Right also close/open bins in the bin list. Check which part of the media pool is active.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Down"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+a",
+      "command": "Media Pool > Select All Clips",
+      "context": "DaVinci Resolve Edit media pool browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected bin and clips; Return opens the selection in the viewer.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+a"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "Return",
+      "command": "Media Pool > Open Selected Clip in Viewer",
+      "context": "DaVinci Resolve Edit media pool browser; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected bin and clips; Return opens the selection in the viewer.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Return"
+      ],
+      "modes": [
+        "edit-media-pool"
+      ]
+    },
+    {
+      "shortcut": "i",
+      "command": "Mark > Mark In",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source versus timeline focus and the exact playhead frame.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "i"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+i",
+      "command": "Mark > Mark Video In",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Sets a video-only boundary in the focused source or timeline.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+i"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+i",
+      "command": "Mark > Mark Audio In",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Sets an audio-only boundary; the same chord can invoke import/export outside this panel.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+i"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+i",
+      "command": "Playback > Go to In",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The relevant boundary must exist in the intended source or timeline.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+i"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+i",
+      "command": "Mark > Clear In",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Clears the boundary in the focused source or timeline.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+i"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "o",
+      "command": "Mark > Mark Out",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source versus timeline focus and the exact playhead frame.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "o"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+o",
+      "command": "Mark > Mark Video Out",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Sets a video-only boundary in the focused source or timeline.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+o"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+o",
+      "command": "Mark > Mark Audio Out",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Sets an audio-only boundary; the same chord can invoke import/export outside this panel.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+o"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+o",
+      "command": "Playback > Go to Out",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The relevant boundary must exist in the intended source or timeline.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+o"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+o",
+      "command": "Mark > Clear Out",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Clears the boundary in the focused source or timeline.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+o"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "space",
+      "command": "Playback > Toggle Play/Stop",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "space"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "j",
+      "command": "Playback > Play Reverse",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "j"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "k",
+      "command": "Playback > Stop",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "k"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "l",
+      "command": "Playback > Play Forward",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "l"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+l",
+      "command": "Playback > Play Again",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+l"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+k",
+      "command": "Playback > Stop and Go to Last Position",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+k"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "slash",
+      "command": "Playback > Play Around Selection",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "slash"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "Up",
+      "command": "Playback > Previous Clip or Edit",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Up"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "Down",
+      "command": "Playback > Next Clip or Edit",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "Down"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "m",
+      "command": "Mark > Add Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "m"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+m",
+      "command": "Mark > Add and Modify Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+m"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+m",
+      "command": "Mark > Modify Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+m"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+m",
+      "command": "Mark > Delete Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+m"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+Up",
+      "command": "Playback > Previous Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+Up"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+Down",
+      "command": "Playback > Next Marker",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the viewer, playhead, selection and marker. Playback keys and marker keys are state-dependent; CTRL+m can pause playback and open a dialog.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+Down"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+b",
+      "command": "Mark > Create Subclip",
+      "context": "DaVinci Resolve Edit source viewer; 21.1 manual p. 864",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source In/Out points and the destination media pool bin.",
+      "source_page": 864,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=864",
+      "notation": "chord",
+      "strokes": [
+        "ALT+b"
+      ],
+      "modes": [
+        "edit-source-viewer"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+j",
+      "command": "Playback > Fast Reverse",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 871",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Speed depends on current playback state; inspect the speed indicator.",
+      "source_page": 871,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=871",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+j"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+l",
+      "command": "Playback > Fast Forward",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 871",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Speed depends on current playback state; inspect the speed indicator.",
+      "source_page": 871,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=871",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+l"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+k",
+      "command": "Playback > Play Slow",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 871",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Speed depends on current playback state; inspect the speed indicator.",
+      "source_page": 871,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=871",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+k"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+slash",
+      "command": "Playback > Loop/Unloop",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 872",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the relevant boundaries and playback preferences; these commands start or change playback.",
+      "source_page": 872,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=872",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+slash"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+space",
+      "command": "Playback > Play Around In",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 872",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the relevant boundaries and playback preferences; these commands start or change playback.",
+      "source_page": 872,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=872",
+      "notation": "chord",
+      "strokes": [
+        "ALT+space"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+space",
+      "command": "Playback > Play Around Out",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 872",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the relevant boundaries and playback preferences; these commands start or change playback.",
+      "source_page": 872,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=872",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+space"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+slash",
+      "command": "Playback > Play In to Out",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 872",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the relevant boundaries and playback preferences; these commands start or change playback.",
+      "source_page": 872,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=872",
+      "notation": "chord",
+      "strokes": [
+        "ALT+slash"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+slash",
+      "command": "Playback > Play to Out",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 872",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the relevant boundaries and playback preferences; these commands start or change playback.",
+      "source_page": 872,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=872",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+slash"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "Left",
+      "command": "Playback > Previous Frame",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 870",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Confirm viewer focus and inspect the resulting timecode; this is a discrete navigation action.",
+      "source_page": 870,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=870",
+      "notation": "chord",
+      "strokes": [
+        "Left"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "Right",
+      "command": "Playback > Next Frame",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 870",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Confirm viewer focus and inspect the resulting timecode; this is a discrete navigation action.",
+      "source_page": 870,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=870",
+      "notation": "chord",
+      "strokes": [
+        "Right"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+Left",
+      "command": "Playback > Step One Second Reverse",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 870",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Confirm viewer focus and inspect the resulting timecode; this is a discrete navigation action.",
+      "source_page": 870,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=870",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+Left"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+Right",
+      "command": "Playback > Step One Second Forward",
+      "context": "DaVinci Resolve Edit viewer or timeline; 21.1 manual p. 870",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Confirm viewer focus and inspect the resulting timecode; this is a discrete navigation action.",
+      "source_page": 870,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=870",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+Right"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "v",
+      "command": "Trim > Select Nearest Edit",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "v"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+v",
+      "command": "Edit > Select Clip at Playhead",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+v"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "u",
+      "command": "Trim > Cycle Edit Point Side",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "u"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+u",
+      "command": "Trim > Cycle Video/Audio Edit Selection",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+u"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+y",
+      "command": "Edit > Select Clips Forward on All Tracks",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+y"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+y",
+      "command": "Edit > Select Clips Backward on All Tracks",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+y"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "y",
+      "command": "Edit > Select Clips Forward on Current Track",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "y"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+y",
+      "command": "Edit > Select Clips Backward on Current Track",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+y"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+backslash",
+      "command": "Timeline > Split Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+backslash"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "n",
+      "command": "Timeline > Toggle Snapping",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "n"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+l",
+      "command": "Timeline > Toggle Linked Selection",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection, playhead, track controls and current edit mode. Toggle commands require state inspection.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+l"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+e",
+      "command": "Trim > Select Nearest Video Edit",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 902",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Track selectors and the current selection determine the edit affected.",
+      "source_page": 902,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=902",
+      "notation": "chord",
+      "strokes": [
+        "ALT+e"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+e",
+      "command": "Trim > Select Nearest Audio Edit",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 902",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Track selectors and the current selection determine the edit affected.",
+      "source_page": 902,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=902",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+e"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+a",
+      "command": "Edit > Deselect All Edit Points",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 902",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Track selectors and the current selection determine the edit affected.",
+      "source_page": 902,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=902",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+a"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+4",
+      "command": "Workspace > Active Panel > Timeline",
+      "context": "DaVinci Resolve Edit page; 21.1 manual p. 902",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify timeline focus after switching; compositor focus alone is insufficient.",
+      "source_page": 902,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=902",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+4"
+      ],
+      "modes": [
+        "edit"
+      ]
+    },
+    {
+      "shortcut": "d",
+      "command": "Clip > Enable/Disable Clip",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 909",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Toggles each selected clip; mixed enabled/disabled selections swap states rather than becoming uniformly enabled.",
+      "source_page": 909,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=909",
+      "notation": "chord",
+      "strokes": [
+        "d"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "a",
+      "command": "Timeline > Selection Mode",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 943",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected tool; do not invoke while a text field is focused.",
+      "source_page": 943,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=943",
+      "notation": "chord",
+      "strokes": [
+        "a"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "b",
+      "command": "Timeline > Razor Edit Mode",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 950",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Selects the razor tool; subsequent clicks split clips. Verify the target tool before using it.",
+      "source_page": 950,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=950",
+      "notation": "chord",
+      "strokes": [
+        "b"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "t",
+      "command": "Timeline > Trim Edit Mode",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 1074",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Selects the trim tool; verify selection and ripple behavior before editing.",
+      "source_page": 1074,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1074",
+      "notation": "chord",
+      "strokes": [
+        "t"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+c",
+      "command": "Edit > Copy Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 943",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected clips, clipboard contents, target track and playhead; paste may alter timeline duration.",
+      "source_page": 943,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=943",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+c"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+v",
+      "command": "Edit > Paste Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 943",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected clips, clipboard contents, target track and playhead; paste may alter timeline duration.",
+      "source_page": 943,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=943",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+v"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+v",
+      "command": "Edit > Paste Insert Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 943",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected clips, clipboard contents, target track and playhead; paste may alter timeline duration.",
+      "source_page": 943,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=943",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+v"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+x",
+      "command": "Edit > Cut Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 953",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the exact selection and whether subsequent clips should move.",
+      "source_page": 953,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=953",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+x"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+x",
+      "command": "Edit > Ripple Cut Clips",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 953",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the exact selection and whether subsequent clips should move.",
+      "source_page": 953,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=953",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+x"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+1",
+      "command": "Workspace > Active Panel > Media Pool Bin List",
+      "context": "DaVinci Resolve Edit page; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the requested panel became active before further input.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+1"
+      ],
+      "modes": [
+        "edit"
+      ]
+    },
+    {
+      "shortcut": "CTRL+2",
+      "command": "Workspace > Active Panel > Media Pool Browser",
+      "context": "DaVinci Resolve Edit page; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the requested panel became active before further input.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+2"
+      ],
+      "modes": [
+        "edit"
+      ]
+    },
+    {
+      "shortcut": "q",
+      "command": "Workspace > Toggle Source/Timeline Viewer Focus",
+      "context": "DaVinci Resolve Edit viewer; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect which viewer becomes active before using shared keys.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "q"
+      ],
+      "modes": [
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+a",
+      "command": "Mark > Mark Selection",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+a"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "x",
+      "command": "Mark > Mark Clip at Playhead",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "x"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+x",
+      "command": "Mark > Clear In and Out",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+x"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Up",
+      "command": "Timeline > Move Video Destination Up",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+Up"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Down",
+      "command": "Timeline > Move Video Destination Down",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+Down"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+Up",
+      "command": "Timeline > Move Audio Destination Up",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+Up"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+Down",
+      "command": "Timeline > Move Audio Destination Down",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+Down"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+q",
+      "command": "Edit > Toggle Switch to Timeline After Edit",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selection, source/destination tracks and current focus behavior; inspect the result of toggles.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+q"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+1",
+      "command": "Timeline > Set Video Destination 1",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+1",
+      "command": "Timeline > Set Audio Destination 1",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+1",
+      "command": "Timeline > Toggle Video Track 1 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F1",
+      "command": "Timeline > Toggle Audio Track 1 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F1",
+      "command": "Timeline > Toggle Video Track 1 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F1",
+      "command": "Timeline > Toggle Audio Track 1 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F1"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+2",
+      "command": "Timeline > Set Video Destination 2",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+2",
+      "command": "Timeline > Set Audio Destination 2",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+2",
+      "command": "Timeline > Toggle Video Track 2 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F2",
+      "command": "Timeline > Toggle Audio Track 2 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F2",
+      "command": "Timeline > Toggle Video Track 2 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F2",
+      "command": "Timeline > Toggle Audio Track 2 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F2"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+3",
+      "command": "Timeline > Set Video Destination 3",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+3",
+      "command": "Timeline > Set Audio Destination 3",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+3",
+      "command": "Timeline > Toggle Video Track 3 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F3",
+      "command": "Timeline > Toggle Audio Track 3 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F3",
+      "command": "Timeline > Toggle Video Track 3 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F3",
+      "command": "Timeline > Toggle Audio Track 3 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F3"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+4",
+      "command": "Timeline > Set Video Destination 4",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+4",
+      "command": "Timeline > Set Audio Destination 4",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+4",
+      "command": "Timeline > Toggle Video Track 4 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F4",
+      "command": "Timeline > Toggle Audio Track 4 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F4",
+      "command": "Timeline > Toggle Video Track 4 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F4",
+      "command": "Timeline > Toggle Audio Track 4 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F4"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+5",
+      "command": "Timeline > Set Video Destination 5",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+5",
+      "command": "Timeline > Set Audio Destination 5",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+5",
+      "command": "Timeline > Toggle Video Track 5 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F5",
+      "command": "Timeline > Toggle Audio Track 5 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F5",
+      "command": "Timeline > Toggle Video Track 5 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F5",
+      "command": "Timeline > Toggle Audio Track 5 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F5"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+6",
+      "command": "Timeline > Set Video Destination 6",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+6",
+      "command": "Timeline > Set Audio Destination 6",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+6",
+      "command": "Timeline > Toggle Video Track 6 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F6",
+      "command": "Timeline > Toggle Audio Track 6 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F6",
+      "command": "Timeline > Toggle Video Track 6 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F6",
+      "command": "Timeline > Toggle Audio Track 6 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F6"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+7",
+      "command": "Timeline > Set Video Destination 7",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+7",
+      "command": "Timeline > Set Audio Destination 7",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+7",
+      "command": "Timeline > Toggle Video Track 7 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F7",
+      "command": "Timeline > Toggle Audio Track 7 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F7",
+      "command": "Timeline > Toggle Video Track 7 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F7",
+      "command": "Timeline > Toggle Audio Track 7 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F7"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+8",
+      "command": "Timeline > Set Video Destination 8",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+8",
+      "command": "Timeline > Set Audio Destination 8",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+8",
+      "command": "Timeline > Toggle Video Track 8 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F8",
+      "command": "Timeline > Toggle Audio Track 8 Lock",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F8",
+      "command": "Timeline > Toggle Video Track 8 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F8",
+      "command": "Timeline > Toggle Audio Track 8 Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The numbered track must exist. Check current control state; repeating a destination shortcut can disable it. Multicam mode uses overlapping number chords.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F8"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+9",
+      "command": "Timeline > Toggle All Video Track Locks",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Affects all tracks of the indicated type; verify their existing lock states.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+9"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+F9",
+      "command": "Timeline > Toggle All Audio Track Locks",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Affects all tracks of the indicated type; verify their existing lock states.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+F9"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+F9",
+      "command": "Timeline > Toggle All Video Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Affects all auto-select controls of the indicated type; verify the resulting state.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "ALT+F9"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+F9",
+      "command": "Timeline > Toggle All Audio Auto Select",
+      "context": "DaVinci Resolve Edit timeline track controls; 21.1 manual p. 967",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Affects all auto-select controls of the indicated type; verify the resulting state.",
+      "source_page": 967,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=967",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+F9"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "F9",
+      "command": "Edit > Insert",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source clips, In/Out marks, destination tracks and playhead before the edit.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "F9"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "F10",
+      "command": "Edit > Overwrite",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source clips, In/Out marks, destination tracks and playhead before the edit.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "F10"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "F11",
+      "command": "Edit > Replace",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 889",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source clips, In/Out marks, destination tracks and playhead before the edit.",
+      "source_page": 889,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=889",
+      "notation": "chord",
+      "strokes": [
+        "F11"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "F12",
+      "command": "Edit > Place on Top",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 890",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source selection, target timeline and destination tracks; these commands change the timeline.",
+      "source_page": 890,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=890",
+      "notation": "chord",
+      "strokes": [
+        "F12"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+F10",
+      "command": "Edit > Ripple Overwrite",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 890",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source selection, target timeline and destination tracks; these commands change the timeline.",
+      "source_page": 890,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=890",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+F10"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+F11",
+      "command": "Edit > Fit to Fill",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 890",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source selection, target timeline and destination tracks; these commands change the timeline.",
+      "source_page": 890,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=890",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+F11"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+F12",
+      "command": "Edit > Append to End of Timeline",
+      "context": "DaVinci Resolve Edit media pool, source viewer or timeline; 21.1 manual p. 890",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify source selection, target timeline and destination tracks; these commands change the timeline.",
+      "source_page": 890,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=890",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+F12"
+      ],
+      "modes": [
+        "edit-media-pool",
+        "edit-source-viewer",
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+equal",
+      "command": "Timeline > Zoom In",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 852",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect the resulting zoom before using coordinates; SHIFT+z toggles between fit and prior zoom.",
+      "source_page": 852,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=852",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+equal"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+minus",
+      "command": "Timeline > Zoom Out",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 852",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect the resulting zoom before using coordinates; SHIFT+z toggles between fit and prior zoom.",
+      "source_page": 852,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=852",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+minus"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+z",
+      "command": "Timeline > Toggle Zoom to Fit",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 852",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Inspect the resulting zoom before using coordinates; SHIFT+z toggles between fit and prior zoom.",
+      "source_page": 852,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=852",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+z"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+s",
+      "command": "Timeline > Toggle Audio Scrubbing",
+      "context": "DaVinci Resolve Edit timeline; 21.1 manual p. 826",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the current audio-scrubbing preference and result.",
+      "source_page": 826,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=826",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+s"
+      ],
+      "modes": [
+        "edit-timeline"
+      ]
+    },
+    {
+      "shortcut": "1",
+      "command": "Clip > Multicam Cut > Angle 1",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "1"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+1",
+      "command": "Clip > Multicam Switch > Angle 1",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+1"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "2",
+      "command": "Clip > Multicam Cut > Angle 2",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "2"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+2",
+      "command": "Clip > Multicam Switch > Angle 2",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+2"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "3",
+      "command": "Clip > Multicam Cut > Angle 3",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "3"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+3",
+      "command": "Clip > Multicam Switch > Angle 3",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+3"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "4",
+      "command": "Clip > Multicam Cut > Angle 4",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "4"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+4",
+      "command": "Clip > Multicam Switch > Angle 4",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+4"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "5",
+      "command": "Clip > Multicam Cut > Angle 5",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "5"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+5",
+      "command": "Clip > Multicam Switch > Angle 5",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+5"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "6",
+      "command": "Clip > Multicam Cut > Angle 6",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "6"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+6",
+      "command": "Clip > Multicam Switch > Angle 6",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+6"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "7",
+      "command": "Clip > Multicam Cut > Angle 7",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "7"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+7",
+      "command": "Clip > Multicam Switch > Angle 7",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+7"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "8",
+      "command": "Clip > Multicam Cut > Angle 8",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "8"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+8",
+      "command": "Clip > Multicam Switch > Angle 8",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+8"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "9",
+      "command": "Clip > Multicam Cut > Angle 9",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1043",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle, playhead and audio/video switching mode; inserts a cut and switches angle.",
+      "source_page": 1043,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1043",
+      "notation": "chord",
+      "strokes": [
+        "9"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+9",
+      "command": "Clip > Multicam Switch > Angle 9",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the multicam clip, available angle and audio/video switching mode; changes angle without adding a cut. This overlaps track destination shortcuts outside Multicam mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+9"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Left",
+      "command": "Edit > Multicam > Previous Angle",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+Left"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Right",
+      "command": "Edit > Multicam > Next Angle",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+Right"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+Left",
+      "command": "Edit > Multicam > Previous Page",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+Left"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+Right",
+      "command": "Edit > Multicam > Next Page",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+Right"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+bracketleft",
+      "command": "Edit > Multicam > Video and Audio",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+bracketleft"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+bracketright",
+      "command": "Edit > Multicam > Video Only",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+bracketright"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+backslash",
+      "command": "Edit > Multicam > Audio Only",
+      "context": "DaVinci Resolve Edit source or timeline viewer in Multicam mode; 21.1 manual p. 1044",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active multicam viewer, clip and available angles; inspect the resulting selection or mode.",
+      "source_page": 1044,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+backslash"
+      ],
+      "modes": [
+        "edit-multicam-viewer"
+      ]
+    },
+    {
+      "shortcut": "c",
+      "command": "Photo > Capture Image",
+      "context": "DaVinci Resolve Photo capture panel or live view; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Capture panel or Capture Live View must be active and the capture device ready.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "c"
+      ],
+      "modes": [
+        "photo-capture"
+      ]
+    },
+    {
+      "shortcut": "0",
+      "command": "Photo > Set Star Rating 0",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "0"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "1",
+      "command": "Photo > Set Star Rating 1",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "1"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "2",
+      "command": "Photo > Set Star Rating 2",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "2"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "3",
+      "command": "Photo > Set Star Rating 3",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "3"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "4",
+      "command": "Photo > Set Star Rating 4",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "4"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "5",
+      "command": "Photo > Set Star Rating 5",
+      "context": "DaVinci Resolve Photo album or media pool; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected photos; zero removes all stars.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "5"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "s",
+      "command": "Photo > Toggle Good Take",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "s"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "x",
+      "command": "Photo > Toggle Rejected Take",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "x"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+bracketleft",
+      "command": "Photo > Rotate Left",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+bracketleft"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+bracketright",
+      "command": "Photo > Rotate Right",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+bracketright"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+bracketleft",
+      "command": "Photo > Flip Horizontal",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+bracketleft"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+bracketright",
+      "command": "Photo > Flip Vertical",
+      "context": "DaVinci Resolve Photo page image selection; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected image and existing tag or orientation; tags toggle on repeat.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+bracketright"
+      ],
+      "modes": [
+        "photo-album",
+        "photo-media-pool"
+      ]
+    },
+    {
+      "shortcut": "CTRL+r",
+      "command": "Photo > Reset Photo",
+      "context": "DaVinci Resolve Photo inspector; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The Inspector must have focus; verify which image and adjustments will be reset.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+r"
+      ],
+      "modes": [
+        "photo-inspector"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+r",
+      "command": "Photo > Remove All Photo Effects",
+      "context": "DaVinci Resolve Photo inspector; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The Inspector must have focus; verify which image and adjustments will be reset.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+r"
+      ],
+      "modes": [
+        "photo-inspector"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+r",
+      "command": "Photo > Remove and Reset All",
+      "context": "DaVinci Resolve Photo inspector; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. The Inspector must have focus; verify which image and adjustments will be reset.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+r"
+      ],
+      "modes": [
+        "photo-inspector"
+      ]
+    },
+    {
+      "shortcut": "Up",
+      "command": "Photo > Select Next Photo",
+      "context": "DaVinci Resolve Photo album; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Direction follows the published table; verify the resulting image against the current album ordering before batching.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "Up"
+      ],
+      "modes": [
+        "photo-album"
+      ]
+    },
+    {
+      "shortcut": "Left",
+      "command": "Photo > Select Next Photo",
+      "context": "DaVinci Resolve Photo album; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Direction follows the published table; verify the resulting image against the current album ordering before batching.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "Left"
+      ],
+      "modes": [
+        "photo-album"
+      ]
+    },
+    {
+      "shortcut": "Down",
+      "command": "Photo > Select Previous Photo",
+      "context": "DaVinci Resolve Photo album; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Direction follows the published table; verify the resulting image against the current album ordering before batching.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "Down"
+      ],
+      "modes": [
+        "photo-album"
+      ]
+    },
+    {
+      "shortcut": "Right",
+      "command": "Photo > Select Previous Photo",
+      "context": "DaVinci Resolve Photo album; 21.1 manual p. 617",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Direction follows the published table; verify the resulting image against the current album ordering before batching.",
+      "source_page": 617,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=617",
+      "notation": "chord",
+      "strokes": [
+        "Right"
+      ],
+      "modes": [
+        "photo-album"
+      ]
+    },
+    {
+      "shortcut": "CTRL+1",
+      "command": "Fusion > Reset Node Editor Scale",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1382",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Node editor must have focus; inspect its scale or navigator visibility.",
+      "source_page": 1382,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1382",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+1"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "v",
+      "command": "Fusion > Toggle Node Navigator",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1382",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Node editor must have focus; inspect its scale or navigator visibility.",
+      "source_page": 1382,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1382",
+      "notation": "chord",
+      "strokes": [
+        "v"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+d",
+      "command": "Fusion > Add Node View Bookmark",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1383",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Opens the bookmark dialog for the current node-editor view.",
+      "source_page": 1383,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1383",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+d"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+space",
+      "command": "Fusion > Select Tool",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1386",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Opens a search dialog; tool selection is a new visual decision.",
+      "source_page": 1386,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1386",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+space"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+a",
+      "command": "Fusion > Select All Nodes",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1390",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the composition and node selection scope.",
+      "source_page": 1390,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1390",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+a"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+a",
+      "command": "Fusion > Deselect All Nodes",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1391",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the node editor has focus.",
+      "source_page": 1391,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1391",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+a"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "1",
+      "command": "Fusion > Toggle Selected Node in Left Viewer",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1393",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected node and current viewer contents; number keys toggle display rather than always loading it.",
+      "source_page": 1393,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1393",
+      "notation": "chord",
+      "strokes": [
+        "1"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "2",
+      "command": "Fusion > Toggle Selected Node in Right Viewer",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1393",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected node and current viewer contents; number keys toggle display rather than always loading it.",
+      "source_page": 1393,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1393",
+      "notation": "chord",
+      "strokes": [
+        "2"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "grave",
+      "command": "Fusion > Clear Both Viewers",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1393",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected node and current viewer contents; number keys toggle display rather than always loading it.",
+      "source_page": 1393,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1393",
+      "notation": "chord",
+      "strokes": [
+        "grave"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+t",
+      "command": "Fusion > Swap Node Inputs",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1406",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. A selected node with swappable inputs is required; inspect the graph afterward.",
+      "source_page": 1406,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1406",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+t"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+c",
+      "command": "Fusion > Copy Nodes",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1408",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify composition, selected nodes, clipboard and intended connection point before changing the graph.",
+      "source_page": 1408,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1408",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+c"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+x",
+      "command": "Fusion > Cut Nodes",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1408",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify composition, selected nodes, clipboard and intended connection point before changing the graph.",
+      "source_page": 1408,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1408",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+x"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "CTRL+v",
+      "command": "Fusion > Paste Nodes",
+      "context": "DaVinci Resolve Fusion node editor; 21.1 manual p. 1408",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify composition, selected nodes, clipboard and intended connection point before changing the graph.",
+      "source_page": 1408,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1408",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+v"
+      ],
+      "modes": [
+        "fusion-node-editor"
+      ]
+    },
+    {
+      "shortcut": "ALT+f",
+      "command": "Workspace > Viewer Mode > Enhanced Viewer",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3048",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Viewer modes toggle; inspect the resulting layout before coordinate input.",
+      "source_page": 3048,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3048",
+      "notation": "chord",
+      "strokes": [
+        "ALT+f"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+f",
+      "command": "Workspace > Viewer Mode > Full Screen Viewer",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3049",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Viewer modes toggle; inspect the resulting layout before coordinate input.",
+      "source_page": 3049,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3049",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+f"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+d",
+      "command": "Color > Bypass Color Grades and Fusion Effects",
+      "context": "DaVinci Resolve Color page; 21.1 manual p. 3072",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Toggles bypass; verify the current state before assessing the image.",
+      "source_page": 3072,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3072",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+d"
+      ],
+      "modes": [
+        "color"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+z",
+      "command": "Color Viewer > Zoom to 100 Percent",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3076",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify viewer focus; timeline zoom uses overlapping shortcuts elsewhere.",
+      "source_page": 3076,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3076",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+z"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+z",
+      "command": "Color Viewer > Zoom to Fit",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3076",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify viewer focus; timeline zoom uses overlapping shortcuts elsewhere.",
+      "source_page": 3076,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3076",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+z"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "CTRL+ALT+g",
+      "command": "Color > Stills > Grab Still",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3084",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify clip, frame and grade before saving a gallery still.",
+      "source_page": 3084,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3084",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+ALT+g"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "CTRL+w",
+      "command": "Color > Stills > Play Still",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3085",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected gallery still and current wipe state; CTRL+w closes tabs elsewhere.",
+      "source_page": 3085,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3085",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+w"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "ALT+w",
+      "command": "Color > Stills > Invert Wipe",
+      "context": "DaVinci Resolve Color viewer; 21.1 manual p. 3086",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. An active still wipe is required; inspect which side is displayed.",
+      "source_page": 3086,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3086",
+      "notation": "chord",
+      "strokes": [
+        "ALT+w"
+      ],
+      "modes": [
+        "color-viewer"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+w",
+      "command": "Workspace > Video Scopes > On/Off",
+      "context": "DaVinci Resolve Color page; 21.1 manual p. 3093",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Toggles scopes; inspect whether they opened or closed.",
+      "source_page": 3093,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3093",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+w"
+      ],
+      "modes": [
+        "color"
+      ]
+    },
+    {
+      "shortcut": "ALT+SHIFT+c",
+      "command": "Color > Auto Color",
+      "context": "DaVinci Resolve Color page; 21.1 manual p. 3129",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the target clip and grade; this changes color settings and needs visual review.",
+      "source_page": 3129,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3129",
+      "notation": "chord",
+      "strokes": [
+        "ALT+SHIFT+c"
+      ],
+      "modes": [
+        "color"
+      ]
+    },
+    {
+      "shortcut": "space",
+      "command": "Fairlight > Toggle Play/Stop",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3823",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify transport state and playhead; space toggles while k stops.",
+      "source_page": 3823,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3823",
+      "notation": "chord",
+      "strokes": [
+        "space"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "j",
+      "command": "Fairlight > Play Reverse",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3823",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify transport state and playhead; space toggles while k stops.",
+      "source_page": 3823,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3823",
+      "notation": "chord",
+      "strokes": [
+        "j"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "k",
+      "command": "Fairlight > Stop",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3823",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify transport state and playhead; space toggles while k stops.",
+      "source_page": 3823,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3823",
+      "notation": "chord",
+      "strokes": [
+        "k"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "l",
+      "command": "Fairlight > Play Forward",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3823",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify transport state and playhead; space toggles while k stops.",
+      "source_page": 3823,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3823",
+      "notation": "chord",
+      "strokes": [
+        "l"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+j",
+      "command": "Fairlight > Fast Reverse",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3824",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify playback state and the relevant In/Out points.",
+      "source_page": 3824,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3824",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+j"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+k",
+      "command": "Fairlight > Play at Half Speed",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3824",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify playback state and the relevant In/Out points.",
+      "source_page": 3824,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3824",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+k"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+l",
+      "command": "Fairlight > Fast Forward",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3824",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify playback state and the relevant In/Out points.",
+      "source_page": 3824,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3824",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+l"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+slash",
+      "command": "Fairlight > Loop/Unloop",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3824",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify playback state and the relevant In/Out points.",
+      "source_page": 3824,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3824",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+slash"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+slash",
+      "command": "Fairlight > Play In to Out",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3824",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify playback state and the relevant In/Out points.",
+      "source_page": 3824,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3824",
+      "notation": "chord",
+      "strokes": [
+        "ALT+slash"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "a",
+      "command": "Fairlight > Pointer Mode",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3861",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify timeline focus and the resulting tool.",
+      "source_page": 3861,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3861",
+      "notation": "chord",
+      "strokes": [
+        "a"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "r",
+      "command": "Fairlight > Range Mode",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3863",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify timeline focus; this is the keyboard Range tool, not clicking a track record-arm button.",
+      "source_page": 3863,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3863",
+      "notation": "chord",
+      "strokes": [
+        "r"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+i",
+      "command": "Fairlight > Clear In",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3866",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active timeline range.",
+      "source_page": 3866,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3866",
+      "notation": "chord",
+      "strokes": [
+        "ALT+i"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+o",
+      "command": "Fairlight > Clear Out",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3866",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active timeline range.",
+      "source_page": 3866,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3866",
+      "notation": "chord",
+      "strokes": [
+        "ALT+o"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "ALT+x",
+      "command": "Fairlight > Clear In and Out",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3866",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the active timeline range.",
+      "source_page": 3866,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3866",
+      "notation": "chord",
+      "strokes": [
+        "ALT+x"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+backslash",
+      "command": "Fairlight > Split Clip",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3875",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected clips, track and playhead before splitting.",
+      "source_page": 3875,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3875",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+backslash"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+b",
+      "command": "Fairlight > Razor",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3875",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selected clips, track and playhead before splitting.",
+      "source_page": 3875,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3875",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+b"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+bracketleft",
+      "command": "Fairlight > Trim Start",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3876",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection and playhead; these alter clip boundaries.",
+      "source_page": 3876,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3876",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+bracketleft"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+bracketright",
+      "command": "Fairlight > Trim End",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3876",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify selection and playhead; these alter clip boundaries.",
+      "source_page": 3876,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3876",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+bracketright"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "CTRL+SHIFT+t",
+      "command": "Fairlight > Trim to Selection",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3877",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Verify the selected range and affected clips before trimming.",
+      "source_page": 3877,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3877",
+      "notation": "chord",
+      "strokes": [
+        "CTRL+SHIFT+t"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    },
+    {
+      "shortcut": "SHIFT+t",
+      "command": "Timeline > Add Audio Only Transition",
+      "context": "DaVinci Resolve Fairlight timeline; 21.1 manual p. 3890",
+      "condition": "Verify the active keyboard preset, focused panel and enabled command. Select the intended audio edit point and verify the default transition.",
+      "source_page": 3890,
+      "source_url": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=3890",
+      "notation": "chord",
+      "strokes": [
+        "SHIFT+t"
+      ],
+      "modes": [
+        "fairlight-timeline"
+      ]
+    }
+  ],
+  "configurable_commands": [
+    {
+      "command": "Clip > Enable Clip",
+      "context": "Edit timeline; manual p. 909",
+      "modes": [
+        "edit-timeline"
+      ],
+      "condition": "Configurable command; no default shortcut established by this catalog."
+    },
+    {
+      "command": "Clip > Disable Clip",
+      "context": "Edit timeline; manual p. 909",
+      "modes": [
+        "edit-timeline"
+      ],
+      "condition": "Configurable command; no default shortcut established by this catalog."
+    }
+  ],
+  "references": [
+    {
+      "source_id": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=122",
+      "text": "Resolve 21.1 can inherit updated non-conflicting defaults into a custom preset. Inspect the active preset after updates; documentation defaults do not resolve overrides.",
+      "evidence": "documentation"
+    },
+    {
+      "source_id": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=1044",
+      "text": "Dedicated multicam shortcuts can be assigned through angle 25. Only angles 1-9 have default cut/switch chords documented here. Inspect Keyboard Customization for the rest; do not extrapolate number bindings.",
+      "evidence": "documentation"
+    },
+    {
+      "source_id": "https://documents.blackmagicdesign.com/UserManuals/DaVinci_Resolve_21.1_Reference_Manual.pdf#page=871",
+      "text": "Held K with J/L, tapping while holding K, and continuous dynamic-trim gestures are outside this chord catalog and cannot be encoded as ordinary WCU modifier chords.",
+      "evidence": "documentation"
+    }
+  ]
+}

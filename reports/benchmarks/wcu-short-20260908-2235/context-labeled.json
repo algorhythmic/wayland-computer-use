@@ -1,0 +1,262 @@
+{
+  "scope": "Controlled local retrieval pipeline; no model inference or desktop actions",
+  "interactive_p95_target_ms": 250,
+  "catalog_revision": "b8bb7d8e3313ea95c738e7bbb97f1f1434885567257ff60d6ccf8c428760bb1c",
+  "backends": {
+    "substring": {
+      "warm_p50_ms": 0.556102,
+      "warm_p95_ms": 0.715435,
+      "relevant_action_recall": 0.375,
+      "violations": {
+        "ineligible_actions": 0,
+        "incomplete_bundles": 0,
+        "mixed_revisions": 0,
+        "budget_overruns": 0,
+        "incorrect_no_answer": 0
+      },
+      "cases": [
+        {
+          "intent": "go to the browser address bar",
+          "expected_command": "IDC_FOCUS_LOCATION",
+          "commands": [],
+          "recalled": false,
+          "status": "no_result",
+          "bytes": 576,
+          "backend_failures": []
+        },
+        {
+          "intent": "enter URL",
+          "expected_command": "IDC_FOCUS_LOCATION",
+          "commands": [],
+          "recalled": false,
+          "status": "no_result",
+          "bytes": 576,
+          "backend_failures": []
+        },
+        {
+          "intent": "arrange side by side terminal panes",
+          "expected_command": "split_vertical",
+          "commands": [],
+          "recalled": false,
+          "status": "no_result",
+          "bytes": 572,
+          "backend_failures": []
+        },
+        {
+          "intent": "split terminal vertically",
+          "expected_command": "split_vertical",
+          "commands": [],
+          "recalled": false,
+          "status": "no_result",
+          "bytes": 572,
+          "backend_failures": []
+        },
+        {
+          "intent": "repeat next search match",
+          "expected_command": "next search match",
+          "commands": [
+            "next search match"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2368,
+          "backend_failures": []
+        },
+        {
+          "intent": "previous search match",
+          "expected_command": "previous search match",
+          "commands": [
+            "previous search match"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2376,
+          "backend_failures": []
+        },
+        {
+          "intent": "reverse search",
+          "expected_command": "reverse search",
+          "commands": [
+            "reverse search"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2362,
+          "backend_failures": []
+        },
+        {
+          "intent": "optional explorer",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 567,
+          "backend_failures": []
+        },
+        {
+          "intent": "create a new note",
+          "expected_command": "file-explorer:new-file",
+          "commands": [],
+          "recalled": false,
+          "status": "no_result",
+          "bytes": 576,
+          "backend_failures": []
+        },
+        {
+          "intent": "start recording",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 566,
+          "backend_failures": []
+        },
+        {
+          "intent": "stale source action",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 570,
+          "backend_failures": []
+        }
+      ],
+      "binary_sha256": null,
+      "ranking_policy": "substring"
+    },
+    "local": {
+      "warm_p50_ms": 0.705169,
+      "warm_p95_ms": 0.927604,
+      "relevant_action_recall": 1.0,
+      "violations": {
+        "ineligible_actions": 0,
+        "incomplete_bundles": 0,
+        "mixed_revisions": 0,
+        "budget_overruns": 0,
+        "incorrect_no_answer": 0
+      },
+      "cases": [
+        {
+          "intent": "go to the browser address bar",
+          "expected_command": "IDC_FOCUS_LOCATION",
+          "commands": [
+            "IDC_FOCUS_LOCATION"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 3835,
+          "backend_failures": []
+        },
+        {
+          "intent": "enter URL",
+          "expected_command": "IDC_FOCUS_LOCATION",
+          "commands": [
+            "IDC_FOCUS_LOCATION"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2418,
+          "backend_failures": []
+        },
+        {
+          "intent": "arrange side by side terminal panes",
+          "expected_command": "split_vertical",
+          "commands": [
+            "split_vertical"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 3859,
+          "backend_failures": []
+        },
+        {
+          "intent": "split terminal vertically",
+          "expected_command": "split_vertical",
+          "commands": [
+            "split_vertical"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 3859,
+          "backend_failures": []
+        },
+        {
+          "intent": "repeat next search match",
+          "expected_command": "next search match",
+          "commands": [
+            "next search match"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2368,
+          "backend_failures": []
+        },
+        {
+          "intent": "previous search match",
+          "expected_command": "previous search match",
+          "commands": [
+            "previous search match"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2376,
+          "backend_failures": []
+        },
+        {
+          "intent": "reverse search",
+          "expected_command": "reverse search",
+          "commands": [
+            "reverse search"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2362,
+          "backend_failures": []
+        },
+        {
+          "intent": "optional explorer",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 567,
+          "backend_failures": []
+        },
+        {
+          "intent": "create a new note",
+          "expected_command": "file-explorer:new-file",
+          "commands": [
+            "file-explorer:new-file"
+          ],
+          "recalled": true,
+          "status": "ok",
+          "bytes": 2375,
+          "backend_failures": []
+        },
+        {
+          "intent": "start recording",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 566,
+          "backend_failures": []
+        },
+        {
+          "intent": "stale source action",
+          "expected_command": null,
+          "commands": [],
+          "recalled": null,
+          "status": "no_result",
+          "bytes": 570,
+          "backend_failures": []
+        }
+      ],
+      "binary_sha256": null,
+      "ranking_policy": "local"
+    }
+  },
+  "status": "complete",
+  "default_backend": "local",
+  "rollout": "Braid opt-in; this small synthetic retrieval pilot does not establish general task gains."
+}

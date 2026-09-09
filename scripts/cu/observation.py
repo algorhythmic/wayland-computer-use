@@ -64,7 +64,7 @@ class Collector:
         self.capturer.close()
         self.accessibility.unwatch()
 
-    def collect(self, window, channels=DEFAULT_CHANNELS, wait_damage_ms=0):
+    def collect(self, window, channels=DEFAULT_CHANNELS, wait_damage_ms=0, a11y_scope=None, read_text=None):
         started, started_ns = time.time(), time.monotonic_ns()
         timings = {}
         clients, monitors, active = self.hypr('clients'), self.hypr('monitors'), self.hypr('activewindow')
@@ -119,7 +119,7 @@ class Collector:
                 timings['capture_ms'] = (time.monotonic_ns()-tick)/1e6
             if 'accessibility' in channels:
                 tick = time.monotonic_ns()
-                state['accessibility'] = self.accessibility.probe(target['pid'], target['title'])
+                state['accessibility'] = self.accessibility.probe(target['pid'], target['title'], scope=a11y_scope, read_text=read_text)
                 timings['accessibility_ms'] = (time.monotonic_ns()-tick)/1e6
             tick = time.monotonic_ns()
             current = window_record(self.hypr('activewindow'))
@@ -204,12 +204,16 @@ class History:
 
 
 CONDITION_SCHEMA = {'type': 'object', 'properties': {
-    'kind': {'type': 'string', 'enum': ['accessible', 'window', 'region_changed']},
+    'kind': {'type': 'string', 'enum': ['accessible', 'accessible_absent', 'text_equals', 'window', 'window_changed', 'region_changed', 'region_stable']},
     'name': {'type': 'string', 'maxLength': 160}, 'role': {'type': 'string', 'maxLength': 80},
     'state': {'type': 'string', 'enum': ['visible', 'showing', 'enabled', 'sensitive', 'focused', 'checked', 'selected', 'editable']},
+    'text': {'type': 'string', 'maxLength': 4096},
+    'stable_ms': {'type': 'integer', 'minimum': 100, 'maximum': 5000},
+    'states': {'type': 'array', 'items': {'type': 'string'}},
     'value': {'type': 'number'}, 'title': {'type': 'string', 'maxLength': 256},
     'title_prefix': {'type': 'string', 'maxLength': 256, 'description': 'Window title must start with this.'},
     'focused': {'type': 'boolean', 'description': 'Window condition also requires the matched window to be active.'},
+    'address': {'type': 'string', 'maxLength': 80},
     'class': {'type': 'string', 'maxLength': 128},
     'box': {'type': 'array', 'items': {'type': 'integer', 'minimum': 0}, 'minItems': 4, 'maxItems': 4}},
     'required': ['kind'], 'additionalProperties': False,
@@ -221,19 +225,30 @@ def validate_condition(condition):
         raise ValueError('condition must be an object')
     kind = condition.get('kind')
     allowed = {'accessible': {'kind', 'name', 'role', 'state', 'value'},
-               'window': {'kind', 'title', 'title_prefix', 'class', 'focused'}, 'region_changed': {'kind', 'box'}}
+               'window': {'kind', 'address', 'title', 'title_prefix', 'class', 'focused'},
+               'accessible_absent': {'kind', 'name', 'role'}, 'text_equals': {'kind', 'text'},
+               'window_changed': {'kind'}, 'region_stable': {'kind', 'box', 'stable_ms'},
+               'region_changed': {'kind', 'box'}}
+    allowed['accessible'].add('states')
     if type(kind) is not str or kind not in allowed or set(condition)-allowed[kind]:
         raise ValueError('Invalid condition fields')
-    if kind == 'accessible' and 'name' not in condition:
+    if kind in ('accessible', 'accessible_absent') and 'name' not in condition:
         raise ValueError('Accessible condition requires exact name')
-    if kind == 'window' and not ({'title', 'title_prefix', 'class'} & set(condition)):
+    if kind == 'window' and not ({'address', 'title', 'title_prefix', 'class'} & set(condition)):
         raise ValueError('Window condition requires title, title_prefix or class')
     if kind == 'window' and 'focused' in condition and type(condition['focused']) is not bool:
         raise ValueError('focused must be a boolean')
-    if kind == 'region_changed':
+    if kind in ('region_changed', 'region_stable'):
         box = condition.get('box')
         if not isinstance(box, list) or len(box) != 4 or any(type(x) is not int or x < 0 for x in box) or box[0] >= box[2] or box[1] >= box[3]:
             raise ValueError('Invalid region box')
+    if kind == 'region_stable' and (type(condition.get('stable_ms')) is not int or not 100 <= condition['stable_ms'] <= 5000):
+        raise ValueError('stable_ms must be 100 to 5000')
+    if kind == 'text_equals' and 'text' not in condition:
+        raise ValueError('text_equals requires text')
+    if 'states' in condition and (not isinstance(condition['states'], list) or not condition['states'] or
+            any(v not in CONDITION_SCHEMA['properties']['state']['enum'] for v in condition['states'])):
+        raise ValueError('Invalid control states')
     for key, value in condition.items():
         prop = CONDITION_SCHEMA['properties'][key]
         if prop['type'] == 'string' and (type(value) is not str or not value or len(value) > prop.get('maxLength', 80)):
@@ -248,27 +263,50 @@ def matches(condition, sample, reference=None):
     state, kind = sample['state'], condition['kind']
     if kind == 'window':
         found = [w for w in state.get('windows', []) if w.get('mapped') and
-                 all(w.get(k) == v for k, v in condition.items() if k in ('title', 'class')) and
+                 all(w.get(k) == v for k, v in condition.items() if k in ('address', 'title', 'class')) and
                  str(w.get('title', '')).startswith(condition.get('title_prefix', ''))]
         if condition.get('focused') and found:
             found = [w for w in found if w.get('address') == state.get('active_window')]
         return len(found) == 1
-    if kind == 'accessible':
+    if kind in ('accessible', 'accessible_absent'):
         evidence = state.get('accessibility', {})
         if evidence.get('status') != 'available':
             return False
         found = [n for n in evidence.get('nodes', []) if n.get('name') == condition['name'] and
                  n.get('name') != '[protected]' and
-                 all((v in n.get('states', [])) if k == 'state' else n.get(k) == v
+                 all((v in n.get('states', [])) if k == 'state' else set(v) <= set(n.get('states', [])) if k == 'states' else n.get(k) == v
                      for k, v in condition.items() if k not in ('kind', 'name'))]
-        return len(found) == 1
+        return len(found) == (0 if kind == 'accessible_absent' else 1)
+    if kind == 'text_equals':
+        readback = state.get('accessibility', {}).get('text_readback', {})
+        return readback.get('verifiable') is True and readback.get('status') == 'available' and readback.get('text') == condition['text']
+    if kind == 'window_changed':
+        return bool(reference and sample.get('target') and reference.get('target') and
+                    sample['target'].get('id') == reference['target'].get('id') and
+                    sample['target'] != reference['target'])
     if not reference or sample.get('rgb') is None or reference.get('rgb') is None:
         return False
     visual = state.get('visual', {})
     if visual.get('geometry') != reference['state'].get('visual', {}).get('geometry'):
         return False
     width = visual['geometry'][2]
-    return crop(sample['rgb'], width, condition['box']) != crop(reference['rgb'], width, condition['box'])
+    same = crop(sample['rgb'], width, condition['box']) == crop(reference['rgb'], width, condition['box'])
+    if kind == 'region_stable':
+        return same and sample.get('started_ns', 0)-reference.get('completed_ns', 0) >= condition['stable_ms']*1_000_000
+    return not same
+
+
+def condition_evidence(condition, sample, reference=None):
+    if not matches(condition, sample, reference):
+        return None
+    target = sample.get('target')
+    if condition['kind'] == 'window':
+        found = [w for w in sample['state'].get('windows', []) if
+                 matches(condition, {'state': {**sample['state'], 'windows': [w]}})]
+        target = found[0] if len(found) == 1 else None
+    return {'target': target, 'revision': sample.get('revision'),
+            'collection_started_ns': sample.get('started_ns'),
+            'completed_ns': sample.get('completed_ns'), 'authorizes_focus_change': False}
 
 
 class Observer:
@@ -331,6 +369,8 @@ class Observer:
                 started, started_ns = time.time(), time.monotonic_ns()
                 try:
                     options = {'channels': scope[1]}
+                    if len(scope) > 2 and scope[2]:
+                        options.update(json.loads(scope[2]))
                     if self.waiting and 'pixels' in scope[1] and 'accessibility' not in scope[1]:
                         options['wait_damage_ms'] = 50
                     sample = self.collector.collect(scope[0], **options)
@@ -357,7 +397,7 @@ class Observer:
 
     def observe(self, window=None, since_revision=None, images=True, timeout_ms=15000, wait=False,
                 channels=None, max_age_ms=0, after_action=None, condition=None, return_sample=False,
-                reference_sample=None):
+                reference_sample=None, a11y_scope=None, read_text=None):
         if condition:
             validate_condition(condition)
         channels = tuple(sorted(set(channels if channels is not None else DEFAULT_CHANNELS)))
@@ -367,9 +407,9 @@ class Observer:
             channels = ('metadata',)
         if condition and condition['kind'] != 'window' and not window:
             raise ValueError('This condition requires an exact window')
-        if condition and condition['kind'] == 'accessible' and 'accessibility' not in channels:
+        if condition and condition['kind'] in ('accessible', 'accessible_absent', 'text_equals') and 'accessibility' not in channels:
             raise ValueError('Accessible condition requires accessibility channel')
-        if condition and condition['kind'] == 'region_changed' and 'pixels' not in channels:
+        if condition and condition['kind'] in ('region_changed', 'region_stable') and 'pixels' not in channels:
             raise ValueError('Region condition requires pixels channel')
         now_ns = time.monotonic_ns()
         if after_action is not None and (type(after_action) is not int or not 0 <= after_action <= now_ns):
@@ -380,16 +420,27 @@ class Observer:
             with self.cv:
                 if self.closed:
                     raise RuntimeError('Observer closed')
-                if self.scope != (window, channels):
-                    self.scope = (window, channels)
+                extra = {k: v for k, v in {'a11y_scope': a11y_scope, 'read_text': read_text}.items() if v}
+                scope_key = (window, channels, json.dumps(extra, sort_keys=True)) if extra else (window, channels)
+                if self.scope != scope_key and extra:
+                    for selector in extra.values():
+                        previous = next((s for s in self.history.items if s['revision'] == selector['revision']), None)
+                        if previous is None or (previous.get('target') or {}).get('address') != window:
+                            raise ValueError('Unknown scope revision; observe the window first')
+                        nodes = previous['state'].get('accessibility', {}).get('nodes', [])
+                        if len([n for n in nodes if all(n.get(k) == selector[k] for k in ('ref', 'name', 'role'))]) != 1:
+                            raise ValueError('Scope reference identity unavailable')
+                if self.scope != scope_key:
+                    self.scope = scope_key
                     self.generation += 1
                     self.history = History()
                 generation = self.generation
                 reference = reference_sample or next((s for s in self.history.items if s['revision'] == since_revision), None)
-                if condition and condition['kind'] == 'region_changed':
-                    if reference is None or reference.get('rgb') is None:
+                if condition and condition['kind'] in ('region_changed', 'window_changed'):
+                    if reference is None or condition['kind'] == 'region_changed' and reference.get('rgb') is None:
                         raise ValueError('Region wait requires retained baseline pixels; observe again')
-                    crop(reference['rgb'], reference['state']['visual']['geometry'][2], condition['box'])
+                    if condition['kind'] == 'region_changed':
+                        crop(reference['rgb'], reference['state']['visual']['geometry'][2], condition['box'])
                 self.deadline = time.monotonic()+120
                 self.waiting = wait or condition is not None
                 latest = self.history.items[-1] if self.history.items else None
@@ -406,6 +457,11 @@ class Observer:
                         sample = self.history.items[-1] if self.history.items else None
                         fresh = sample is not None and sample['started_ns'] >= requested_ns
                         if fresh:
+                            if condition and condition['kind'] == 'region_stable':
+                                if reference is None or sample.get('rgb') is None or reference.get('rgb') is None or sample['state'].get('visual', {}).get('geometry') != reference['state'].get('visual', {}).get('geometry'):
+                                    reference = sample
+                                elif crop(sample['rgb'], sample['state']['visual']['geometry'][2], condition['box']) != crop(reference['rgb'], reference['state']['visual']['geometry'][2], condition['box']):
+                                    reference = sample
                             satisfied = matches(condition, sample, reference) if condition else not wait or sample['revision'] != since_revision
                             if satisfied:
                                 status = 'matched' if condition else 'changed' if wait else 'observed'
@@ -434,6 +490,7 @@ class Observer:
                         freshness_satisfied=fresh, status=status,
                         wait_timed_out=status == 'timeout', condition_met=condition is not None and status == 'matched',
                         event_source=event_source, observation_lease_seconds=120)
+            body['condition_evidence'] = condition_evidence(condition, sample, reference) if condition and status == 'matched' else None
             body['timings_ms']['request_ms'] = (time.monotonic_ns()-now_ns)/1e6
             result[0]['text'] = json.dumps(body)
             return (result, sample) if return_sample else result
@@ -455,7 +512,12 @@ class Observer:
         self.thread.join(timeout=30)
 
 
-COMMON = {'window': {'type': 'string', 'description': 'Exact Hyprland window address; omit for desktop metadata.'},
+SCOPE_SELECTOR = {'type': 'object', 'properties': {
+    'ref': {'type': 'string'}, 'name': {'type': 'string'}, 'role': {'type': 'string'}, 'revision': {'type': 'string'}},
+    'required': ['ref', 'name', 'role', 'revision'], 'additionalProperties': False}
+COMMON = {'a11y_scope': SCOPE_SELECTOR,
+          'read_text': {**SCOPE_SELECTOR, 'properties': {**SCOPE_SELECTOR['properties'], 'max_chars': {'type': 'integer', 'minimum': 1, 'maximum': 4096}}},
+          'window': {'type': 'string', 'description': 'Exact Hyprland window address; omit for desktop metadata.'},
           'since_revision': {'type': 'string'}, 'images': {'type': 'boolean'},
           'channels': {'type': 'array', 'items': {'type': 'string', 'enum': ['metadata', 'pixels', 'accessibility']}, 'uniqueItems': True, 'minItems': 1, 'maxItems': 3},
           'max_age_ms': {'type': 'integer', 'minimum': 0, 'maximum': 5000, 'default': 0},
@@ -483,6 +545,16 @@ def validate(name, args):
             raise ValueError('Invalid string length: '+key)
         if kind == 'integer' and not prop.get('minimum', 0) <= value <= prop.get('maximum', 2**63-1):
             raise ValueError('Out of range: '+key)
+    for key in ('a11y_scope', 'read_text'):
+        if key in args:
+            value = args[key]
+            allowed = set(SCOPE_SELECTOR['properties']) | ({'max_chars'} if key == 'read_text' else set())
+            if set(value)-allowed or set(SCOPE_SELECTOR['required'])-set(value) or any(type(value[k]) is not str or len(value[k]) > 200 for k in SCOPE_SELECTOR['required']):
+                raise ValueError('Invalid scoped accessibility selector')
+            if 'max_chars' in value and (type(value['max_chars']) is not int or not 1 <= value['max_chars'] <= 4096):
+                raise ValueError('Invalid readback limit')
+            if not args.get('window') or 'accessibility' not in args.get('channels', DEFAULT_CHANNELS):
+                raise ValueError('Scoped accessibility requires a window and accessibility channel')
     if 'channels' in args:
         values = args['channels']
         if not 1 <= len(values) <= 3 or any(type(v) is not str or v not in DEFAULT_CHANNELS for v in values) or len(set(values)) != len(values):

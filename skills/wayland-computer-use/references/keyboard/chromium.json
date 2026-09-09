@@ -1,0 +1,895 @@
+{
+  "schema": 1,
+  "environment": "chromium",
+  "version": "151.0.7922.173",
+  "evidence": "source_defaults",
+  "coverage": "All Linux accelerator-table mappings, including conditional debug/printing mappings, plus nine page/text navigation bindings. Excludes site shortcuts, extension commands, DevTools-internal shortcuts, and complete Blink/editor keymaps. Source presence does not establish runtime command availability.",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/chromium/chromium/151.0.7922.173/chrome/browser/ui/accelerator_table.cc",
+      "sha256": "3aba2b12b214f00261e26bffac46a5d0b3c26e29344b6dfcbca8c52ed565e248",
+      "license": "BSD-3-Clause; see chromium-LICENSE.txt"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "F7",
+      "command": "IDC_CARET_BROWSING_TOGGLE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "Escape",
+      "command": "IDC_CLOSE_FIND_OR_STOP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+D",
+      "command": "IDC_BOOKMARK_THIS_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+D",
+      "command": "IDC_BOOKMARK_ALL_TABS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+W",
+      "command": "IDC_CLOSE_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+W",
+      "command": "IDC_CLOSE_WINDOW",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+F",
+      "command": "IDC_FIND",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+A",
+      "command": "IDC_TAB_SEARCH",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+G",
+      "command": "IDC_FIND_NEXT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+G",
+      "command": "IDC_FIND_PREVIOUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+L",
+      "command": "IDC_FOCUS_LOCATION",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+O",
+      "command": "IDC_OPEN_FILE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+P",
+      "command": "IDC_PRINT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+R",
+      "command": "IDC_RELOAD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+R",
+      "command": "IDC_RELOAD_BYPASSING_CACHE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+S",
+      "command": "IDC_SAVE_PAGE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+9",
+      "command": "IDC_SELECT_LAST_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_9",
+      "command": "IDC_SELECT_LAST_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+9",
+      "command": "IDC_SELECT_LAST_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_9",
+      "command": "IDC_SELECT_LAST_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Page_Down",
+      "command": "IDC_MOVE_TAB_NEXT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Page_Up",
+      "command": "IDC_MOVE_TAB_PREVIOUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+Tab",
+      "command": "IDC_SELECT_NEXT_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+Page_Down",
+      "command": "IDC_SELECT_NEXT_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Tab",
+      "command": "IDC_SELECT_PREVIOUS_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+Page_Up",
+      "command": "IDC_SELECT_PREVIOUS_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+1",
+      "command": "IDC_SELECT_TAB_0",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_1",
+      "command": "IDC_SELECT_TAB_0",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+2",
+      "command": "IDC_SELECT_TAB_1",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_2",
+      "command": "IDC_SELECT_TAB_1",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+3",
+      "command": "IDC_SELECT_TAB_2",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_3",
+      "command": "IDC_SELECT_TAB_2",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+4",
+      "command": "IDC_SELECT_TAB_3",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_4",
+      "command": "IDC_SELECT_TAB_3",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+5",
+      "command": "IDC_SELECT_TAB_4",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_5",
+      "command": "IDC_SELECT_TAB_4",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+6",
+      "command": "IDC_SELECT_TAB_5",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_6",
+      "command": "IDC_SELECT_TAB_5",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+7",
+      "command": "IDC_SELECT_TAB_6",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_7",
+      "command": "IDC_SELECT_TAB_6",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+8",
+      "command": "IDC_SELECT_TAB_7",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_8",
+      "command": "IDC_SELECT_TAB_7",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+1",
+      "command": "IDC_SELECT_TAB_0",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_1",
+      "command": "IDC_SELECT_TAB_0",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+2",
+      "command": "IDC_SELECT_TAB_1",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_2",
+      "command": "IDC_SELECT_TAB_1",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+3",
+      "command": "IDC_SELECT_TAB_2",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_3",
+      "command": "IDC_SELECT_TAB_2",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+4",
+      "command": "IDC_SELECT_TAB_3",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_4",
+      "command": "IDC_SELECT_TAB_3",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+5",
+      "command": "IDC_SELECT_TAB_4",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_5",
+      "command": "IDC_SELECT_TAB_4",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+6",
+      "command": "IDC_SELECT_TAB_5",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_6",
+      "command": "IDC_SELECT_TAB_5",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+7",
+      "command": "IDC_SELECT_TAB_6",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_7",
+      "command": "IDC_SELECT_TAB_6",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+8",
+      "command": "IDC_SELECT_TAB_7",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+KP_8",
+      "command": "IDC_SELECT_TAB_7",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Favorites",
+      "command": "IDC_SHOW_BOOKMARK_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+B",
+      "command": "IDC_SHOW_BOOKMARK_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+minus",
+      "command": "IDC_ZOOM_MINUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_Subtract",
+      "command": "IDC_ZOOM_MINUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+0",
+      "command": "IDC_ZOOM_NORMAL",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_0",
+      "command": "IDC_ZOOM_NORMAL",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+equal",
+      "command": "IDC_ZOOM_PLUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+KP_Add",
+      "command": "IDC_ZOOM_PLUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F1",
+      "command": "IDC_HELP_PAGE_VIA_KEYBOARD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F3",
+      "command": "IDC_FIND_NEXT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "SHIFT+F3",
+      "command": "IDC_FIND_PREVIOUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+F4",
+      "command": "IDC_CLOSE_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+F4",
+      "command": "IDC_CLOSE_WINDOW",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F5",
+      "command": "IDC_RELOAD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+F5",
+      "command": "IDC_RELOAD_BYPASSING_CACHE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "SHIFT+F5",
+      "command": "IDC_RELOAD_BYPASSING_CACHE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F6",
+      "command": "IDC_FOCUS_NEXT_PANE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "SHIFT+F6",
+      "command": "IDC_FOCUS_PREVIOUS_PANE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+F6",
+      "command": "IDC_FOCUS_WEB_CONTENTS_PANE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F10",
+      "command": "IDC_FOCUS_MENU_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F11",
+      "command": "IDC_FULLSCREEN",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+M",
+      "command": "IDC_SHOW_AVATAR_MENU",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+L",
+      "command": "IDC_TOGGLE_VERTICAL_TABS_COLLAPSE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Back",
+      "command": "IDC_BACK",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Forward",
+      "command": "IDC_FORWARD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86HomePage",
+      "command": "IDC_HOME",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Refresh",
+      "command": "IDC_RELOAD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+XF86Refresh",
+      "command": "IDC_RELOAD_BYPASSING_CACHE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "SHIFT+XF86Refresh",
+      "command": "IDC_RELOAD_BYPASSING_CACHE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Close",
+      "command": "IDC_CLOSE_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86New",
+      "command": "IDC_NEW_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Delete",
+      "command": "IDC_CLEAR_BROWSING_DATA",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "SHIFT+Escape",
+      "command": "IDC_TASK_MANAGER_SHORTCUT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "Alt_L",
+      "command": "IDC_FOCUS_MENU_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "Alt_L",
+      "command": "IDC_FOCUS_MENU_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "Alt_R",
+      "command": "IDC_FOCUS_MENU_BAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "XF86Search",
+      "command": "IDC_FOCUS_SEARCH",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+N",
+      "command": "IDC_NEW_INCOGNITO_WINDOW",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+T",
+      "command": "IDC_NEW_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+N",
+      "command": "IDC_NEW_WINDOW",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+T",
+      "command": "IDC_RESTORE_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+Left",
+      "command": "IDC_BACK",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALTGR+Left",
+      "command": "IDC_BACK",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+P",
+      "command": "IDC_BASIC_PRINT",
+      "context": "browser chrome",
+      "condition": "Only when ENABLE_PRINTING was compiled in."
+    },
+    {
+      "shortcut": "ALT+SHIFT+B",
+      "command": "IDC_FOCUS_BOOKMARKS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+A",
+      "command": "IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+D",
+      "command": "IDC_FOCUS_LOCATION",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+E",
+      "command": "IDC_FOCUS_SEARCH",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+K",
+      "command": "IDC_FOCUS_SEARCH",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+R",
+      "command": "IDC_SHOW_READING_MODE_KEYBOARD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+T",
+      "command": "IDC_FOCUS_TOOLBAR",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+Right",
+      "command": "IDC_FORWARD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALTGR+Right",
+      "command": "IDC_FORWARD",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+Home",
+      "command": "IDC_HOME",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+E",
+      "command": "IDC_SHOW_APP_MENU",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+F",
+      "command": "IDC_SHOW_APP_MENU",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+O",
+      "command": "IDC_SHOW_BOOKMARK_MANAGER",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+J",
+      "command": "IDC_SHOW_DOWNLOADS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+H",
+      "command": "IDC_SHOW_HISTORY",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+minus",
+      "command": "IDC_ZOOM_MINUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+equal",
+      "command": "IDC_ZOOM_PLUS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+C",
+      "command": "IDC_ADD_NEW_TAB_TO_GROUP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+P",
+      "command": "IDC_CREATE_NEW_TAB_GROUP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+X",
+      "command": "IDC_FOCUS_NEXT_TAB_GROUP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+Z",
+      "command": "IDC_FOCUS_PREV_TAB_GROUP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "ALT+SHIFT+W",
+      "command": "IDC_CLOSE_TAB_GROUP",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "F12",
+      "command": "IDC_DEV_TOOLS_TOGGLE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+I",
+      "command": "IDC_DEV_TOOLS",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+J",
+      "command": "IDC_DEV_TOOLS_CONSOLE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+C",
+      "command": "IDC_DEV_TOOLS_INSPECT",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+U",
+      "command": "IDC_VIEW_SOURCE",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+ALT+SHIFT+T",
+      "command": "IDC_DEBUG_TOGGLE_TABLET_MODE",
+      "context": "browser chrome",
+      "condition": "Only when Chromium UIDebugTools feature is enabled."
+    },
+    {
+      "shortcut": "CTRL+ALT+SHIFT+V",
+      "command": "IDC_DEBUG_PRINT_VIEW_TREE",
+      "context": "browser chrome",
+      "condition": "Only when Chromium UIDebugTools feature is enabled."
+    },
+    {
+      "shortcut": "CTRL+ALT+SHIFT+M",
+      "command": "IDC_DEBUG_PRINT_VIEW_TREE_DETAILS",
+      "context": "browser chrome",
+      "condition": "Only when Chromium UIDebugTools feature is enabled."
+    },
+    {
+      "shortcut": "ALT+SHIFT+N",
+      "command": "IDC_NEW_SPLIT_TAB",
+      "context": "browser chrome",
+      "condition": "Browser command must be available in the current mode."
+    },
+    {
+      "shortcut": "CTRL+X",
+      "command": "IDC_CUT",
+      "context": "editable or selectable content",
+      "condition": "Current selection and focused control determine effect."
+    },
+    {
+      "shortcut": "CTRL+C",
+      "command": "IDC_COPY",
+      "context": "editable or selectable content",
+      "condition": "Current selection and focused control determine effect."
+    },
+    {
+      "shortcut": "CTRL+V",
+      "command": "IDC_PASTE",
+      "context": "editable or selectable content",
+      "condition": "Current selection and focused control determine effect."
+    },
+    {
+      "shortcut": "Tab",
+      "command": "focus-next",
+      "context": "page or browser control",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "SHIFT+Tab",
+      "command": "focus-previous",
+      "context": "page or browser control",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "space",
+      "command": "scroll-page-down",
+      "context": "page body",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "SHIFT+space",
+      "command": "scroll-page-up",
+      "context": "page body",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "Home",
+      "command": "scroll-top",
+      "context": "page body",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "End",
+      "command": "scroll-bottom",
+      "context": "page body",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "CTRL+Left",
+      "command": "previous-word",
+      "context": "text field",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "CTRL+Right",
+      "command": "next-word",
+      "context": "text field",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    },
+    {
+      "shortcut": "CTRL+BackSpace",
+      "command": "delete-previous-word",
+      "context": "text field",
+      "condition": "Focus-sensitive; page handlers may consume keys.",
+      "source": "https://support.google.com/chrome/answer/157179"
+    }
+  ]
+}

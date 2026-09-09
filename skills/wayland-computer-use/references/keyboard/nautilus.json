@@ -1,0 +1,407 @@
+{
+  "schema": 1,
+  "environment": "nautilus",
+  "version": "50.2.2",
+  "evidence": "source_defaults",
+  "coverage": "All 61 items in the installed Nautilus shortcuts dialog: 47 literal accelerators and 14 registered actions resolved from matching Nautilus and libadwaita sources. Excludes inherited GTK text-editing bindings and extension-added actions.",
+  "sources": [
+    {
+      "path": "/usr/bin/nautilus!.gresource.nautilus:/org/gnome/nautilus/shortcuts-dialog.ui",
+      "sha256": "610106e6855533a7d2addf6a0b097f65911ee1a8c20ba9e8d28b13c9a0a85194"
+    },
+    {
+      "url": "https://github.com/GNOME/nautilus/blob/50.2.2/src/nautilus-application.c",
+      "sha256": "c12ac198e99f8fa19077bfcc0c15820b18a2889d940e6fc037f542aa42276726"
+    },
+    {
+      "url": "https://github.com/GNOME/nautilus/blob/50.2.2/src/nautilus-window.c",
+      "sha256": "6f4cfa267b7d992f59c02fe701e0d3b039671153a26cc8fe3a8e18f851a4543f"
+    },
+    {
+      "url": "https://github.com/GNOME/libadwaita/blob/1.9.3/src/adw-application.c",
+      "sha256": "62c04aea6afea493ba78d556c9aa7c07fcbf903605e96a325be64b9086242f5f"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "Return <Primary>O",
+      "command": "Open",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>Return",
+      "command": "Open in New Tab",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<shift>Return",
+      "command": "Open in New Window",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt><Primary>O",
+      "command": "Open Item Location (Search and Recent Only)",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>O <alt>Down",
+      "command": "Open With Default App",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>period",
+      "command": "Open Current Directory in Console",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "F10",
+      "command": "Open Current Folder Menu",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.current-location-menu"
+    },
+    {
+      "shortcut": "<Shift>F10",
+      "command": "Open Context Menu",
+      "context": "Actions",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary><shift>N",
+      "command": "Create Folder",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>X",
+      "command": "Cut",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>C",
+      "command": "Copy",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>V",
+      "command": "Paste",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "F2",
+      "command": "Rename",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<control>z",
+      "command": "Undo",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.undo"
+    },
+    {
+      "shortcut": "<shift><control>z",
+      "command": "Redo",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.redo"
+    },
+    {
+      "shortcut": "Delete",
+      "command": "Move to Trash",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<shift>Delete",
+      "command": "Delete Permanently",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>M",
+      "command": "Create Link to Copied Item",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary><shift>M",
+      "command": "Create Link to Selected Item",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>I <alt>Return",
+      "command": "Show Item Properties",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>D",
+      "command": "Bookmark Current Location",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>plus",
+      "command": "Zoom In",
+      "context": "View",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>minus",
+      "command": "Zoom Out",
+      "context": "View",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>0",
+      "command": "Reset Zoom",
+      "context": "View",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>1",
+      "command": "List View",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>2",
+      "command": "Grid View",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "F5 <Primary>R",
+      "command": "Refresh View",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "Right",
+      "command": "Expand Folder",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "Left",
+      "command": "Expand Folder",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "Left",
+      "command": "Collapse Folder",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "Right",
+      "command": "Collapse Folder",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>H",
+      "command": "Show/Hide Hidden Files",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "F9",
+      "command": "Show/Hide Sidebar",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.toggle-sidebar"
+    },
+    {
+      "shortcut": "<Primary>A",
+      "command": "Select All",
+      "context": "Select",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<shift><Primary>I",
+      "command": "Invert Selection",
+      "context": "Select",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>S",
+      "command": "Select Items Matching",
+      "context": "Select",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Left",
+      "command": "Go Back",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Right",
+      "command": "Go Back",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Right",
+      "command": "Go Forward",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Left",
+      "command": "Go Forward",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Up",
+      "command": "Go Up",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Down",
+      "command": "Go Down",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>Home",
+      "command": "Go to Home Folder",
+      "context": "Navigation",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>L",
+      "command": "Enter Location",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "slash",
+      "command": "Location Bar With Root Location",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "asciitilde",
+      "command": "Location Bar With Home Location",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary><Shift>F",
+      "command": "Search Everywhere",
+      "context": "Search",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>F",
+      "command": "Search Current Folder",
+      "context": "Search",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>n",
+      "command": "New Window",
+      "context": "Windows & Tabs",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "app.clone-window"
+    },
+    {
+      "shortcut": "<control>t",
+      "command": "New Tab",
+      "context": "Windows & Tabs",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.new-tab"
+    },
+    {
+      "shortcut": "<control>w",
+      "command": "Close Window or Tab",
+      "context": "Windows & Tabs",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.close-current-view"
+    },
+    {
+      "shortcut": "<shift><control>t",
+      "command": "Restore Closed Tab",
+      "context": "Windows & Tabs",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.restore-tab"
+    },
+    {
+      "shortcut": "<Primary>Page_Up",
+      "command": "Go to Previous Tab",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<Primary>Page_Down",
+      "command": "Go to Next Tab",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<alt>0...8",
+      "command": "Open Tab",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability."
+    },
+    {
+      "shortcut": "<shift><control>Page_Up",
+      "command": "Move Tab Left",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.tab-move-left"
+    },
+    {
+      "shortcut": "<shift><control>Page_Down",
+      "command": "Move Tab Right",
+      "context": "Nautilus",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "win.tab-move-right"
+    },
+    {
+      "shortcut": "<Primary>comma",
+      "command": "Show Preferences",
+      "context": "App",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "app.preferences"
+    },
+    {
+      "shortcut": "<Control>question",
+      "command": "Shortcuts",
+      "context": "App",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "app.shortcuts"
+    },
+    {
+      "shortcut": "F1",
+      "command": "Show Help",
+      "context": "App",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "app.help"
+    },
+    {
+      "shortcut": "<Primary>q",
+      "command": "Quit",
+      "context": "App",
+      "condition": "Selection, view and dialog determine availability.",
+      "action": "app.quit"
+    }
+  ]
+}

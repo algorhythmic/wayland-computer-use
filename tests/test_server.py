@@ -7,7 +7,7 @@ import sys
 import time
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, ANY
 
 PATH = Path(__file__).resolve().parents[1] / "scripts" / "server.py"
 spec = importlib.util.spec_from_file_location("wayland_server", PATH)
@@ -29,6 +29,16 @@ class Tests(unittest.TestCase):
         patcher = patch.object(server, 'desktop_locked', return_value=False)
         patcher.start()
         self.addCleanup(patcher.stop)
+        # Guarded input checks real mocked compositor state at each segment.
+        state = {'address': '0x123', 'mapped': True}
+        compositor = patch.object(server.Desktop, 'hypr', side_effect=lambda command:
+            [frame()['monitor']] if command == 'monitors' else [dict(state)] if command == 'clients' else dict(state))
+        compositor.start()
+        self.addCleanup(compositor.stop)
+        capture = patch.object(server.Capturer, 'capture', side_effect=RuntimeError('fixture_capture_unavailable'))
+        capture.start()
+        self.addCleanup(capture.stop)
+
 
     def test_locked_desktop_blocks_capture_and_input_without_subprocess(self):
         d, f, state, args = self.approval_desktop()
@@ -276,9 +286,9 @@ class Tests(unittest.TestCase):
         d = server.Desktop()
         with patch.object(server, "run", return_value=b"ok\n") as run:
             d.dispatch("focuswindow", "address:0x123")
-            run.assert_called_with(["hyprctl", "dispatch", 'hl.dsp.focus({window="address:0x123"})'])
+            run.assert_called_with(["hyprctl", "dispatch", 'hl.dsp.focus({window="address:0x123"})'], timeout=3)
             d.move((-100, 900))
-            run.assert_called_with(["hyprctl", "dispatch", "hl.dsp.cursor.move({x=-100,y=900})"])
+            run.assert_called_with(["hyprctl", "dispatch", "hl.dsp.cursor.move({x=-100,y=900})"], timeout=3)
             with self.assertRaises(ValueError):
                 d.dispatch("focuswindow", 'address:0x123"; anything')
 
@@ -361,13 +371,13 @@ class Tests(unittest.TestCase):
                 patch.object(d, 'screenshot', side_effect=RuntimeError('Target changed during capture; take another screenshot')) as shot:
             with self.assertRaises(server.ActionRejected) as error:
                 d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
-        self.assertEqual(shot.call_count, 2)
+        self.assertEqual(shot.call_count, 4)
         self.assertTrue(json.loads(error.exception.content[0]['text'])['action_performed'])
         with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), \
                 patch.object(d, 'screenshot', side_effect=RuntimeError('capture unavailable')) as shot:
             with self.assertRaises(server.ActionRejected):
                 d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
-        self.assertEqual(shot.call_count, 1)
+        self.assertEqual(shot.call_count, 2)
 
     def test_literal_text_uses_stdin_and_consumes_frame(self):
         d = server.Desktop()
@@ -375,7 +385,7 @@ class Tests(unittest.TestCase):
         with patch.object(d, "guard", return_value=frame()), patch.object(d, "screenshot", return_value=[]), \
                 patch.object(server, "run") as run:
             d.call("type_text", {"frame_id": "token", "text": "$(secret) `literal` — café"})
-            run.assert_called_once_with(["wtype", "-"], "$(secret) `literal` — café".encode())
+            run.assert_called_once_with(["wtype", "-"], "$(secret) `literal` — café".encode(), timeout=ANY)
         self.assertEqual(d.frames, {})
 
     def test_drag_releases_button_after_failure(self):
@@ -422,7 +432,7 @@ class Tests(unittest.TestCase):
                 patch.object(d,'observation_content',return_value=[server.text_content({'status':'timeout','condition_met':False})]) as wait, \
                 patch.object(d,'screenshot',return_value=[]),patch.object(server.time,'sleep') as sleep:
             result=d.call('type_text',args)
-        run.assert_called_once_with(['wtype','-'],b'hello')
+        run.assert_called_once_with(['wtype','-'],b'hello',timeout=ANY)
         sleep.assert_not_called()
         meta=json.loads(result[0]['text'])
         self.assertTrue(meta['action_performed'])
@@ -562,9 +572,10 @@ class Tests(unittest.TestCase):
         waits = []
         def observation(args):
             waits.append(args)
-            return [server.text_content({'status': 'matched', 'condition_met': True})]
+            return [server.text_content({'status': 'matched', 'condition_met': True,
+                'condition_evidence': {'target': {'address': '0x777'}, 'revision': 'obs:1'}})]
         steps = [{'action': 'press_key', 'key': 'CTRL+c'},
-                 {'action': 'focus_window', 'address': '0x777', 'expect': {'kind': 'window', 'class': 'md.obsidian.Obsidian', 'focused': True}},
+                 {'action': 'focus_window', 'address': '0x777', 'expect': {'kind': 'window', 'address': '0x777'}},
                  {'action': 'press_key', 'key': 'CTRL+n', 'after': {'condition': {'kind': 'window', 'title_prefix': 'Untitled', 'focused': True}, 'timeout_ms': 500}},
                  {'action': 'type_text', 'text': 'name'},
                  {'action': 'press_key', 'key': 'Return'}]
@@ -596,7 +607,7 @@ class Tests(unittest.TestCase):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         seq = meta['sequence']
         self.assertEqual((seq['steps_completed'], seq['stopped']), (1, True))
-        self.assertEqual([s['status'] for s in seq['steps']], ['done', 'precondition_failed'])
+        self.assertEqual([s['status'] for s in seq['steps']], ['done', 'precondition_failed', 'unattempted'])
         self.assertEqual(run.call_count, 1)
         self.assertIn('expect not met', seq['stop_reason'])
 
@@ -620,7 +631,7 @@ class Tests(unittest.TestCase):
                 patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         seq = meta['sequence']
-        self.assertEqual([s['status'] for s in seq['steps']], ['after_timeout'])
+        self.assertEqual([s['status'] for s in seq['steps']], ['after_timeout', 'unattempted'])
         self.assertEqual(run.call_count, 1)
         self.assertTrue(meta['action_performed'])
 
@@ -657,7 +668,7 @@ class Tests(unittest.TestCase):
         responses = [json.loads(line) for line in stdout.getvalue().splitlines()]
         self.assertEqual(len(responses), 3)
         self.assertEqual(responses[0]["result"]["protocolVersion"], "2025-06-18")
-        self.assertEqual(len(responses[1]["result"]["tools"]), 12)
+        self.assertEqual(len(responses[1]["result"]["tools"]), 13)
         self.assertTrue(responses[2]["result"]["isError"])
 
 

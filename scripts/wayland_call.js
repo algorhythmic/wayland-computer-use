@@ -4,9 +4,12 @@
   // Outcome waits can last 30 seconds. Reserve transport/capture time in
   // addition, while retaining a hard bound even for invalid caller arguments.
   const args = request.arguments || {};
+  const execution = ['run_steps', 'type_text', 'press_key', 'pointer', 'scroll', 'drag', 'focus_window'].includes(request.name);
+  const requestedDuration = args.duration_ms ?? 60000;
+  const durationMs = Number.isInteger(requestedDuration) ? Math.min(120000, Math.max(1, requestedDuration)) : 60000;
   const requestedWait = args.after?.timeout_ms ?? args.timeout_ms ?? 0;
   const waitMs = Number.isInteger(requestedWait) ? Math.min(30000, Math.max(0, requestedWait)) : 0;
-  const deadline = Date.now() + 20000 + waitMs;
+  const deadline = Date.now() + 20000 + (execution ? durationMs : waitMs);
   let buffer = "";
   let chunk = await tools.write_stdin({
     session_id: sessionId, chars: JSON.stringify(request) + "\n",
@@ -30,8 +33,8 @@
         if (item.type === "image") {
           if (!/^\/tmp\/hush-mcp-[A-Za-z0-9_-]+\.png$/.test(item.saved_image || ""))
             throw new Error("Unexpected screenshot path; stop and inspect");
-          const viewed = await tools.view_image({path: item.saved_image});
-          image(viewed.image_url);
+          const viewed = await tools.view_image({path: item.saved_image, detail: "original"});
+          image(viewed.image_url, "original");
         } else if (item.type === "text") {
           text(item.text);
         }

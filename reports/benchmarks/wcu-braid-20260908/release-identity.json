@@ -1,0 +1,170 @@
+{
+  "release_runtime": {
+    "identity": {
+      "kind": "published_bundle",
+      "revision": "fb4ac4da6ab03192d99ca4b8e26963a3eb60e9f8e5748350adbc0badad1957ab",
+      "source_sha256": {
+        "server.py": "c245aa4ef5e0b9a9972da9a2df400640eb75cff0d3649cca7f0b06b8d4663475",
+        "cu/__init__.py": "85fc33c472a914f9f1d87dd924058b92954591406c39a4c396c0fde8e71761b9",
+        "cu/accessibility.py": "10a8ece30ac9a8c8c3ce73a13bd2773ee35be2407921d0c903e8ff0ccc86702f",
+        "cu/accessibility_worker.py": "403b2d15f8ab5f2960b386a0a2189cc0bb479f15dff8e2743b31f721b2a5c087",
+        "cu/braid_client.py": "e580982f033cdf049d5ea05ba74e0550570724c124bcb43d0c5f4c0c3040a82d",
+        "cu/capture-helper": "6cc6e3327d49010b3037e580b2390099bd71c4a51a330d67521ed7cbebad16a9",
+        "cu/capture.py": "f0160867ed266537391f57ef395b50301b3348f7da34953549e2f2b0c698fd3b",
+        "cu/context_records.py": "c4bbc28a0a64ee4bb30a89a461fe6a8d70b6f19e3a43b6f0d2cbb87c3f06cd4d",
+        "cu/context_retrieval.py": "d031581c889700015b8d864974458bde6beb9ef9a15cbed32e489d5db231ad0c",
+        "cu/events.py": "4e3a2429bf8e551a79dca077a8b91f4024499f9927ad9d1a4c027fb8f7a9b67e",
+        "cu/execution.py": "e688adfaef3031c3f7e083b95b32c8c07935dda84ecb629dba60132dc98b0dcc",
+        "cu/observation.py": "a78da69f08e30652e487e0b56d0781c7c03c75fecdd44df9826eb2c7a2df60f1",
+        "cu/pixels.py": "d78c4156a0cbcb3cd5770462c7442bff1674e0eb552c35a921280ab5f4abf0ac",
+        "cu/recipes.py": "a5a716087666057ed0b629a0ad86438bdc79c527de1cc3cd161f4637228d0336",
+        "cu/system.py": "66080461da2f823f25b9d142c8b19d92d6c40ef1b462bae191ff79daacbfc101",
+        "cu/trace.py": "7e91e6394ab97f3c0b9692507970bb2e02e674a7add61635c06914e53701dcfb"
+      },
+      "published_skill_sha256": "b1bb77b49d09948340babaa9603962d27195eec86615728b26feede6e5c345bf",
+      "published_skill_files_sha256": {
+        "SKILL.md": "b1bb77b49d09948340babaa9603962d27195eec86615728b26feede6e5c345bf",
+        "references/environment-context.md": "2cb6372b3975c2e109a22bdcd32aa5019ba3d278ce43c898be3c9479b47ec8c8",
+        "references/execution-and-context.md": "4e8616057f9e8f3e57734d275293b3131e2122aaf61ee7d0e8b83643b4f407c3",
+        "references/keyboard/chromium-LICENSE.txt": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+        "references/keyboard/chromium.json": "4babc871d1683cdca82ab674bf4464258c44116c176d85316e85a0b38efa1d91",
+        "references/keyboard/herdr-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "references/keyboard/herdr.json": "ba015b24f6588a874bb2691385ce77b973b449c74e20393fc7ca0102b5159abc",
+        "references/keyboard/lazyvim-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "references/keyboard/lazyvim.json": "0da5a4fad48eeb5a26f4592da78dc73a2c1805c51294470f36a285c552aec690",
+        "references/keyboard/nautilus.json": "661119030bca1a77bdbc5a5da1c1371c5f58851dce66019602cd269b6eb33746",
+        "references/keyboard/neovim-NOTICE.md": "70b1302ac8b5471ec90b6ec18224c9dcd1a172b944386e393735a8f75a69a91a",
+        "references/keyboard/neovim.json": "27d842bc1ac6e5c2df4cc6b085a2208ad022b282e382db13b7da50ca7292ed11",
+        "references/keyboard/obs.json": "ace72c5ba27392839ea6d726a0d47ed81b263bad2d3553dface51b7ed87884dc",
+        "references/keyboard/obsidian-editor.json": "a01cb72ea36d7022dae9a1e723916b8ae85cd1347498da3d3e37b8b82e2e4557",
+        "references/keyboard/obsidian.json": "7701c1769fdc2f9d29b61707af85c841ff20169f118523220e1ed02470820e19"
+      }
+    },
+    "tool_contract_version": "wcu-tools-2",
+    "tool_contract_sha256": "54be0e40cf370eff0a211388bbf526ae3023b2580872c70220dd3baefedce63b",
+    "context_schema": 1,
+    "context_contract": "wcu-context-1",
+    "observer_version": "a78da69f08e30652e487e0b56d0781c7c03c75fecdd44df9826eb2c7a2df60f1",
+    "client_loaded_skill_revision": null,
+    "capabilities": [
+      "guarded_sequences",
+      "segment_guards",
+      "execution_ledger",
+      "shared_deadline",
+      "context_for_task",
+      "explicit_window_transitions",
+      "scoped_accessibility",
+      "bounded_text_readback",
+      "readiness_conditions",
+      "result_views",
+      "original_image_detail"
+    ],
+    "unsupported": [
+      "focus_until",
+      "semantic_activation",
+      "arbitrary_code",
+      "asynchronous_input"
+    ]
+  },
+  "fresh_installed_connection_verified": true,
+  "input_tools": [
+    "context_for_task",
+    "desktop_state",
+    "screenshot",
+    "focus_window",
+    "pointer",
+    "type_text",
+    "press_key",
+    "scroll",
+    "drag",
+    "run_steps",
+    "observe_window",
+    "wait_for",
+    "stop_observing"
+  ],
+  "desktop_benchmark_revision": "6bfc5c5c72b861a8b163ede300595386f07a4a6d21665d1c0d15714a08aed452",
+  "runtime_delta_since_desktop_benchmark": [
+    "cu/braid_client.py"
+  ],
+  "plugin_versions": {
+    "wayland-computer-use": "0.1.0+codex.20260908075753",
+    "wayland-desktop-observer": "0.1.0+codex.20260908075753"
+  },
+  "braid": {
+    "source_commit": "65c7f6e23cdbb0e01aa43bd287ed913e6b17faa2",
+    "source_clean": true,
+    "binary_sha256": "a3b079f58d427f972df8acaecab42cefa5f3c67183c064c35e9e6738328a11f6",
+    "hello": {
+      "capabilities": [
+        "query",
+        "explain",
+        "upsert",
+        "ingest",
+        "replay",
+        "reindex",
+        "eval",
+        "strict_requests",
+        "structured_errors",
+        "dataset_binding",
+        "replace_snapshot",
+        "apply",
+        "dataset",
+        "reindex_start",
+        "reindex_status",
+        "reindex_cancel",
+        "embedding_reuse",
+        "negative_eval",
+        "abstention_policy",
+        "hard_filters",
+        "allowed_ids",
+        "get_many",
+        "read_revision",
+        "required_context",
+        "context_export",
+        "query_timeout",
+        "stage_stats",
+        "constrained_eval"
+      ],
+      "dataset": {
+        "id": "wcu:5ea71c497acb48ff52b18a979f95764e7b1b4a27f2681818b491354cf8be0bd4",
+        "revision": 0,
+        "digest": "cb8989fd5bce3f30dbc038a157a039023d6d2a6bb069e43bd060706ba14ebbe0"
+      },
+      "max_request_bytes": 16777216,
+      "protocol_version": 1,
+      "ranking_version": "mmr-admitted-dependencies-v2"
+    },
+    "dataset": {
+      "id": "wcu:5ea71c497acb48ff52b18a979f95764e7b1b4a27f2681818b491354cf8be0bd4",
+      "revision": 1,
+      "digest": "eb2cb5b33a925c418e1adcd226cd2d15d56822aff555289d505c7c29da67479b"
+    },
+    "policy": "mmr-admitted-dependencies-v2",
+    "go_toolchain": {
+      "filename": "go1.27.1.linux-amd64.tar.gz",
+      "os": "linux",
+      "arch": "amd64",
+      "version": "go1.27.1",
+      "sha256": "63d339f0da5ab53635a56f2490a7984dfe12dfcff22ad749f63edaf590168445",
+      "size": 70553950,
+      "kind": "archive"
+    }
+  },
+  "environment": {
+    "python": "3.14.7",
+    "kernel": "7.1.9-arch1-2",
+    "packages": {
+      "omarchy": "4.0.2-1",
+      "hyprland": "0.56.2-1",
+      "chromium": "151.0.7922.173-1",
+      "obsidian": "1.13.7-2",
+      "ghostty": "1.3.1-2",
+      "nautilus": "50.2.2-1",
+      "herdr": "0.8.2-1",
+      "obs-studio": "32.2.2-1",
+      "neovim": "0.12.5-1",
+      "omarchy-nvim": "2026.8.13-1"
+    }
+  },
+  "existing_chat_rediscovery": "Not claimed. Installed skill was separately read and matched; use a new Codex thread for the updated plugin schema and skill."
+}

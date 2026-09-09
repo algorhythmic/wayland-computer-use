@@ -21,9 +21,17 @@ def sources(root):
     return files
 
 
+def skill_sources(root):
+    directory = root/'skills/wayland-computer-use'
+    return {str(path.relative_to(directory)): path.read_bytes()
+            for path in sorted(directory.rglob('*')) if path.is_file()}
+
+
 def publish(root, destination):
     root, destination = Path(root), Path(destination)
     files = sources(root)
+    skills = skill_sources(root)
+    skill_bytes = skills.get('SKILL.md')
     for name, data in files.items():
         if name.endswith('.py'):
             compile(data, name, 'exec')
@@ -34,9 +42,13 @@ def publish(root, destination):
         subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', str(observer_tests), '-v'], cwd=root, check=True)
     if files != sources(root):
         raise ValueError("Source changed during tests; publish again after edits finish")
+    if skills != skill_sources(root):
+        raise ValueError('Skill changed during tests; publish again')
     if not (destination / "scripts" / "dev_host.py").is_file():
         raise ValueError("Destination must have the development host installed first")
-    manifest = json.dumps({'format': 2, 'files': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}, sort_keys=True).encode()
+    manifest = json.dumps({'format': 2, 'skill_sha256': hashlib.sha256(skill_bytes).hexdigest() if skill_bytes else None,
+                          'skill_files_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in skills.items()},
+                          'files': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}, sort_keys=True).encode()
     revision = hashlib.sha256(manifest).hexdigest()
     state = destination / ".dev"
     release = state / "releases" / revision

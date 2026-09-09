@@ -61,7 +61,10 @@ class Capturer:
 
     def capture(self, monitor, geometry=None, timeout=3, wait_damage_ms=0):
         requested = time.monotonic_ns()  # Lock contention is reported, not hidden in capture time.
-        with self.lock:
+        end = time.monotonic()+timeout
+        if timeout <= 0 or not self.lock.acquire(timeout=timeout):
+            raise TimeoutError('Capture lock timeout')
+        try:
             started = time.monotonic_ns()
             # Initial helper implementation intentionally falls back for transformed
             # or scaled outputs. Never approximate an input coordinate transform.
@@ -87,7 +90,6 @@ class Capturer:
                         raise ValueError('Unsupported output name')
                     request = f"{name} {x-monitor['x']} {y-monitor['y']} {width} {height} {wait_damage_ms}\n"
                     self.process.stdin.write(request.encode())
-                    end = time.monotonic()+timeout
                     line = bytearray()
                     while not line.endswith(b'\n') and len(line) < 4096:
                         line.extend(self._read(1, end))
@@ -111,8 +113,13 @@ class Capturer:
                 args += ['-g', f'{x},{y} {width}x{height}']
             else:
                 args += ['-o', monitor['name']]
-            width, height, rgb = parse_ppm(self.command(args+['-t', 'ppm', '-'], timeout=timeout))
+            remaining = end-time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Capture deadline exhausted')
+            width, height, rgb = parse_ppm(self.command(args+['-t', 'ppm', '-'], timeout=remaining))
             if geometry and (width, height) != tuple(geometry[2:]):
                 raise ValueError('Capture dimensions do not match logical region')
             return Capture(width, height, rgb, started, time.monotonic_ns(), 'grim-ppm',
                            fallback_reason=reason, requested_ns=requested)
+        finally:
+            self.lock.release()

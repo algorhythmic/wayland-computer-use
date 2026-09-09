@@ -1,0 +1,379 @@
+{
+  "schema": 1,
+  "environment": "obs",
+  "version": "32.2.2",
+  "evidence": "source_defaults",
+  "coverage": "Every nonempty frontend .ui shortcut plus Linux setShortcut/setShortcuts assignments (including preview nudges) from OBS 32.2.2, and five documented preview gestures. Configurable frontend actions have no universal recording/streaming hotkey; refresh reads the active profile and scene collection. Excludes inherited Qt editing keys, arbitrary widget key handlers and plugin-provided defaults.",
+  "sources": [
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/forms/OBSBasic.ui",
+      "sha256": "8f94681d2ff8b17092b560eaedd9a8a0e75c636df54be4ffa2d4af0f4e70e74b"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/forms/OBSBasicFilters.ui",
+      "sha256": "705af6838eb983c20ae364cf6f71bd4cae1345ace6ecd36f3287dfb8a92de636"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/forms/source-toolbar/media-controls.ui",
+      "sha256": "c37bac5dfcf516ed998ce9d3e0424daceeff2145d0dc5f6c9b5cc18ea9222458"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/widgets/OBSBasic.cpp",
+      "sha256": "8e27372e77b8377844be6f9d591a23089d302bdf12abee39c629aff9b65279e9"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/widgets/OBSBasic_Hotkeys.cpp",
+      "sha256": "8ceea89edb53d1a073cf9b554b579f13f8ad772dff648e718549d331d97673bf"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/dialogs/OBSBasicFilters.cpp",
+      "sha256": "a7aa865dc1fcb88e4607862049a9c9267efd2cd98be9e76d396e10d4e99b9037"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/widgets/OBSProjector.cpp",
+      "sha256": "eddf581b8b9a380a654894575ab3139cfe4edd054616663040ad4b654d21d003"
+    },
+    {
+      "url": "https://github.com/obsproject/obs-studio/blob/32.2.2/frontend/components/MediaControls.cpp",
+      "sha256": "deffc016bd5572c72f1d30eb5c424a47192ddb4ca6378a052f0bbb096bfb05eb"
+    },
+    {
+      "url": "https://obsproject.com/kb/keyboard-shortcuts"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "Ctrl+C",
+      "command": "actionCopySource",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+V",
+      "command": "actionPasteRef",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "F11",
+      "command": "actionFullscreenInterface",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Del",
+      "command": "actionRemoveScene",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Del",
+      "command": "actionRemoveSource",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+E",
+      "command": "actionEditTransform",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Shift+C",
+      "command": "actionCopyTransform",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Shift+V",
+      "command": "actionPasteTransform",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+F",
+      "command": "actionFitToScreen",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+S",
+      "command": "actionStretchToScreen",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+R",
+      "command": "actionResetTransform",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+D",
+      "command": "actionCenterToScreen",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Up",
+      "command": "actionMoveUp",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Down",
+      "command": "actionMoveDown",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Home",
+      "command": "actionMoveToTop",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+End",
+      "command": "actionMoveToBottom",
+      "context": "frontend/forms/OBSBasic.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Del",
+      "command": "actionRemoveFilter",
+      "context": "frontend/forms/OBSBasicFilters.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Up",
+      "command": "actionMoveUp",
+      "context": "frontend/forms/OBSBasicFilters.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Ctrl+Down",
+      "command": "actionMoveDown",
+      "context": "frontend/forms/OBSBasicFilters.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "P",
+      "command": "previousButton",
+      "context": "frontend/forms/source-toolbar/media-controls.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "S",
+      "command": "stopButton",
+      "context": "frontend/forms/source-toolbar/media-controls.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "N",
+      "command": "nextButton",
+      "context": "frontend/forms/source-toolbar/media-controls.ui",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "F2",
+      "command": "rename-scene",
+      "context": "scenes dock",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "F2",
+      "command": "rename-source",
+      "context": "sources dock",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+Q",
+      "command": "quit",
+      "context": "OBS application",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+Z",
+      "command": "undo",
+      "context": "OBS application",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Z",
+      "command": "redo",
+      "context": "OBS application",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+Y",
+      "command": "redo",
+      "context": "OBS application",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "F2",
+      "command": "rename-filter",
+      "context": "Filters dialog",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Delete",
+      "command": "remove-filter",
+      "context": "Filters dialog",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+C",
+      "command": "copy-filter",
+      "context": "Filters dialog",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "CTRL+V",
+      "command": "paste-filter",
+      "context": "Filters dialog",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Escape",
+      "command": "close-projector",
+      "context": "projector",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "R",
+      "command": "restart-media",
+      "context": "media controls",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Right",
+      "command": "seek-forward",
+      "context": "media controls",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Left",
+      "command": "seek-backward",
+      "context": "media controls",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "space",
+      "command": "play-pause",
+      "context": "media controls",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Up",
+      "command": "nudge-1-pixel-up",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "SHIFT+Up",
+      "command": "nudge-10-pixels-up",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Down",
+      "command": "nudge-1-pixel-down",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "SHIFT+Down",
+      "command": "nudge-10-pixels-down",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Left",
+      "command": "nudge-1-pixel-left",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "SHIFT+Left",
+      "command": "nudge-10-pixels-left",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "Right",
+      "command": "nudge-1-pixel-right",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "SHIFT+Right",
+      "command": "nudge-10-pixels-right",
+      "context": "preview with bounding box selected",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability."
+    },
+    {
+      "shortcut": "ALT + drag",
+      "command": "crop",
+      "context": "preview; pan/zoom require fixed scaling",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability.",
+      "notation": "gesture"
+    },
+    {
+      "shortcut": "SHIFT + drag",
+      "command": "stretch",
+      "context": "preview; pan/zoom require fixed scaling",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability.",
+      "notation": "gesture"
+    },
+    {
+      "shortcut": "CTRL + drag",
+      "command": "temporarily-disable-snapping",
+      "context": "preview; pan/zoom require fixed scaling",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability.",
+      "notation": "gesture"
+    },
+    {
+      "shortcut": "space then drag",
+      "command": "pan-fixed-scale-preview",
+      "context": "preview; pan/zoom require fixed scaling",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability.",
+      "notation": "gesture"
+    },
+    {
+      "shortcut": "space + scroll",
+      "command": "zoom-fixed-scale-preview",
+      "context": "preview; pan/zoom require fixed scaling",
+      "condition": "Focused widget, selection, enabled action and open dialog determine availability.",
+      "notation": "gesture"
+    }
+  ],
+  "package": "obs-studio",
+  "configurable_commands": [
+    "OBSBasic.AddChapterMarker",
+    "OBSBasic.DisablePreview",
+    "OBSBasic.DisablePreviewProgram",
+    "OBSBasic.EnablePreview",
+    "OBSBasic.EnablePreviewProgram",
+    "OBSBasic.ForceStopStreaming",
+    "OBSBasic.HideContextBar",
+    "OBSBasic.PauseRecording",
+    "OBSBasic.ResetStats",
+    "OBSBasic.Screenshot",
+    "OBSBasic.SelectedSourceScreenshot",
+    "OBSBasic.ShowContextBar",
+    "OBSBasic.SplitFile",
+    "OBSBasic.StartRecording",
+    "OBSBasic.StartReplayBuffer",
+    "OBSBasic.StartStreaming",
+    "OBSBasic.StartVirtualCam",
+    "OBSBasic.StopRecording",
+    "OBSBasic.StopReplayBuffer",
+    "OBSBasic.StopStreaming",
+    "OBSBasic.StopVirtualCam",
+    "OBSBasic.TogglePreviewProgram",
+    "OBSBasic.Transition",
+    "OBSBasic.UnpauseRecording",
+    "OBSBasic.hpp"
+  ]
+}

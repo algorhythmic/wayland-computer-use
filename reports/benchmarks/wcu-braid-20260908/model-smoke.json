@@ -1,0 +1,503 @@
+{
+  "identity": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {}
+    },
+    "serverInfo": {
+      "name": "wayland-computer-use",
+      "version": "6bfc5c5c72b861a8b163ede300595386f07a4a6d21665d1c0d15714a08aed452"
+    },
+    "instructions": "Shared live desktop: retain approval gates. Use fresh screenshots before input. For approval focus changes approve one combined restore_focus action naming target_window and target_title. After a development reload all old frame IDs are invalid; capture and review again. Never replay failed input."
+  },
+  "tools": [
+    "context_for_task",
+    "desktop_state",
+    "screenshot",
+    "focus_window",
+    "pointer",
+    "type_text",
+    "press_key",
+    "scroll",
+    "drag",
+    "run_steps",
+    "observe_window",
+    "wait_for",
+    "stop_observing"
+  ],
+  "calls": [
+    {
+      "tool": "observe_window",
+      "elapsed_ms": 49.895235,
+      "response_bytes": 227546,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 163908,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": null
+    },
+    {
+      "tool": "context_for_task",
+      "elapsed_ms": 201.042549,
+      "response_bytes": 651,
+      "images": [],
+      "is_error": false,
+      "sequence": null
+    },
+    {
+      "tool": "type_text",
+      "elapsed_ms": 127.332021,
+      "response_bytes": 231718,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 165054,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": {
+        "steps_total": 1,
+        "steps_completed": 1,
+        "stopped": false,
+        "stop_reason": null,
+        "last_completed_action": 0,
+        "interrupted_step": null,
+        "unattempted_steps": [],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "matched",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "segments_total": 1,
+            "action_completed_ns": 2012655272785
+          }
+        ]
+      }
+    },
+    {
+      "tool": "press_key",
+      "elapsed_ms": 90.717284,
+      "response_bytes": 232009,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 165292,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": {
+        "steps_total": 1,
+        "steps_completed": 1,
+        "stopped": false,
+        "stop_reason": null,
+        "last_completed_action": 0,
+        "interrupted_step": null,
+        "unattempted_steps": [],
+        "steps": [
+          {
+            "index": 0,
+            "action": "press_key",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "matched",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "action_completed_ns": 2034350317596
+          }
+        ]
+      }
+    },
+    {
+      "tool": "run_steps",
+      "elapsed_ms": 145.849566,
+      "response_bytes": 5314639,
+      "images": [
+        {
+          "width": 2560,
+          "height": 1440,
+          "png_bytes": 3984109,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": true,
+      "sequence": {
+        "steps_total": 2,
+        "steps_completed": 0,
+        "stopped": true,
+        "stop_reason": "ActionRejected",
+        "last_completed_action": null,
+        "interrupted_step": null,
+        "unattempted_steps": [
+          0,
+          1
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 1,
+            "action": "press_key",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "observe_window",
+      "elapsed_ms": 39.988054,
+      "response_bytes": 230598,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 165079,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": null
+    },
+    {
+      "tool": "run_steps",
+      "elapsed_ms": 152.34874,
+      "response_bytes": 223865,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 166225,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": {
+        "steps_total": 2,
+        "steps_completed": 2,
+        "stopped": false,
+        "stop_reason": null,
+        "last_completed_action": 1,
+        "interrupted_step": null,
+        "unattempted_steps": [],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "not_requested",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "segments_total": 1,
+            "action_completed_ns": 2089037928587
+          },
+          {
+            "index": 1,
+            "action": "press_key",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "matched",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "action_completed_ns": 2089060530101,
+            "after_status": "matched"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "observe_window",
+      "elapsed_ms": 51.680864,
+      "response_bytes": 227541,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 163901,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": null
+    },
+    {
+      "tool": "run_steps",
+      "elapsed_ms": 142.256753,
+      "response_bytes": 5248155,
+      "images": [
+        {
+          "width": 2560,
+          "height": 1440,
+          "png_bytes": 3933888,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": true,
+      "sequence": {
+        "steps_total": 4,
+        "steps_completed": 0,
+        "stopped": true,
+        "stop_reason": "ActionRejected",
+        "last_completed_action": null,
+        "interrupted_step": null,
+        "unattempted_steps": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 1,
+            "action": "press_key",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 2,
+            "action": "type_text",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 3,
+            "action": "press_key",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "run_steps",
+      "elapsed_ms": 71.788896,
+      "response_bytes": 2675010,
+      "images": [
+        {
+          "width": 1080,
+          "height": 1920,
+          "png_bytes": 2004208,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": true,
+      "sequence": {
+        "steps_total": 4,
+        "steps_completed": 0,
+        "stopped": true,
+        "stop_reason": "ValueError",
+        "last_completed_action": null,
+        "interrupted_step": null,
+        "unattempted_steps": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 1,
+            "action": "press_key",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 2,
+            "action": "type_text",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          },
+          {
+            "index": 3,
+            "action": "press_key",
+            "status": "unattempted",
+            "injection": "not_started",
+            "verification": "not_requested",
+            "submitted_segments": 0,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "focus_window",
+      "elapsed_ms": 129.100242,
+      "response_bytes": 5238855,
+      "images": [
+        {
+          "width": 2560,
+          "height": 1440,
+          "png_bytes": 3927805,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": {
+        "steps_total": 1,
+        "steps_completed": 1,
+        "stopped": false,
+        "stop_reason": null,
+        "last_completed_action": 0,
+        "interrupted_step": null,
+        "unattempted_steps": [],
+        "steps": [
+          {
+            "index": 0,
+            "action": "focus_window",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "not_requested",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "action_completed_ns": 2321662200775
+          }
+        ]
+      }
+    },
+    {
+      "tool": "run_steps",
+      "elapsed_ms": 331.191448,
+      "response_bytes": 224492,
+      "images": [
+        {
+          "width": 409,
+          "height": 688,
+          "png_bytes": 166240,
+          "detail_hint": "original"
+        }
+      ],
+      "is_error": false,
+      "sequence": {
+        "steps_total": 4,
+        "steps_completed": 4,
+        "stopped": false,
+        "stop_reason": null,
+        "last_completed_action": 3,
+        "interrupted_step": null,
+        "unattempted_steps": [],
+        "steps": [
+          {
+            "index": 0,
+            "action": "type_text",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "not_requested",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "expect_status": "matched",
+            "segments_total": 1,
+            "action_completed_ns": 2351844538900
+          },
+          {
+            "index": 1,
+            "action": "press_key",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "matched",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "action_completed_ns": 2351865327561,
+            "after_status": "matched"
+          },
+          {
+            "index": 2,
+            "action": "type_text",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "not_requested",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "segments_total": 1,
+            "action_completed_ns": 2351956636650
+          },
+          {
+            "index": 3,
+            "action": "press_key",
+            "status": "done",
+            "injection": "submitted",
+            "verification": "matched",
+            "submitted_segments": 1,
+            "in_flight_unknown": false,
+            "application_accepted": "unverified",
+            "action_completed_ns": 2351979887761,
+            "after_status": "matched"
+          }
+        ]
+      }
+    }
+  ]
+}

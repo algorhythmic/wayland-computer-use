@@ -1,0 +1,37 @@
+{
+  "scope": "In-memory installed catalog retrieval; excludes loading, model inference and desktop input",
+  "catalog_revision": "54ea8e7bc51796fc6d38ab93c6297de69b7276a92e3d90cb5dd0a893f09cfaa0",
+  "record_count": 2052,
+  "interactive_p95_target_ms": 250,
+  "backends": {
+    "local": {
+      "first_query_ms": 61.01299,
+      "warm_p50_ms": 61.0911805,
+      "warm_p95_ms": 81.610491,
+      "median_payload_bytes": 6752.0,
+      "samples": 50,
+      "actual_backends": [
+        "local"
+      ],
+      "failures": [],
+      "unsupported_executable_recommendations": 0,
+      "budget_overruns": 0,
+      "incomplete_bundles": 0
+    },
+    "braid": {
+      "first_query_ms": 483.13112,
+      "warm_p50_ms": 147.465108,
+      "warm_p95_ms": 181.518814,
+      "median_payload_bytes": 7244.0,
+      "samples": 50,
+      "actual_backends": [
+        "braid"
+      ],
+      "failures": [],
+      "unsupported_executable_recommendations": 0,
+      "budget_overruns": 0,
+      "incomplete_bundles": 0
+    }
+  },
+  "status": "complete"
+}

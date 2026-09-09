@@ -11,7 +11,7 @@ import os
 WATCH_APP = None
 
 
-def probe(pid, title):
+def probe(pid, title, scope=None, read_text=None):
     import gi
     gi.require_version('Atspi', '2.0')
     from gi.repository import Atspi
@@ -32,19 +32,41 @@ def probe(pid, title):
             child = app.get_child_at_index(j)
             if child.get_name() == title:
                 candidates.append(child)
-    if len(candidates) != 1:
+    if len(candidates) != 1 or desktop.get_child_count() > 128 or top_levels > 128:
         reason = ('application_not_exposed' if not matched_apps else
                   'application_exposes_no_windows' if not top_levels else
                   'no_unique_pid_and_title_match')
         return {'status': 'unavailable', 'reason': reason}
-    nodes, queue = [], [(candidates[0], 'root', 0)]
+    return probe_tree(candidates[0], Atspi, scope, read_text)
+
+
+def resolve(root, selector, Atspi):
+    obj = root
+    path = selector.get('ref', 'root')
+    import re
+    if not re.fullmatch(r'root(?:/\d+){0,12}', path):
+        raise ValueError('Invalid ancestor reference')
+    for index in path.split('/')[1:]:
+        index = int(index)
+        if index >= obj.get_child_count():
+            raise ValueError('Ancestor no longer exists')
+        obj = obj.get_child_at_index(index)
+    name = '[protected]' if obj.get_role() == Atspi.Role.PASSWORD_TEXT else obj.get_name()
+    if name != selector['name'] or obj.get_role_name() != selector['role']:
+        raise ValueError('Ancestor identity changed')
+    return obj, path
+
+
+def probe_tree(root, Atspi, scope=None, read_text=None):
+    source = root
+    root, root_ref = resolve(root, scope, Atspi) if scope else (root, 'root')
+    nodes, queue = [], [(root, root_ref, 0)]
     truncated = False
     while queue and len(nodes) < 200:
         obj, path, depth = queue.pop(0)
         states = obj.get_state_set()
-        # Do not extract text contents or protected-entry names/values.
         protected = obj.get_role() == Atspi.Role.PASSWORD_TEXT
-        node = {'ref': path, 'role': obj.get_role_name(),
+        node = {'ref': path, 'role': obj.get_role_name(), 'protected': protected,
                 'name': '[protected]' if protected else (obj.get_name() or '')[:160],
                 'states': [name.lower() for name in
                            ('VISIBLE', 'SHOWING', 'ENABLED', 'SENSITIVE', 'FOCUSED',
@@ -60,15 +82,38 @@ def probe(pid, title):
             node['value'] = value.get_current_value()
         nodes.append(node)
         count = obj.get_child_count()
-        if depth >= 12:
-            truncated |= count > 0
-            continue
-        truncated |= count > 200
-        for i in range(min(count, 200)):
+        capacity = max(0, 200-len(nodes)-len(queue)) if depth < 12 else 0
+        truncated |= count > capacity
+        for i in range(min(count, capacity)):
             queue.append((obj.get_child_at_index(i), f'{path}/{i}', depth + 1))
-    return {'status': 'partial' if queue or truncated else 'available',
-            'source': 'atspi', 'nodes': nodes, 'refs': 'revision-local tree paths',
-            'coordinates': 'AT-SPI window-relative; not verified for input'}
+    complete = not queue and not truncated
+    focused = [node for node in nodes if 'focused' in node['states']]
+    result = {'status': 'available' if complete else 'partial',
+              'source': 'atspi', 'scope': {'ref': root_ref, 'name': '[protected]' if root.get_role() == Atspi.Role.PASSWORD_TEXT else root.get_name(), 'role': root.get_role_name()},
+              'complete': complete, 'nodes': nodes, 'refs': 'revision-local tree paths',
+              'focused_control': focused[0] if complete and len(focused) == 1 else None,
+              'focus_status': 'unique' if complete and len(focused) == 1 else 'ambiguous' if len(focused) > 1 else 'unavailable',
+              'coordinates': 'AT-SPI window-relative; not verified for input'}
+    if read_text:
+        text_obj, text_ref = resolve(source, read_text, Atspi)
+        if text_ref != root_ref and not text_ref.startswith(root_ref+'/'):
+            raise ValueError('Text reference outside requested scope')
+        if text_obj.get_role() == Atspi.Role.PASSWORD_TEXT:
+            result['text_readback'] = {'status': 'protected', 'verifiable': False}
+        else:
+            interface = text_obj.get_text_iface()
+            if interface:
+                count = interface.get_character_count()
+                limit = read_text.get('max_chars', 1024)
+                result['text_readback'] = {'status': 'available', 'ref': text_ref,
+                    # PyGObject's Accessible override also defines get_text()
+                    # (the legacy interface accessor). Dispatch through Text to
+                    # avoid calling that zero-argument method on real objects.
+                    'text': Atspi.Text.get_text(interface, 0, min(count, limit)), 'complete': count <= limit,
+                    'verifiable': count <= limit}
+            else:
+                result['text_readback'] = {'status': 'unavailable', 'verifiable': False}
+    return result
 
 
 def serve():
@@ -135,7 +180,7 @@ def serve():
                     unwatch()
                     continue
                 try:
-                    result = probe(request['pid'], request['title'])
+                    result = probe(request['pid'], request['title'], request.get('scope'), request.get('read_text'))
                 except Exception as exc:
                     result = {'status': 'unavailable', 'reason': type(exc).__name__}
                 result['events_available'] = bool(subscribed)

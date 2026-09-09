@@ -1,0 +1,5277 @@
+{
+  "schema": 1,
+  "environment": "lazyvim",
+  "version": "docs-2026-09-07",
+  "evidence": "documented_defaults",
+  "coverage": "Every mapping row in the official generated keymaps reference captured 2026-09-07, including optional extras with modes and module names. This documentation snapshot is not version-matched to a live editor. Plugin-local popup mappings, arbitrary Lua overrides and dynamically attached mappings need live discovery.",
+  "sources": [
+    {
+      "url": "https://github.com/LazyVim/lazyvim.github.io/blob/main/docs/keymaps.md",
+      "sha256": "9ef8eddb70cae87b528a67f67b824f52b006629eb3ab96d6c1534c06762bb189"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "j",
+      "command": "Down",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<Down>",
+      "command": "Down",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "k",
+      "command": "Up",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<Up>",
+      "command": "Up",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-h>",
+      "command": "Go to Left Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-j>",
+      "command": "Go to Lower Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-k>",
+      "command": "Go to Upper Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-l>",
+      "command": "Go to Right Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-Up>",
+      "command": "Increase Window Height",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-Down>",
+      "command": "Decrease Window Height",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-Left>",
+      "command": "Decrease Window Width",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-Right>",
+      "command": "Increase Window Width",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<A-j>",
+      "command": "Move Down",
+      "context": "General",
+      "modes": [
+        "n",
+        "i",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<A-k>",
+      "command": "Move Up",
+      "context": "General",
+      "modes": [
+        "n",
+        "i",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<S-h>",
+      "command": "Prev Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<S-l>",
+      "command": "Next Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[b",
+      "command": "Prev Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]b",
+      "command": "Next Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bb",
+      "command": "Switch to Other Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>`",
+      "command": "Switch to Other Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bd",
+      "command": "Delete Buffer",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bo",
+      "command": "Delete Other Buffers",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bi",
+      "command": "Delete Invisible Buffers",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bD",
+      "command": "Delete Buffer and Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<esc>",
+      "command": "Escape and Clear hlsearch",
+      "context": "General",
+      "modes": [
+        "i",
+        "n",
+        "s"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ur",
+      "command": "Redraw / Clear hlsearch / Diff Update",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "n",
+      "command": "Next Search Result",
+      "context": "General",
+      "modes": [
+        "n",
+        "x",
+        "o"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "N",
+      "command": "Prev Search Result",
+      "context": "General",
+      "modes": [
+        "n",
+        "x",
+        "o"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<C-s>",
+      "command": "Save File",
+      "context": "General",
+      "modes": [
+        "i",
+        "x",
+        "n",
+        "s"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>K",
+      "command": "Keywordprg",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gco",
+      "command": "Add Comment Below",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gcO",
+      "command": "Add Comment Above",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>l",
+      "command": "Lazy",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fn",
+      "command": "New File",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xl",
+      "command": "Location List",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xq",
+      "command": "Quickfix List",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[q",
+      "command": "Previous Quickfix",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]q",
+      "command": "Next Quickfix",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cf",
+      "command": "Format",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cd",
+      "command": "Line Diagnostics",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]d",
+      "command": "Next Diagnostic",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[d",
+      "command": "Prev Diagnostic",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]e",
+      "command": "Next Error",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[e",
+      "command": "Prev Error",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]w",
+      "command": "Next Warning",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[w",
+      "command": "Prev Warning",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uf",
+      "command": "Toggle Auto Format (Global)",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uF",
+      "command": "Toggle Auto Format (Buffer)",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>us",
+      "command": "Toggle Spelling",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uw",
+      "command": "Toggle Wrap",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uL",
+      "command": "Toggle Relative Number",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ud",
+      "command": "Toggle Diagnostics",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ul",
+      "command": "Toggle Line Numbers",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uc",
+      "command": "Toggle Conceal Level",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uA",
+      "command": "Toggle Tabline",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uT",
+      "command": "Toggle Treesitter Highlight",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ub",
+      "command": "Toggle Dark Background",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uD",
+      "command": "Toggle Dimming",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ua",
+      "command": "Toggle Animations",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ug",
+      "command": "Toggle Indent Guides",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uS",
+      "command": "Toggle Smooth Scroll",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>dpp",
+      "command": "Toggle Profiler",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>dph",
+      "command": "Toggle Profiler Highlights",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uh",
+      "command": "Toggle Inlay Hints",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gL",
+      "command": "Git Log (cwd)",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gb",
+      "command": "Git Blame Line",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gf",
+      "command": "Git Current File History",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gl",
+      "command": "Git Log",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gB",
+      "command": "Git Browse (open)",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gY",
+      "command": "Git Browse (copy)",
+      "context": "General",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>qq",
+      "command": "Quit All",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ui",
+      "command": "Inspect Pos",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uI",
+      "command": "Inspect Tree",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>L",
+      "command": "LazyVim Changelog",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fT",
+      "command": "Terminal (cwd)",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ft",
+      "command": "Terminal (Root Dir)",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-/>",
+      "command": "Terminal (Root Dir)",
+      "context": "General",
+      "modes": [
+        "n",
+        "t"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-_>",
+      "command": "which_key_ignore",
+      "context": "General",
+      "modes": [
+        "n",
+        "t"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>-",
+      "command": "Split Window Below",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>|",
+      "command": "Split Window Right",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>wd",
+      "command": "Delete Window",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>wm",
+      "command": "Toggle Zoom Mode",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uZ",
+      "command": "Toggle Zoom Mode",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uz",
+      "command": "Toggle Zen Mode",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>l",
+      "command": "Last Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>o",
+      "command": "Close Other Tabs",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>f",
+      "command": "First Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab><tab>",
+      "command": "New Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>]",
+      "command": "Next Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>d",
+      "command": "Close Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><tab>[",
+      "command": "Previous Tab",
+      "context": "General",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cl",
+      "command": "Lsp Info",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gd",
+      "command": "Goto Definition",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gr",
+      "command": "References",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gI",
+      "command": "Goto Implementation",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gy",
+      "command": "Goto T[y]pe Definition",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gD",
+      "command": "Goto Declaration",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "K",
+      "command": "Hover",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gK",
+      "command": "Signature Help",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-k>",
+      "command": "Signature Help",
+      "context": "LSP",
+      "modes": [
+        "i"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ca",
+      "command": "Code Action",
+      "context": "LSP",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cc",
+      "command": "Run Codelens",
+      "context": "LSP",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cC",
+      "command": "Refresh & Display Codelens",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cR",
+      "command": "Rename File",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cr",
+      "command": "Rename",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cA",
+      "command": "Source Action",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]]",
+      "command": "Next Reference",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[[",
+      "command": "Prev Reference",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<a-n>",
+      "command": "Next Reference",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<a-p>",
+      "command": "Prev Reference",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>co",
+      "command": "Organize Imports",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ss",
+      "command": "LSP Symbols",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sS",
+      "command": "LSP Workspace Symbols",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gai",
+      "command": "C[a]lls Incoming",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "gao",
+      "command": "C[a]lls Outgoing",
+      "context": "LSP",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bj",
+      "command": "Pick Buffer",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bl",
+      "command": "Delete Buffers to the Left",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bp",
+      "command": "Toggle Pin",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>bP",
+      "command": "Delete Non-Pinned Buffers",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>br",
+      "command": "Delete Buffers to the Right",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[b",
+      "command": "Prev Buffer",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[B",
+      "command": "Move buffer prev",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]b",
+      "command": "Next Buffer",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]B",
+      "command": "Move buffer next",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<S-h>",
+      "command": "Prev Buffer",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<S-l>",
+      "command": "Next Buffer",
+      "context": "[bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cF",
+      "command": "Format Injected Langs",
+      "context": "[conform.nvim](https://github.com/stevearc/conform.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-s>",
+      "command": "Toggle Flash Search",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "c"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "r",
+      "command": "Remote Flash",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "o"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "R",
+      "command": "Treesitter Search",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "s",
+      "command": "Flash",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "S",
+      "command": "Flash Treesitter",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-space>",
+      "command": "Treesitter Incremental Selection",
+      "context": "[flash.nvim](https://github.com/folke/flash.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sr",
+      "command": "Search and Replace",
+      "context": "[grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cm",
+      "command": "Mason",
+      "context": "[mason.nvim](https://github.com/mason-org/mason.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-b>",
+      "command": "Scroll Backward",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n",
+        "i",
+        "s"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-f>",
+      "command": "Scroll Forward",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n",
+        "i",
+        "s"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sn",
+      "command": "+noice",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sna",
+      "command": "Noice All",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>snd",
+      "command": "Dismiss All",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>snh",
+      "command": "Noice History",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>snl",
+      "command": "Noice Last Message",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>snt",
+      "command": "Noice Picker (Telescope/FzfLua)",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<S-Enter>",
+      "command": "Redirect Cmdline",
+      "context": "[noice.nvim](https://github.com/folke/noice.nvim.git)",
+      "modes": [
+        "c"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>qd",
+      "command": "Don't Save Current Session",
+      "context": "[persistence.nvim](https://github.com/folke/persistence.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ql",
+      "command": "Restore Last Session",
+      "context": "[persistence.nvim](https://github.com/folke/persistence.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>qs",
+      "command": "Restore Session",
+      "context": "[persistence.nvim](https://github.com/folke/persistence.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>qS",
+      "command": "Select Session",
+      "context": "[persistence.nvim](https://github.com/folke/persistence.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader><space>",
+      "command": "Find Files (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>,",
+      "command": "Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>.",
+      "command": "Toggle Scratch Buffer",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>/",
+      "command": "Grep (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>:",
+      "command": "Command History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>dps",
+      "command": "Profiler Scratch Buffer",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>e",
+      "command": "Explorer Snacks (root dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>E",
+      "command": "Explorer Snacks (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fb",
+      "command": "Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fB",
+      "command": "Buffers (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fc",
+      "command": "Find Config File",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fe",
+      "command": "Explorer Snacks (root dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fE",
+      "command": "Explorer Snacks (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>ff",
+      "command": "Find Files (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fF",
+      "command": "Find Files (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fg",
+      "command": "Find Files (git-files)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fp",
+      "command": "Projects",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fr",
+      "command": "Recent",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>fR",
+      "command": "Recent (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gd",
+      "command": "Git Diff (hunks)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gD",
+      "command": "Git Diff (origin)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gi",
+      "command": "GitHub Issues (open)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gI",
+      "command": "GitHub Issues (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gp",
+      "command": "GitHub Pull Requests (open)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gP",
+      "command": "GitHub Pull Requests (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gs",
+      "command": "Git Status",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>gS",
+      "command": "Git Stash",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>n",
+      "command": "Notification History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>S",
+      "command": "Select Scratch Buffer",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>s\"",
+      "command": "Registers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>s/",
+      "command": "Search History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sa",
+      "command": "Autocmds",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sb",
+      "command": "Buffer Lines",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sB",
+      "command": "Grep Open Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sc",
+      "command": "Command History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sC",
+      "command": "Commands",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sd",
+      "command": "Diagnostics",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sD",
+      "command": "Buffer Diagnostics",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sg",
+      "command": "Grep (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sG",
+      "command": "Grep (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sh",
+      "command": "Help Pages",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sH",
+      "command": "Highlights",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>si",
+      "command": "Icons",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sj",
+      "command": "Jumps",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sk",
+      "command": "Keymaps",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sl",
+      "command": "Location List",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sm",
+      "command": "Marks",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sM",
+      "command": "Man Pages",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sp",
+      "command": "Search for Plugin Spec",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sq",
+      "command": "Quickfix List",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sR",
+      "command": "Resume",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>su",
+      "command": "Undotree",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sw",
+      "command": "Visual selection or word (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sW",
+      "command": "Visual selection or word (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>uC",
+      "command": "Colorschemes",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>un",
+      "command": "Dismiss All Notifications",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>st",
+      "command": "Todo",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>sT",
+      "command": "Todo/Fix/Fixme",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xt",
+      "command": "Todo (Trouble)",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xT",
+      "command": "Todo/Fix/Fixme (Trouble)",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[t",
+      "command": "Previous Todo Comment",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]t",
+      "command": "Next Todo Comment",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cs",
+      "command": "Symbols (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>cS",
+      "command": "LSP references/definitions/... (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xL",
+      "command": "Location List (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xQ",
+      "command": "Quickfix List (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xx",
+      "command": "Diagnostics (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>xX",
+      "command": "Buffer Diagnostics (Trouble)",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "[q",
+      "command": "Previous Trouble/Quickfix Item",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "]q",
+      "command": "Next Trouble/Quickfix Item",
+      "context": "[trouble.nvim](https://github.com/folke/trouble.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<c-w><space>",
+      "command": "Window Hydra Mode (which-key)",
+      "context": "[which-key.nvim](https://github.com/folke/which-key.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>?",
+      "command": "Buffer Keymaps (which-key)",
+      "context": "[which-key.nvim](https://github.com/folke/which-key.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists."
+    },
+    {
+      "shortcut": "<leader>aa",
+      "command": "Ask Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>ac",
+      "command": "Chat with Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>ae",
+      "command": "Edit Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>af",
+      "command": "Focus Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>ah",
+      "command": "Avante History",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>am",
+      "command": "Select Avante Model",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>an",
+      "command": "New Avante Chat",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>ap",
+      "command": "Switch Avante Provider",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>ar",
+      "command": "Refresh Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>as",
+      "command": "Stop Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>at",
+      "command": "Toggle Avante",
+      "context": "[avante.nvim](https://github.com/yetone/avante.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.avante"
+    },
+    {
+      "shortcut": "<leader>a",
+      "command": "+ai",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>aa",
+      "command": "Accept diff",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>ab",
+      "command": "Add current buffer",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>ac",
+      "command": "Toggle Claude",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>aC",
+      "command": "Continue Claude",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>ad",
+      "command": "Deny diff",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>af",
+      "command": "Focus Claude",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>ar",
+      "command": "Resume Claude",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>as",
+      "command": "Add file",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<leader>as",
+      "command": "Send to Claude",
+      "context": "[claudecode.nvim](https://github.com/coder/claudecode.nvim.git)",
+      "modes": [
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.claudecode"
+    },
+    {
+      "shortcut": "<c-s>",
+      "command": "Submit Prompt",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>a",
+      "command": "+ai",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>aa",
+      "command": "Toggle (CopilotChat)",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>ap",
+      "command": "Prompt Actions (CopilotChat)",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>aq",
+      "command": "Quick Chat (CopilotChat)",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>ax",
+      "command": "Clear (CopilotChat)",
+      "context": "[CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.copilot-chat"
+    },
+    {
+      "shortcut": "<leader>a",
+      "command": "+ai",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>aa",
+      "command": "Sidekick Toggle CLI",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>ad",
+      "command": "Detach a CLI Session",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>af",
+      "command": "Send File",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>ap",
+      "command": "Sidekick Select Prompt",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>as",
+      "command": "Select CLI",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>at",
+      "command": "Send This",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<leader>av",
+      "command": "Send Visual Selection",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "<c-.>",
+      "command": "Sidekick Focus",
+      "context": "[sidekick.nvim](https://github.com/folke/sidekick.nvim.git)",
+      "modes": [
+        "n",
+        "i",
+        "t",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ai.sidekick"
+    },
+    {
+      "shortcut": "gsa",
+      "command": "Add Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsd",
+      "command": "Delete Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsf",
+      "command": "Find Right Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsF",
+      "command": "Find Left Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsh",
+      "command": "Highlight Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsn",
+      "command": "Update `MiniSurround.config.n_lines`",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "gsr",
+      "command": "Replace Surrounding",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.mini-surround"
+    },
+    {
+      "shortcut": "<leader>cn",
+      "command": "Generate Annotations (Neogen)",
+      "context": "[neogen](https://github.com/danymat/neogen.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.neogen"
+    },
+    {
+      "shortcut": "<leader>p",
+      "command": "Open Yank History",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "<p",
+      "command": "Put and Indent Left",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "<P",
+      "command": "Put Before and Indent Left",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "=p",
+      "command": "Put After Applying a Filter",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "=P",
+      "command": "Put Before Applying a Filter",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": ">p",
+      "command": "Put and Indent Right",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": ">P",
+      "command": "Put Before and Indent Right",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "[p",
+      "command": "Put Indented Before Cursor (Linewise)",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "[P",
+      "command": "Put Indented Before Cursor (Linewise)",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "[y",
+      "command": "Cycle Forward Through Yank History",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "]p",
+      "command": "Put Indented After Cursor (Linewise)",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "]P",
+      "command": "Put Indented After Cursor (Linewise)",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "]y",
+      "command": "Cycle Backward Through Yank History",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "gp",
+      "command": "Put Text After Selection",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "gP",
+      "command": "Put Text Before Selection",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "p",
+      "command": "Put Text After Cursor",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "P",
+      "command": "Put Text Before Cursor",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "y",
+      "command": "Yank Text",
+      "context": "[yanky.nvim](https://github.com/gbprod/yanky.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.coding.yanky"
+    },
+    {
+      "shortcut": "<leader>da",
+      "command": "Run with Args",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>db",
+      "command": "Toggle Breakpoint",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dB",
+      "command": "Breakpoint Condition",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dc",
+      "command": "Run/Continue",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dC",
+      "command": "Run to Cursor",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dg",
+      "command": "Go to Line (No Execute)",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>di",
+      "command": "Step Into",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dj",
+      "command": "Down",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dk",
+      "command": "Up",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dl",
+      "command": "Run Last",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>do",
+      "command": "Step Out",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dO",
+      "command": "Step Over",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dP",
+      "command": "Pause",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dr",
+      "command": "Toggle REPL",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>ds",
+      "command": "Session",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dt",
+      "command": "Terminate",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>dw",
+      "command": "Widgets",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>de",
+      "command": "Eval",
+      "context": "[nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>du",
+      "command": "Dap UI",
+      "context": "[nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.dap.core"
+    },
+    {
+      "shortcut": "<leader>cs",
+      "command": "Aerial (Symbols)",
+      "context": "[aerial.nvim](https://github.com/stevearc/aerial.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.aerial"
+    },
+    {
+      "shortcut": "<leader>ss",
+      "command": "Goto Symbol (Aerial)",
+      "context": "[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.aerial"
+    },
+    {
+      "shortcut": "<C-a>",
+      "command": "Increment",
+      "context": "[dial.nvim](https://github.com/monaqa/dial.nvim.git)",
+      "modes": [
+        "n",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.dial"
+    },
+    {
+      "shortcut": "<C-x>",
+      "command": "Decrement",
+      "context": "[dial.nvim](https://github.com/monaqa/dial.nvim.git)",
+      "modes": [
+        "n",
+        "v"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.dial"
+    },
+    {
+      "shortcut": "g<C-a>",
+      "command": "Increment",
+      "context": "[dial.nvim](https://github.com/monaqa/dial.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.dial"
+    },
+    {
+      "shortcut": "g<C-x>",
+      "command": "Decrement",
+      "context": "[dial.nvim](https://github.com/monaqa/dial.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.dial"
+    },
+    {
+      "shortcut": "<leader>1",
+      "command": "Harpoon to File 1",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>2",
+      "command": "Harpoon to File 2",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>3",
+      "command": "Harpoon to File 3",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>4",
+      "command": "Harpoon to File 4",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>5",
+      "command": "Harpoon to File 5",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>6",
+      "command": "Harpoon to File 6",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>7",
+      "command": "Harpoon to File 7",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>8",
+      "command": "Harpoon to File 8",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>9",
+      "command": "Harpoon to File 9",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>h",
+      "command": "Harpoon Quick Menu",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "<leader>H",
+      "command": "Harpoon File",
+      "context": "[harpoon](https://github.com/ThePrimeagen/harpoon.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.harpoon2"
+    },
+    {
+      "shortcut": "[[",
+      "command": "Prev Reference",
+      "context": "[vim-illuminate](https://github.com/RRethy/vim-illuminate.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.illuminate"
+    },
+    {
+      "shortcut": "]]",
+      "command": "Next Reference",
+      "context": "[vim-illuminate](https://github.com/RRethy/vim-illuminate.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.illuminate"
+    },
+    {
+      "shortcut": "gs",
+      "command": "Leap from Windows",
+      "context": "[leap.nvim](https://codeberg.org/andyg/leap.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.leap"
+    },
+    {
+      "shortcut": "s",
+      "command": "Leap Forward to",
+      "context": "[leap.nvim](https://codeberg.org/andyg/leap.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.leap"
+    },
+    {
+      "shortcut": "S",
+      "command": "Leap Backward to",
+      "context": "[leap.nvim](https://codeberg.org/andyg/leap.nvim.git)",
+      "modes": [
+        "n",
+        "o",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.leap"
+    },
+    {
+      "shortcut": "gz",
+      "command": "+surround",
+      "context": "[mini.surround](https://github.com/nvim-mini/mini.surround.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.leap"
+    },
+    {
+      "shortcut": "<leader>go",
+      "command": "Toggle mini.diff overlay",
+      "context": "[mini.diff](https://github.com/nvim-mini/mini.diff.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.mini-diff"
+    },
+    {
+      "shortcut": "<leader>fm",
+      "command": "Open mini.files (Directory of Current File)",
+      "context": "[mini.files](https://github.com/nvim-mini/mini.files.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.mini-files"
+    },
+    {
+      "shortcut": "<leader>fM",
+      "command": "Open mini.files (cwd)",
+      "context": "[mini.files](https://github.com/nvim-mini/mini.files.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.mini-files"
+    },
+    {
+      "shortcut": "<leader>cs",
+      "command": "Toggle Outline",
+      "context": "[outline.nvim](https://github.com/hedyhli/outline.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.outline"
+    },
+    {
+      "shortcut": "<leader>oo",
+      "command": "Run task",
+      "context": "[overseer.nvim](https://github.com/stevearc/overseer.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.overseer"
+    },
+    {
+      "shortcut": "<leader>ot",
+      "command": "Task action",
+      "context": "[overseer.nvim](https://github.com/stevearc/overseer.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.overseer"
+    },
+    {
+      "shortcut": "<leader>ow",
+      "command": "Task list",
+      "context": "[overseer.nvim](https://github.com/stevearc/overseer.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.overseer"
+    },
+    {
+      "shortcut": "<leader>r",
+      "command": "+refactor",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rc",
+      "command": "Debug Cleanup",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rf",
+      "command": "Extract Function",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rF",
+      "command": "Extract Function To File",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>ri",
+      "command": "Inline Variable",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rp",
+      "command": "Debug Print Variable",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rP",
+      "command": "Debug Print Location",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rs",
+      "command": "Select Refactor",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>rx",
+      "command": "Extract Variable",
+      "context": "[refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.refactoring"
+    },
+    {
+      "shortcut": "<leader>e",
+      "command": "Explorer Snacks (root dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_explorer"
+    },
+    {
+      "shortcut": "<leader>E",
+      "command": "Explorer Snacks (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_explorer"
+    },
+    {
+      "shortcut": "<leader>fe",
+      "command": "Explorer Snacks (root dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_explorer"
+    },
+    {
+      "shortcut": "<leader>fE",
+      "command": "Explorer Snacks (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_explorer"
+    },
+    {
+      "shortcut": "<leader><space>",
+      "command": "Find Files (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>,",
+      "command": "Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>/",
+      "command": "Grep (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>:",
+      "command": "Command History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fb",
+      "command": "Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fB",
+      "command": "Buffers (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fc",
+      "command": "Find Config File",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>ff",
+      "command": "Find Files (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fF",
+      "command": "Find Files (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fg",
+      "command": "Find Files (git-files)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fp",
+      "command": "Projects",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fr",
+      "command": "Recent",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>fR",
+      "command": "Recent (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gd",
+      "command": "Git Diff (hunks)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gD",
+      "command": "Git Diff (origin)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gi",
+      "command": "GitHub Issues (open)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gI",
+      "command": "GitHub Issues (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gp",
+      "command": "GitHub Pull Requests (open)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gP",
+      "command": "GitHub Pull Requests (all)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gs",
+      "command": "Git Status",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>gS",
+      "command": "Git Stash",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>n",
+      "command": "Notification History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>s\"",
+      "command": "Registers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>s/",
+      "command": "Search History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sa",
+      "command": "Autocmds",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sb",
+      "command": "Buffer Lines",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sB",
+      "command": "Grep Open Buffers",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sc",
+      "command": "Command History",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sC",
+      "command": "Commands",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sd",
+      "command": "Diagnostics",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sD",
+      "command": "Buffer Diagnostics",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sg",
+      "command": "Grep (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sG",
+      "command": "Grep (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sh",
+      "command": "Help Pages",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sH",
+      "command": "Highlights",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>si",
+      "command": "Icons",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sj",
+      "command": "Jumps",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sk",
+      "command": "Keymaps",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sl",
+      "command": "Location List",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sm",
+      "command": "Marks",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sM",
+      "command": "Man Pages",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sp",
+      "command": "Search for Plugin Spec",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sq",
+      "command": "Quickfix List",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sR",
+      "command": "Resume",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>su",
+      "command": "Undotree",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sw",
+      "command": "Visual selection or word (Root Dir)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sW",
+      "command": "Visual selection or word (cwd)",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n",
+        "x"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>uC",
+      "command": "Colorschemes",
+      "context": "[snacks.nvim](https://github.com/folke/snacks.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>st",
+      "command": "Todo",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>sT",
+      "command": "Todo/Fix/Fixme",
+      "context": "[todo-comments.nvim](https://github.com/folke/todo-comments.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.editor.snacks_picker"
+    },
+    {
+      "shortcut": "<leader>ta",
+      "command": "Ansible Run Playbook/Role",
+      "context": "[nvim-ansible](https://github.com/mfussenegger/nvim-ansible.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.ansible"
+    },
+    {
+      "shortcut": "<localleader>e",
+      "command": "Evaluate All",
+      "context": "[haskell-tools.nvim](https://github.com/mrcjkb/haskell-tools.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.haskell"
+    },
+    {
+      "shortcut": "<localleader>h",
+      "command": "Hoogle Signature",
+      "context": "[haskell-tools.nvim](https://github.com/mrcjkb/haskell-tools.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.haskell"
+    },
+    {
+      "shortcut": "<localleader>r",
+      "command": "REPL (Package)",
+      "context": "[haskell-tools.nvim](https://github.com/mrcjkb/haskell-tools.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.haskell"
+    },
+    {
+      "shortcut": "<localleader>R",
+      "command": "REPL (Buffer)",
+      "context": "[haskell-tools.nvim](https://github.com/mrcjkb/haskell-tools.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.haskell"
+    },
+    {
+      "shortcut": "<localleader>H",
+      "command": "Hoogle",
+      "context": "[telescope_hoogle](https://github.com/luc-tielen/telescope_hoogle.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.haskell"
+    },
+    {
+      "shortcut": "<leader>cp",
+      "command": "Markdown Preview",
+      "context": "[markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.markdown"
+    },
+    {
+      "shortcut": "<leader>dPc",
+      "command": "Debug Class",
+      "context": "[nvim-dap-python](https://github.com/mfussenegger/nvim-dap-python.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.python"
+    },
+    {
+      "shortcut": "<leader>dPt",
+      "command": "Debug Method",
+      "context": "[nvim-dap-python](https://github.com/mfussenegger/nvim-dap-python.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.python"
+    },
+    {
+      "shortcut": "<leader>cv",
+      "command": "Select VirtualEnv",
+      "context": "[venv-selector.nvim](https://github.com/linux-cultist/venv-selector.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.python"
+    },
+    {
+      "shortcut": "<leader>mc",
+      "command": "Metals compile cascade",
+      "context": "[nvim-metals](https://github.com/scalameta/nvim-metals.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.scala"
+    },
+    {
+      "shortcut": "<leader>me",
+      "command": "Metals commands",
+      "context": "[nvim-metals](https://github.com/scalameta/nvim-metals.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.scala"
+    },
+    {
+      "shortcut": "<leader>mh",
+      "command": "Metals hover worksheet",
+      "context": "[nvim-metals](https://github.com/scalameta/nvim-metals.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.scala"
+    },
+    {
+      "shortcut": "<leader>D",
+      "command": "Toggle DBUI",
+      "context": "[vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.sql"
+    },
+    {
+      "shortcut": "<localLeader>l",
+      "command": "+vimtex",
+      "context": "[vimtex](https://github.com/lervag/vimtex.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.tex"
+    },
+    {
+      "shortcut": "<leader>cp",
+      "command": "Toggle Typst Preview",
+      "context": "[typst-preview.nvim](https://github.com/chomosuke/typst-preview.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.lang.typst"
+    },
+    {
+      "shortcut": "<leader>t",
+      "command": "+test",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>ta",
+      "command": "Attach to Test (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tl",
+      "command": "Run Last (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>to",
+      "command": "Show Output (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tO",
+      "command": "Toggle Output Panel (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tr",
+      "command": "Run Nearest (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>ts",
+      "command": "Toggle Summary (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tS",
+      "command": "Stop (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tt",
+      "command": "Run File (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tT",
+      "command": "Run All Test Files (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>tw",
+      "command": "Toggle Watch (Neotest)",
+      "context": "[neotest](https://github.com/nvim-neotest/neotest.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>td",
+      "command": "Debug Nearest",
+      "context": "[nvim-dap](https://github.com/mfussenegger/nvim-dap.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.test.core"
+    },
+    {
+      "shortcut": "<leader>ue",
+      "command": "Edgy Toggle",
+      "context": "[edgy.nvim](https://github.com/folke/edgy.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ui.edgy"
+    },
+    {
+      "shortcut": "<leader>uE",
+      "command": "Edgy Select Window",
+      "context": "[edgy.nvim](https://github.com/folke/edgy.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.ui.edgy"
+    },
+    {
+      "shortcut": "<leader>sz",
+      "command": "Chezmoi",
+      "context": "[chezmoi.nvim](https://github.com/xvzc/chezmoi.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.chezmoi"
+    },
+    {
+      "shortcut": "<leader>G",
+      "command": "+Github",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gc",
+      "command": "+Commits",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gcc",
+      "command": "Close",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gce",
+      "command": "Expand",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gco",
+      "command": "Open To",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gcp",
+      "command": "Pop Out",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gcz",
+      "command": "Collapse",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gi",
+      "command": "+Issues",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gio",
+      "command": "Open",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gip",
+      "command": "Preview",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gl",
+      "command": "+Litee",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Glt",
+      "command": "Toggle Panel",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gp",
+      "command": "+Pull Request",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpc",
+      "command": "Close",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpd",
+      "command": "Details",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpe",
+      "command": "Expand",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpo",
+      "command": "Open",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpp",
+      "command": "PopOut",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpr",
+      "command": "Refresh",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpt",
+      "command": "Open To",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gpz",
+      "command": "Collapse",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gr",
+      "command": "+Review",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Grb",
+      "command": "Begin",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Grc",
+      "command": "Close",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Grd",
+      "command": "Delete",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gre",
+      "command": "Expand",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Grs",
+      "command": "Submit",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Grz",
+      "command": "Collapse",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gt",
+      "command": "+Threads",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gtc",
+      "command": "Create",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gtn",
+      "command": "Next",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>Gtt",
+      "command": "Toggle",
+      "context": "[gh.nvim](https://github.com/ldelossa/gh.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gh"
+    },
+    {
+      "shortcut": "<leader>gg",
+      "command": "GitUi (Root Dir)",
+      "context": "[mason.nvim](https://github.com/mason-org/mason.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gitui"
+    },
+    {
+      "shortcut": "<leader>gG",
+      "command": "GitUi (cwd)",
+      "context": "[mason.nvim](https://github.com/mason-org/mason.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.gitui"
+    },
+    {
+      "shortcut": "<leader>gi",
+      "command": "List Issues (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>gI",
+      "command": "Search Issues (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>gp",
+      "command": "List PRs (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>gP",
+      "command": "Search PRs (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>gr",
+      "command": "List Repos (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>gS",
+      "command": "Search (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>a",
+      "command": "+assignee (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>c",
+      "command": "+comment/code (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>g",
+      "command": "+goto_issue (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>i",
+      "command": "+issue (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>l",
+      "command": "+label (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>p",
+      "command": "+pr (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>pr",
+      "command": "+rebase (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>ps",
+      "command": "+squash (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>r",
+      "command": "+react (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<localleader>v",
+      "command": "+review (Octo)",
+      "context": "[octo.nvim](https://github.com/pwntester/octo.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.octo"
+    },
+    {
+      "shortcut": "<leader>fp",
+      "command": "Projects",
+      "context": "[fzf-lua](https://github.com/ibhagwan/fzf-lua.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.project"
+    },
+    {
+      "shortcut": "<leader>fp",
+      "command": "Projects",
+      "context": "[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.project"
+    },
+    {
+      "shortcut": "<leader>R",
+      "command": "+Rest",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rb",
+      "command": "Open scratchpad",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rc",
+      "command": "Copy as cURL",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>RC",
+      "command": "Paste from curl",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Re",
+      "command": "Set environment",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rg",
+      "command": "Download GraphQL schema",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Ri",
+      "command": "Inspect current request",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rn",
+      "command": "Jump to next request",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rp",
+      "command": "Jump to previous request",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rq",
+      "command": "Close window",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rr",
+      "command": "Replay the last request",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rs",
+      "command": "Send the request",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>RS",
+      "command": "Show stats",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    },
+    {
+      "shortcut": "<leader>Rt",
+      "command": "Toggle headers/body",
+      "context": "[kulala.nvim](https://github.com/mistweaverco/kulala.nvim.git)",
+      "modes": [
+        "n"
+      ],
+      "notation": "vim",
+      "condition": "Documented candidate; configured plugins, overrides, buffer, LSP capabilities and mode determine whether this mapping exists.",
+      "extra": "lazyvim.plugins.extras.util.rest"
+    }
+  ],
+  "version_kind": "documentation_snapshot",
+  "leader_default": "<Space>",
+  "localleader_default": "\\"
+}

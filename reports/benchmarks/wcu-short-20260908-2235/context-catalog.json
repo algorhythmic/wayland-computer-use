@@ -1,0 +1,23 @@
+{
+  "scope": "In-memory installed catalog retrieval; excludes loading, model inference and desktop input",
+  "catalog_revision": "5adc8655ca0e2d4f49ba996889a70b9eff5ff79c1dd807e5d15d8e14ab50ee5c",
+  "record_count": 2306,
+  "interactive_p95_target_ms": 250,
+  "backends": {
+    "local": {
+      "first_query_ms": 68.41973,
+      "warm_p50_ms": 69.118983,
+      "warm_p95_ms": 88.441127,
+      "median_payload_bytes": 6752,
+      "samples": 15,
+      "actual_backends": [
+        "local"
+      ],
+      "failures": [],
+      "unsupported_executable_recommendations": 0,
+      "budget_overruns": 0,
+      "incomplete_bundles": 0
+    }
+  },
+  "status": "complete"
+}

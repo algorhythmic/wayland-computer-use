@@ -7,10 +7,29 @@ description: Inspect and operate native application interfaces on an unlocked Hy
 
 Use the plugin's `wayland` MCP tools. This is a custom Hyprland integration, not OpenAI's bundled Computer Use implementation. It shares the user's foreground desktop and pointer.
 
-1. Call `desktop_state` to inspect available monitors, windows, and backend readiness.
-2. Select an existing window with `focus_window` when needed and inspect its returned screenshot. Do not follow it with a redundant screenshot call: approval of that separate call can steal focus again.
-3. Use the returned `frame_id` for one input action. Coordinates are pixels in that exact screenshot, starting at its top-left. Do not use global monitor coordinates or coordinates from a resized preview; use the original image dimensions in metadata.
-4. Input tools return a new screenshot and frame ID. Inspect it before the next action. Frames expire after two minutes and are invalidated by monitor-layout or active-window changes; take a fresh screenshot if rejected.
+1. Inspect `desktop_state`, including runtime hash, tool-contract capabilities, and context schema. Record the loaded skill file's revision separately; the server cannot know which instructions this client loaded.
+2. Observe the intended window or focus an explicit existing destination and inspect the returned screenshot. At each new subgoal, use `context_for_task` with the current observation reference and a byte budget. Its exploration references require the listed missing evidence before execution.
+3. Compose the predictable portion as a guarded `run_steps` sequence with local entry/outcome checks. Stop the batch where an unknown menu, dialog, search result, or canvas requires a new decision. A source default or retrieval score does not establish applicability.
+4. Inspect the outcome and execution ledger, then continue remaining work. After partial input, focus escape, or timeout, obtain fresh evidence and reconcile submitted segments; never replay the whole action automatically.
+
+Coordinates belong to the exact reviewed screenshot and `frame_id`, at its original dimensions. A coordinate action may only be the first sequence step. Waits do not refresh its age or pixels. Frames expire after two minutes; new result views carry fresh provenance and transforms. Use `result_view: {"kind":"target"}` for a window, `{"kind":"monitor"}` for overview, or a supported region. Dialogs or overlays outside the crop require broader inspection.
+
+The current contract provides segment guards, an execution ledger, explicit window transitions, and a shared `duration_ms` budget (default 60 seconds, maximum 120). `focus_until`, semantic activation, arbitrary code, and asynchronous input remain unsupported. Check runtime capabilities before using newer fields in an older connected client. See [execution and context](references/execution-and-context.md) for the contract, planning state, and recipe validation.
+
+## Environment shortcuts
+
+Before planning keyboard navigation or batches, use the relevant
+[environment context](references/environment-context.md). It provides full,
+searchable source catalogs for Chromium, Obsidian, Nautilus, Herdr, OBS,
+LazyVim and Neovim, and a bounded DaVinci Resolve 21.1 core shortcut catalog,
+plus a read-only collector for active Omarchy bindings,
+effective Ghostty bindings, Obsidian vault overrides, Herdr configuration and
+OBS profile/scene hotkeys. Preserve Vim modes and Herdr prefix sequences. Load
+desktop interception context and the apps needed for the
+task. Check version, coverage, current focus/mode and outcome evidence when
+choosing a shortcut. `desktop_state` lists windows and backend readiness; it does
+not enumerate keybindings. A catalog entry is a candidate action, not proof of
+current availability or permission to perform it.
 
 ## Local observations and outcome waits
 
@@ -22,7 +41,7 @@ Standalone `wayland_observer` revisions and accessibility refs are never input
 capabilities; do not substitute them for an input server's frame ID.
 
 Use `wait_for` for an exact accessible name, unique mapped window title/class,
-or change inside a specified crop region. Region waits need a retained
+visible/enabled controls, complete-scope disappearance, supported text readback, or a changed/settled crop region. Region waits need a retained
 `since_revision` with baseline pixels. `wait_for_change` on the standalone
 observer still means any change, including animation. Prefer a condition tied
 to the user's task. Accessibility may be unavailable or partial; a name wait
@@ -49,16 +68,14 @@ A step belongs in one `run_steps` call when its success can be checked without
 looking at pixels: a window of a known class appears or becomes focused, a
 title changes, an accessible control appears. Reading search results, a
 dialog, or a page whose content decides the next action is a model decision
-and ends the sequence. Give each step an `expect` condition (waited for before
-acting) or an `after` condition (waited for afterwards); a step without
-`expect` acts only if the active window is unchanged. The sequence stops at
+and ends the sequence. Use `expect` for readiness before a step and `after` for its outcome. Readiness never changes the intended input target. Every input and text segment rechecks that target, even when a condition matched. The sequence stops at
 the first unmet condition and reports every step; nothing is retried.
 Coordinate actions may only be the first step, on the reviewed frame.
 
 Omarchy launches by compositor hotkey, so a launch has a checkable outcome:
 `SUPER+Return` terminal, `SUPER+SHIFT+Return` or `SUPER+SHIFT+B` browser,
-`SUPER+SHIFT+O` Obsidian. Verify bindings with `desktop_state` or the user's
-configuration before relying on them.
+`SUPER+SHIFT+O` Obsidian. Verify bindings through the environment-context
+collector or the user's configuration before relying on them.
 
 Obsidian, new note with a title and body, after focusing its window:
 
@@ -74,10 +91,10 @@ Obsidian, new note with a title and body, after focusing its window:
 ```
 
 Launching Obsidian from any window is `{"action": "press_key", "key": "SUPER+SHIFT+o",
-"after": {"condition": {"kind": "window", "class": "md.obsidian.Obsidian", "focused": true}, "timeout_ms": 8000}}`
+"transition": "matched_window", "after": {"condition": {"kind": "window", "class": "md.obsidian.Obsidian", "focused": true}, "timeout_ms": 8000}}`
 as the first step. Copying a selection then switching apps is
 `press_key CTRL+c`, then `focus_window` with the address from `desktop_state`
-and `expect` on that window being focused. Verify the result once at the end
+and `expect` that the destination exists (`{"kind":"window","address":"0x..."}`), followed by `after` on that same address with `focused:true`. Do not require destination focus before the focus action. A newly opened window needs an explicit `transition:"matched_window"` and a unique focused-window `after` match. Verify the result once at the end
 from the returned screenshot, or by a read-only check the task allows.
 
 ## Approval dialogs and focus

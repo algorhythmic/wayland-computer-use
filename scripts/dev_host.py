@@ -131,6 +131,13 @@ class Runtime:
                 raise ValueError("Tool definitions changed; host/client rediscovery required")
             module.session_env()
             desktop = module.Desktop()
+            if hasattr(desktop, 'runtime_identity'):
+                desktop.runtime_identity = {'kind': 'published_bundle', 'revision': revision,
+                    'source_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()},
+                    'published_skill_sha256': bundle.get('skill_sha256') if manifest_path.exists() else None,
+                    'published_skill_files_sha256': bundle.get('skill_files_sha256') if manifest_path.exists() else None}
+                if 'WCU_CONTEXT_ROOT' not in os.environ:
+                    desktop.context_root = self.root/'.dev/keyboard-context/normalized'
             if hasattr(desktop, 'warm'):
                 desktop.warm()  # Pre-start the accessibility worker; legacy bundles lack this.
         except BaseException:
@@ -170,8 +177,9 @@ class Runtime:
             result = {"content": exc.content, "isError": True}
         except Exception as exc:
             result = {"content": [module.text_content({"error": str(exc)[:1400]})], "isError": True}
-        result["content"].append(module.text_content(
-            {"development_runtime": {"revision": self.revision, "host_pid": os.getpid()}}))
+        if params.get('name') != 'context_for_task':
+            result["content"].append(module.text_content(
+                {"development_runtime": {"revision": self.revision, "host_pid": os.getpid()}}))
         return result
 
 

@@ -92,13 +92,13 @@ class Accessibility:
         with self.request_lock:
             self._stop()
 
-    def probe(self, pid, title, timeout=2):
+    def probe(self, pid, title, timeout=2, scope=None, read_text=None):
         with self.request_lock:
             try:
                 self._start()
                 self.sequence += 1
                 sequence = self.sequence
-                self.process.stdin.write((json.dumps({'id': sequence, 'pid': pid, 'title': title})+'\n').encode())
+                self.process.stdin.write((json.dumps({'id': sequence, 'pid': pid, 'title': title, 'scope': scope, 'read_text': read_text})+'\n').encode())
                 self.process.stdin.flush()
                 self.watching = True
                 end = time.monotonic()+timeout

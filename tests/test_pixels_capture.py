@@ -116,6 +116,10 @@ for line in sys.stdin:
             helper.write_text('#!/usr/bin/python3\nimport time\ntime.sleep(10)\n')
             helper.chmod(0o700)
             capturer=Capturer(helper=helper,command=lambda *a,**kw:b'P6\n2 1\n255\nabcdef')
+            with self.assertRaises(TimeoutError):
+                capturer.capture(MONITOR,timeout=.05)
+            # Recovery is a separate bounded read; the expired capture budget
+            # cannot silently start another full timeout.
             shot=capturer.capture(MONITOR,timeout=.05)
             self.assertEqual(shot.backend,'grim-ppm')
             self.assertIn('timeout',shot.fallback_reason)

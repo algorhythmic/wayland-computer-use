@@ -64,6 +64,11 @@ the published pointer before each request and switches implementations only
 between requests. Host PID and the MCP connection stay intact; the implementation
 and its in-memory screenshot frames are replaced, and old workers are closed.
 Bundle manifests cover `server.py`, `cu/*.py`, and the optional capture binary.
+They also record the main skill and every skill reference checksum, checking for
+changes during publication. Those hashes describe the published instructions;
+`client_loaded_skill_revision` stays null because the server cannot observe which
+instructions a model loaded. The host's `desktop_state.runtime` reports the
+runtime revision, schema/contract hashes, observer implementation, and capabilities.
 Python dependencies execute from verified bytes with a fresh import namespace.
 Legacy single-file releases remain readable by the new host. No signals or app restart.
 
@@ -78,7 +83,7 @@ Legacy single-file releases remain readable by the new host. No signals or app r
 4. Publish locally (this reruns the tests and refuses publication on failure):
 
    ```bash
-   python3 /home/david/Work/wayland-computer-use/scripts/dev_publish.py \
+   python3 /home/david/Projects/wayland-computer-use/scripts/dev_publish.py \
      --destination /home/david/plugins/wayland-computer-use
    ```
 
@@ -88,8 +93,8 @@ Legacy single-file releases remain readable by the new host. No signals or app r
    `development_runtime.revision` matches `published_revision`. Until confirmed,
    do not claim the chat's connected plugin has loaded the update. An old server
    launched directly with `server.py` cannot reload and won't report this field.
-6. Capture and review a new screenshot, then request the usual approval for the
-   next action. Old frame IDs are deliberately invalid. Do not replay a failed
+6. Capture and review a new screenshot, then act within the user's authorization
+   and the host's approval policy. Old frame IDs are deliberately invalid. Do not replay a failed
    click, key, or drag automatically. Stay in the same conversation.
 
 All hosts pointing at this installation adopt the published implementation on

@@ -21,6 +21,10 @@ privacy-free or automatically approved.
 
 ## Recorded comparison
 
+[September 8 implementation and E2E results](reports/2026-09-08-wcu-braid-implementation-results.md):
+guarded execution, bounded local context, optional Braid, paired desktop tasks,
+runtime activation evidence, and measured limitations.
+
 [Methodology](benchmarks/COMPARISON.md) ·
 [Raw samples](benchmarks/comparison-20260906-011216.json) ·
 [Preservation and reproduction](benchmarks/PRESERVATION.md)
@@ -94,13 +98,24 @@ is not equivalent to a complete model-driven acceptance test.
 
 Computer Use exposes `desktop_state`, `screenshot`, `focus_window`, `pointer`,
 `type_text`, `press_key`, `scroll`, `drag`, `run_steps`, `observe_window`,
-`wait_for`, and `stop_observing`. Input returns the next screenshot, optionally after a bounded
+`wait_for`, `stop_observing`, and read-only `context_for_task`. Input returns the next screenshot, optionally after a bounded
 `after` condition. There is no unconditional 200 ms post-input sleep. A screenshot
 alone does not establish task completion; use an explicit outcome condition.
 Captures use raw RGB internally and encode lossless PNG at delivery. The optional
 persistent helper uses wlr-screencopy on untransformed scale-1 outputs; other
 configurations use raw `grim`. A frame records capture time, target identity,
 layout and visible pixels, and expires after 120 seconds from capture start.
+
+The `wcu-tools-2` contract pins the intended target before every input segment,
+reports partial submission and outcome verification in a recovery ledger, and
+shares a validated duration budget across sequence steps (60 seconds by default,
+120 seconds maximum). An explicit matched-window transition is required to adopt
+a newly opened target. These guards reduce focus races; they cannot make input
+atomic with compositor queries or prove that an app consumed submitted events.
+Target and region result views retain capture provenance; monitor overview remains
+available. Scoped accessibility, focused-control evidence, bounded non-protected
+text readback and readiness predicates support checks between predictable batches.
+See the [execution and context contract](skills/wayland-computer-use/references/execution-and-context.md).
 
 Approval dialogs can steal focus. With `restore_focus:true`, input names the
 observed window/title, validates it, restores it once, rechecks, and acts within
@@ -140,6 +155,38 @@ are not validated for input. Missing accessibility is explicit; there is no OCR.
 
 ## Development
 
+[Keyboard environment context](skills/wayland-computer-use/references/environment-context.md)
+provides versioned shortcut catalogs and a read-only collector for planning.
+The DaVinci Resolve 21.1 catalog includes 248 reviewed core Linux bindings with
+manual-page provenance and panel-specific conditions; installed/user presets
+remain unverified. [Coverage and lookup examples](skills/wayland-computer-use/references/keyboard/davinci-resolve.md).
+`python3 scripts/keyboard_context.py refresh --vault /path/to/vault` writes full
+local tables and searchable JSON under ignored `.dev/keyboard-context/`.
+Each catalog states its completeness boundary; current compositor bindings and
+vault overrides are distinguished from application source defaults.
+
+Refresh also atomically publishes an immutable normalized snapshot. The read-only
+`context_for_task` operation ranks only after applicability checks, attaches exact
+required context from that snapshot, and caps its canonical JSON payload in UTF-8
+bytes. Caller facts remain claims; unknown prerequisites produce exploration
+references. Source-default shortcuts require live availability evidence before
+they can become executable recommendations.
+
+```bash
+printf '%s\n' '{"intent":"enter URL","max_bytes":8192}' | python3 scripts/context_for_task.py
+python3 scripts/benchmark_context.py --output .dev/context-benchmark.json
+python3 scripts/benchmark_handoff_e2e.py --trials 3 --output .dev/desktop-benchmark.json
+```
+
+The desktop benchmark launches disposable GTK and Chromium windows and verifies
+saved artifacts. It measures deterministic task pipelines, excluding model and
+approval time. Braid stays opt-in: set `WCU_BRAID_EXECUTABLE` and its exact
+`WCU_BRAID_SHA256`, then request `backend: "braid"`. WCU owns a dedicated local
+dataset, uses lexical-only ranking, verifies revisions and dependency closure,
+and retains local fallback. Run real-process conformance with
+`WCU_BRAID_TEST_BIN=/absolute/path/to/braid` in the test/publish environment.
+No Braid process or network access is required for the default local backend.
+
 ```bash
 python3 -m unittest discover -s tests -v
 node tests/test_wayland_call.js
@@ -157,8 +204,9 @@ The frozen `baseline/`, original results, and comparison tag remain unchanged.
 [Computer Use reference](docs/computer-use-reference.md) and
 [Observer reference](docs/observer-reference.md) retain pre-consolidation technical
 notes and historical installation paths/status. This README is the current setup
-entry point. The original sibling observer checkout and installed plugins were
-left untouched; continue source development in this repository.
+entry point. The original sibling observer checkout remains independent; continue
+source development in this repository. Installed plugin activation is recorded
+separately from publication and existing-chat tool discovery in release evidence.
 
 No open-source license has been selected yet. Publication does not itself grant
 an open-source license; select one before advertising reuse terms.

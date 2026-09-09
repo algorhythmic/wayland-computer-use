@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Dependency-free, newline-delimited stdio MCP server for a local Hyprland desktop."""
 import base64
+import hashlib
 import json
 import math
 import os
@@ -19,18 +20,28 @@ import uuid
 # hot reload with stale state. Direct invocation/tests use the checkout package.
 if __package__:
     from .cu.capture import Capturer
+    from .cu.capture import Capture
     from .cu.pixels import crop, png_rgb
     from .cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from .cu import observation
     from .cu import trace
+    from .cu.execution import Deadline, Ledger, DEFAULT_BUDGET_MS
+    from .cu.context_records import SnapshotStore, SCHEMA_VERSION
+    from .cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
+    from .cu.braid_client import BraidBackend
     from .cu.system import desktop_locked, hypr_query
 else:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from cu.capture import Capturer
+    from cu.capture import Capture
     from cu.pixels import crop, png_rgb
     from cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from cu import observation
     from cu import trace
+    from cu.execution import Deadline, Ledger, DEFAULT_BUDGET_MS
+    from cu.context_records import SnapshotStore, SCHEMA_VERSION
+    from cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
+    from cu.braid_client import BraidBackend
     from cu.system import desktop_locked, hypr_query
 
 
@@ -354,9 +365,19 @@ class Desktop:
         self.timings = {}
         self.calls = 0
         self.trace = None
+        self.ledger = self.deadline = None
+        self.runtime_identity = {'kind': 'source', 'server_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+        self.context_root = Path(os.environ.get('WCU_CONTEXT_ROOT', str(Path(__file__).resolve().parents[1]/'.dev/keyboard-context/normalized')))
+        self.context_backend = None
+        self.context_evidence = None
+        self.context_diagnostics = None
+        self.result_view = None
+        self.result_target = None
         self.recorder = trace.Recorder(provenance=trace.provenance([globals().get('__file__')]))
 
     def close(self):
+        if self.context_backend:
+            self.context_backend.close()
         if self.observer:
             self.observer.close()
         self.capturer.close()
@@ -395,7 +416,7 @@ class Desktop:
             raise RuntimeError("No unambiguous Hyprland session could be discovered. "
                                "Set HYPRLAND_INSTANCE_SIGNATURE and WAYLAND_DISPLAY for the MCP server. "
                                "Session sockets must be accessible to this process.")
-        return hypr_query(command)
+        return hypr_query(command, timeout=self.deadline.remaining(3) if self.deadline else 3)
 
     def dispatch(self, command, arg):
         # Hyprland's Lua config mode requires a dispatcher expression, not
@@ -407,7 +428,7 @@ class Desktop:
             expr = f"hl.dsp.cursor.move({{x={x},y={y}}})"
         else:
             raise ValueError("Unsupported dispatcher or argument")
-        reply = run(["hyprctl", "dispatch", expr]).decode().strip()
+        reply = run(["hyprctl", "dispatch", expr], timeout=self.deadline.remaining(3) if self.deadline else 3).decode().strip()
         if reply != "ok":
             raise RuntimeError(reply)
 
@@ -419,7 +440,30 @@ class Desktop:
             for w in windows], "active_window": self.hypr("activewindow"),
             "tools": {t: bool(shutil.which(t)) for t in ("hyprctl", "grim", "wtype", "ydotool")},
             "mouse_socket_available": os.access(os.environ["YDOTOOL_SOCKET"], os.W_OK),
-            "trace": self.recorder.status()}
+            "trace": self.recorder.status(), 'runtime': self.capabilities()}
+
+    def capabilities(self):
+        return {'identity': self.runtime_identity, 'tool_contract_version': 'wcu-tools-2',
+            'tool_contract_sha256': hashlib.sha256(json.dumps(TOOLS, sort_keys=True).encode()).hexdigest(),
+            'context_schema': SCHEMA_VERSION, 'context_contract': CONTRACT_VERSION,
+            'observer_version': hashlib.sha256(Path(observation.__file__).read_bytes()).hexdigest(),
+            'client_loaded_skill_revision': None,
+            'capabilities': ['guarded_sequences', 'segment_guards', 'execution_ledger', 'shared_deadline',
+                             'context_for_task', 'explicit_window_transitions', 'scoped_accessibility',
+                             'bounded_text_readback', 'readiness_conditions', 'result_views', 'original_image_detail'],
+            'unsupported': ['focus_until', 'semantic_activation', 'arbitrary_code', 'asynchronous_input']}
+
+    def task_context(self, args):
+        if self.context_backend is None and os.environ.get('WCU_BRAID_EXECUTABLE') and os.environ.get('WCU_BRAID_SHA256'):
+            self.context_backend = BraidBackend(os.environ['WCU_BRAID_EXECUTABLE'], self.context_root.parent/'braid', os.environ['WCU_BRAID_SHA256'])
+        try:
+            snapshot = SnapshotStore(self.context_root).load()
+        except (OSError, ValueError):
+            body = {'contract_version': CONTRACT_VERSION, 'status': 'catalog_unavailable',
+                    'output': {'unit': 'utf8_bytes', 'renderer': 'canonical-json-utf8-v1', 'limit': args.get('max_bytes', 8192), 'bytes': 0}}
+        else:
+            body, self.context_diagnostics = context_for_task(snapshot, args, self.context_evidence, self.context_backend)
+        return [{'type': 'text', 'text': render(body).decode()}]
 
     @staticmethod
     def layout(monitors):
@@ -434,14 +478,56 @@ class Desktop:
         screenshot. The retry is read-only and reported as ``result_retried``.
         """
         try:
-            return self.screenshot(monitor)
+            return self.capture_result_view(monitor)
         except RuntimeError as exc:
             if 'changed during capture' not in str(exc):
                 raise
             self.result_retried = True
             self.note(result_retry=True)
             time.sleep(.05)
-            return self.screenshot(monitor)
+            return self.capture_result_view(monitor)
+
+    def capture_result_view(self, monitor):
+        policy = self.result_view or {'kind': 'monitor'}
+        reason = None
+        if policy['kind'] != 'monitor':
+            active = self.hypr('activewindow')
+            if not self.result_target or self.identity(active) != self.result_target:
+                reason = 'target_changed_overview_required'
+            else:
+                # Layer-3 surfaces can extend outside a window crop. Unavailable
+                # overlay evidence also requires an overview.
+                try:
+                    layers = self.hypr('layers')
+                    if any(v.get('levels', {}).get('3') for v in layers.values()):
+                        reason = 'overlay_overview_required'
+                except Exception:
+                    reason = 'overlay_coverage_unavailable'
+            if reason is None:
+                content, sample = self.observation_service().observe(active['address'], channels=['metadata', 'pixels'],
+                    images=False, return_sample=True, timeout_ms=self.deadline.milliseconds(3000) if self.deadline else 3000)
+                if not sample.get('capture'):
+                    raise RuntimeError('Result crop unavailable')
+                geometry = sample['geometry']
+                capture = sample['capture']
+                if policy['kind'] == 'region':
+                    left, top, right, bottom = policy['box']
+                    rgb = crop(capture.rgb, capture.width, policy['box'])
+                    capture = Capture(right-left, bottom-top, rgb, capture.started_ns,
+                        capture.completed_ns, capture.backend, presentation_ns=capture.presentation_ns)
+                    geometry = [geometry[0]+left, geometry[1]+top, right-left, bottom-top]
+                result = self.capture_content(capture, sample['monitor'], self.target_record(sample['target']),
+                    self.layout(sample['state']['monitors']), sample['target']['address'], geometry, True)
+                meta = json.loads(result[0]['text'])
+                meta['result_view'] = policy
+                result[0] = text_content(meta)
+                return result
+        result = self.screenshot(monitor)
+        if result and reason:
+            meta = json.loads(result[0]['text'])
+            meta['result_view'] = {'kind': 'monitor', 'fallback_reason': reason}
+            result[0] = text_content(meta)
+        return result
 
     def screenshot(self, monitor=None):
         monitors = self.hypr("monitors")
@@ -456,7 +542,7 @@ class Desktop:
         target = self.target_record(active) if active.get("mapped") and active.get("monitor") == m.get("id") else None
         if desktop_locked():
             raise RuntimeError('Desktop is locked')
-        capture = self.capturer.capture(m)
+        capture = self.capturer.capture(m, timeout=self.deadline.remaining(3) if self.deadline else 3)
         current = self.hypr("activewindow")
         after = current.get("address")
         if before != after or self.layout(monitors) != self.layout(self.hypr("monitors")):
@@ -478,6 +564,10 @@ class Desktop:
         width, height = capture.width, capture.height
         visual = self.target_pixels(target, monitor, capture, geometry) if target else None
         token = uuid.uuid4().hex
+        app_class = (target or {}).get('class', '').casefold()
+        app = {'chromium': 'chromium', 'md.obsidian.obsidian': 'obsidian', 'obs': 'obs',
+               'com.obsproject.studio': 'obs', 'com.mitchellh.ghostty': 'ghostty', 'org.gnome.nautilus': 'nautilus'}.get(app_class)
+        self.context_evidence = SessionEvidence(token, {'focused_app': app, 'focused_window': active} if app else {'focused_window': active}, capture.started_ns)
         self.frames = {token: {"time": capture.started_ns/1e9, "monitor": monitor, "width": width,
                               "height": height, "layout": layout, "active": active,
                               "target": target, "visual": visual, "geometry": geometry,
@@ -494,7 +584,8 @@ class Desktop:
                               'timings_ms': {'capture_ms': (capture.completed_ns-capture.started_ns)/1e6,
                                              'lock_wait_ms': (capture.started_ns-requested)/1e6 if requested else 0,
                                              'encode_ms': (time.monotonic_ns()-encode_start)/1e6}}),
-                {"type": "image", "mimeType": "image/png", "data": base64.b64encode(png).decode()}]
+                {"type": "image", "mimeType": "image/png", "data": base64.b64encode(png).decode(),
+                 '_meta': {'codex/imageDetail': 'original'}}]
 
     def observation_content(self, args):
         content, sample = self.observation_service().observe(**args, images=False, return_sample=True)
@@ -536,7 +627,7 @@ class Desktop:
 
     def target_pixels(self, target, monitor, capture=None, geometry=None):
         # Validation and delivered PNG derive from the SAME immutable RGB capture.
-        capture = capture or self.capturer.capture(monitor, geometry)
+        capture = capture or self.capturer.capture(monitor, geometry, timeout=self.deadline.remaining(3) if self.deadline else 3)
         iw, ih = capture.width, capture.height
         left, top, right, bottom = self.target_bounds(target, self.mapping(monitor, geometry), iw, ih)
         cw, ch = right-left, bottom-top
@@ -598,6 +689,8 @@ class Desktop:
                     if isinstance(exc, ActionRejected):
                         raise
                     self.reject(str(exc), frame['monitor']['name'])
+            if frame.get('target') and 'at' in frame['target']:
+                self.check_target(frame)
             return frame
         frame = self.frames.get(a["frame_id"])
         if not frame or not frame.get("target"):
@@ -676,10 +769,10 @@ class Desktop:
     def move(self, point):
         self.dispatch("movecursor", f"{point[0]} {point[1]}")
 
-    def mouse(self, *args):
+    def mouse(self, *args, release=False):
         if not os.access(os.environ["YDOTOOL_SOCKET"], os.W_OK):
             raise RuntimeError("Mouse daemon unavailable; see README setup")
-        run(["ydotool", *args])
+        run(["ydotool", *args], timeout=2 if release else self.deadline.remaining(15) if self.deadline else 15)
 
     def call(self, name, a):
         self.calls += 1
@@ -688,19 +781,35 @@ class Desktop:
         self.text_segments = None
         self.result_retried = False
         self.input_started = False
+        self.ledger = self.deadline = None
+        self.result_view = a.get('result_view') if isinstance(a, dict) else None
+        self.result_target = None
         previous = trace.activate(self.trace)
         try:
             validate(name, a)
+            if name == 'run_steps':
+                self.validate_steps(a['steps'])
+            if name in (*self.STEP_ACTIONS, 'drag') and name != 'wait' or name == 'run_steps':
+                self.deadline = Deadline(a.get('duration_ms', DEFAULT_BUDGET_MS))
+                self.ledger = Ledger(a['steps'] if name == 'run_steps' else [{'action': name}])
+                if name != 'run_steps':
+                    self.ledger.begin(0)
             content = self._call(name, a)
         except ActionRejected as exc:
             self.finish(exc.content, 'rejected', exc)
             raise
         except Exception as exc:
-            if self.action_started:
+            if self.ledger:
+                if self.ledger.current and self.ledger.current['status'] in ('pending', 'verifying'):
+                    self.ledger.current['status'] = 'interrupted'
+                self.ledger.stop_reason = type(exc).__name__
+            if self.action_started or self.ledger:
                 # Input may have partially executed. Never suggest an automatic retry.
-                content = [text_content({'error': str(exc)[:1400],
-                    'action_performed': True if self.action_completed_ns else 'unknown',
+                message = type(exc).__name__ if self.input_started else str(exc)[:240]
+                content = [text_content({'error': message, 'error_code': type(exc).__name__,
+                    'action_performed': self.ledger.performed() if self.ledger else 'unknown',
                     'action_completed_ns': self.action_completed_ns, 'requires_review': True})]
+                self.recover(content)
                 self.finish(content, 'error', exc)
                 raise ActionRejected(str(exc), content) from exc
             self.finish(None, 'error', exc)
@@ -714,9 +823,16 @@ class Desktop:
         current = self.trace
         current.close(error)
         self.timings = current.durations_ms()
-        performed = True if self.action_completed_ns else ('unknown' if self.action_started else False)
-        if content and content[0]['type'] == 'text':
+        performed = self.ledger.performed() if self.ledger else (True if self.action_completed_ns else ('unknown' if self.action_started else False))
+        if self.ledger and status != 'ok' and not self.ledger.stop_reason:
+            self.ledger.stop_reason = type(error).__name__ if error else status
+        if self.ledger and not content:
+            content = [text_content({})]
+        if content and content[0]['type'] == 'text' and current.root.get('attrs', {}).get('tool') != 'context_for_task':
             metadata = json.loads(content[0]['text'])
+            if self.ledger:
+                metadata.update(sequence=self.ledger.summary(), action_performed=performed,
+                                action_completed_ns=self.action_completed_ns)
             if status == 'ok' and performed is True:
                 metadata.update(action_performed=True, action_completed_ns=self.action_completed_ns)
                 if self.text_segments:
@@ -734,12 +850,50 @@ class Desktop:
                 'outcome': {'status': status, 'action_performed': performed, 'action_started': self.action_started,
                             'action_completed_ns': self.action_completed_ns, 'focus_restored': self.focus_restored,
                             'error_type': type(error).__name__ if error is not None else None,
-                            'reason': str(error)[:trace.REASON_LIMIT] if error is not None else None},
+                            'reason': (type(error).__name__ if self.input_started else str(error)[:trace.REASON_LIMIT]) if error is not None else None},
                 'timings_ms': self.timings, 'spans': current.spans,
                 'result': result_summary(content) if content else None})
         return content
 
+    def recover(self, content):
+        """A fresh read never replays input. Capture failure preserves the ledger."""
+        self.frames.clear()
+        previous = self.deadline
+        self.deadline = Deadline(5000)
+        try:
+            with self.span('recovery'):
+                content += self.result_capture()
+        except Exception as exc:
+            content.append(text_content({'recovery_error': type(exc).__name__, 'image_available': False}))
+        finally:
+            self.deadline = previous
+
+    @staticmethod
+    def identity(window):
+        return {k: window.get(k) for k in ('address', 'pid', 'class', 'initialClass') if window.get(k) is not None}
+
+    def intended_target(self, frame):
+        if frame.get('target'):
+            return self.identity(frame['target'])
+        found = [w for w in self.hypr('clients') if w.get('address') == frame['active'] and w.get('mapped')]
+        if len(found) != 1:
+            raise ValueError('Intended target unavailable')
+        return self.identity(found[0])
+
+    def recheck_target(self, target):
+        if self.deadline:
+            self.deadline.remaining()
+        if desktop_locked():
+            raise ValueError('Desktop is locked')
+        found = [w for w in self.hypr('clients') if w.get('address') == target.get('address') and w.get('mapped')]
+        if len(found) != 1 or any(found[0].get(k) != v for k, v in target.items()):
+            raise ValueError('Intended target identity changed')
+        if self.hypr('activewindow').get('address') != target.get('address'):
+            raise ValueError('active_window_changed')
+
     def _call(self, name, a):
+        if name == 'context_for_task':
+            return self.task_context(a)
         if name in ('observe_window', 'wait_for'):
             with self.span('wait' if name == 'wait_for' else 'observe'):
                 return self.observation_content(a)
@@ -758,9 +912,14 @@ class Desktop:
                 raise ValueError("Unknown window address")
             self.frames.clear()
             self.action_started = True
+            self.ledger.injecting()
             self.dispatch("focuswindow", "address:" + address)
             self.wait_focus(address)
+            self.result_target = self.identity(self.hypr('activewindow'))
             self.action_completed_ns = time.monotonic_ns()
+            self.ledger.submitted()
+            self.ledger.completed(self.action_completed_ns)
+            self.ledger.current['status'] = 'done'
             with self.span('result'):
                 return self.result_capture()
         # Validate all action arguments before restoration, which is itself a mutation.
@@ -780,30 +939,35 @@ class Desktop:
                     self.point(pending, a[xkey], a[ykey])
         if 'after' in a:
             validate_condition(a['after']['condition'])
-            if a['after']['condition']['kind'] == 'region_changed':
-                raise ValueError('Use wait_for with since_revision for region waits')
+            if a['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent'):
+                raise ValueError('Use a separate wait_for with scoped/baseline evidence for this condition')
             if a['after']['condition']['kind'] == 'accessible' and not (pending or {}).get('target'):
                 raise ValueError('Accessible outcome wait requires a screenshot with a focused target')
         with self.span('guard'):
             frame = self.prepare(name, a)
+        target = self.intended_target(frame)
+        self.result_target = dict(target)
+        if self.result_view is None and frame.get('geometry'):
+            self.result_view = {'kind': 'target'}
         def recheck():
-            if a.get("restore_focus", False) or frame.get('shared_observation'):
-                try:
-                    self.check_target(frame)
-                    if self.hypr("activewindow").get("address") != frame["active"]:
-                        raise ValueError("Focus changed before input; action stopped")
-                except ValueError as exc:
-                    if not self.input_started:
-                        self.reject(str(exc), frame["monitor"]["name"])
-                    raise ValueError("Input interrupted after partial execution; inspect before retrying: " + str(exc))
+            self.recheck_target(target)
+            if not self.input_started and (a.get('restore_focus', False) or frame.get('shared_observation')):
+                self.check_target(frame)
         with self.span('input'):
             self.perform(name, a, frame, recheck)
         if 'after' in a:
             condition = a['after']['condition']
             window = None if condition['kind'] == 'window' else (frame.get('target') or {}).get('address')
+            self.ledger.current['status'] = 'verifying'
             with self.span('wait'):
                 result = self.observation_content({'window': window, 'condition': condition,
-                    'timeout_ms': a['after'].get('timeout_ms', 5000), 'after_action': self.action_completed_ns})
+                    'timeout_ms': self.deadline.milliseconds(a['after'].get('timeout_ms', 5000)), 'after_action': self.action_completed_ns})
+            outcome = json.loads(result[0]['text'])
+            self.ledger.current['verification'] = 'matched' if outcome.get('condition_met') else 'failed'
+            self.ledger.current['status'] = 'done' if outcome.get('condition_met') else 'after_timeout'
+            if not outcome.get('condition_met'):
+                self.ledger.current['status'] = 'after_timeout'
+                self.ledger.stop_reason = 'after_not_met'
             if not any(block['type'] == 'image' for block in result):
                 with self.span('result'):
                     result += self.result_capture(frame['monitor']['name'])
@@ -812,75 +976,62 @@ class Desktop:
             return self.result_capture(frame["monitor"]["name"])
 
     def perform(self, name, a, frame, recheck):
-        """Inject one validated input. ``recheck`` runs immediately before the first event."""
+        """Check before every segment; submission is distinct from app acceptance."""
         self.input_started = False
-        if True:
-            if name == "pointer":
-                point = self.point(frame, a["x"], a["y"])
-                button = a.get("button", "left")
-                code = {"left": "0xC0", "right": "0xC1", "middle": "0xC2", "move": None}[button]
-                count = integer(a.get("count", 1), 1, 3)
-                self.frames.clear()
-                self.action_started = True
-                self.move(point)
-                recheck()
+        entry = self.ledger.current
+        self.action_completed_ns = None
+        def submit(callback):
+            recheck()
+            self.frames.clear()
+            self.input_started = self.action_started = True
+            self.ledger.injecting()
+            callback()
+            self.ledger.submitted()
+        def backend(args, data=None):
+            return run(args, data, timeout=self.deadline.remaining(15))
+        if name == 'type_text':
+            segments = text_segments(a['text'])
+            entry['segments_total'] = len(segments)
+            self.note(text_segments=len(segments))
+            for segment in segments:
+                submit(lambda: backend(['wtype', '-'], segment.encode()))
+            self.text_segments = len(segments)
+        elif name == 'press_key':
+            submit(lambda: backend(['wtype', *key_args(a['key'])]))
+        elif name in ('pointer', 'scroll', 'drag'):
+            point = self.point(frame, a['x'], a['y'])
+            submit(lambda: self.move(point))
+            if name == 'pointer':
+                code = {'left': '0xC0', 'right': '0xC1', 'middle': '0xC2', 'move': None}[a.get('button', 'left')]
                 if code:
-                    self.input_started = True
-                    self.mouse("click", "--repeat", str(count), "--next-delay", "100", code)
-            elif name == "type_text":
-                value = a["text"]
-                if not isinstance(value, str) or len(value) > 8000 or "\x00" in value:
-                    raise ValueError("Text must contain at most 8000 characters and no NUL")
-                self.frames.clear()
-                recheck()
-                self.input_started = True
-                self.action_started = True
-                segments = text_segments(value)
-                self.note(text_segments=len(segments))
-                for segment in segments:
-                    run(["wtype", "-"], segment.encode())
-                self.text_segments = len(segments)
-            elif name == "press_key":
-                args = key_args(a["key"])
-                self.frames.clear()
-                recheck()
-                self.input_started = True
-                self.action_started = True
-                run(["wtype", *args])
-            elif name == "scroll":
-                point = self.point(frame, a["x"], a["y"])
-                steps = integer(a["steps"], -20, 20)
-                axis = a.get("axis", "vertical")
-                dx, dy = (0, steps) if axis == "vertical" else (steps, 0)
-                self.frames.clear()
-                self.action_started = True
-                self.move(point)
-                recheck()
-                self.input_started = True
-                self.mouse("mousemove", "--wheel", "--", str(dx), str(dy))
-            elif name == "drag":
-                start = self.point(frame, a["x"], a["y"])
-                end = self.point(frame, a["end_x"], a["end_y"])
-                self.frames.clear()
-                self.action_started = True
-                self.move(start)
-                try:
-                    recheck()
-                    self.input_started = True
-                    self.mouse("click", "0x40")
-                    for i in range(1, 21):
-                        recheck()
-                        self.move(tuple(round(s + (e-s)*i/20) for s, e in zip(start, end)))
-                        time.sleep(.015)
-                finally:
-                    self.mouse("click", "0x80")
+                    submit(lambda: self.mouse('click', '--repeat', str(a.get('count', 1)), '--next-delay', '100', code))
+            elif name == 'scroll':
+                dx, dy = (0, a['steps']) if a.get('axis', 'vertical') == 'vertical' else (a['steps'], 0)
+                submit(lambda: self.mouse('mousemove', '--wheel', '--', str(dx), str(dy)))
             else:
-                raise ValueError("Unknown tool")
-            self.action_completed_ns = time.monotonic_ns()
+                end = self.point(frame, a['end_x'], a['end_y'])
+                pressed = False
+                try:
+                    # A failing press may have reached the backend; always release.
+                    recheck()
+                    pressed = True
+                    submit(lambda: self.mouse('click', '0x40'))
+                    for i in range(1, 21):
+                        submit(lambda: self.move(tuple(round(x+(y-x)*i/20) for x, y in zip(point, end))))
+                        time.sleep(min(.015, self.deadline.remaining()))
+                finally:
+                    if pressed:
+                        self.mouse('click', '0x80', release=True)
+        else:
+            raise ValueError('Unknown input action')
+        self.action_completed_ns = time.monotonic_ns()
+        self.ledger.completed(self.action_completed_ns)
+        entry['status'] = 'done'
 
     # ----- Deterministic sequences -------------------------------------------------
     STEP_ACTIONS = ('press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll')
-    STEP_KEYS = {'action', 'key', 'text', 'address', 'x', 'y', 'button', 'count', 'steps', 'axis',
+    CONTROL_KEYS = {'expect', 'expect_timeout_ms', 'after', 'transition'}
+    STEP_KEYS = {'transition', 'action', 'key', 'text', 'address', 'x', 'y', 'button', 'count', 'steps', 'axis',
                  'expect', 'expect_timeout_ms', 'after'}
 
     def validate_steps(self, steps):
@@ -890,6 +1041,15 @@ class Desktop:
             if not isinstance(step, dict) or set(step)-self.STEP_KEYS or step.get('action') not in self.STEP_ACTIONS:
                 raise ValueError(f'Invalid step {index}')
             action = step['action']
+            payload = {k: v for k, v in step.items() if k not in self.CONTROL_KEYS | {'action'}}
+            if action != 'wait':
+                validate(action, payload if action == 'focus_window' else {'frame_id': 'validation', **payload})
+            elif payload:
+                raise ValueError('wait has no input fields')
+            if 'transition' in step and (step['transition'] != 'matched_window' or
+                    step.get('after', {}).get('condition', {}).get('kind') != 'window' or
+                    step['after']['condition'].get('focused') is not True):
+                raise ValueError('transition requires a focused window after condition')
             if action in ('pointer', 'scroll') and index != 0:
                 raise ValueError('Coordinate actions are only allowed as the first step, on the reviewed frame')
             if action == 'press_key':
@@ -907,136 +1067,145 @@ class Desktop:
             for key in ('expect',):
                 if key in step:
                     validate_condition(step[key])
-                    if step[key]['kind'] == 'region_changed':
-                        raise ValueError(f'Step {index}: expect cannot be a region condition')
+                    if step[key]['kind'] not in ('window', 'accessible', 'accessible_absent'):
+                        raise ValueError(f'Step {index}: expect requires window or accessible evidence')
             if 'expect_timeout_ms' in step:
                 integer(step['expect_timeout_ms'], 1, 30000)
             if 'after' in step:
                 if not isinstance(step['after'], dict) or set(step['after'])-{'condition', 'timeout_ms'} or 'condition' not in step['after']:
                     raise ValueError(f'Step {index}: invalid after')
                 validate_condition(step['after']['condition'])
-                if step['after']['condition']['kind'] == 'region_changed':
-                    raise ValueError(f'Step {index}: after cannot be a region condition')
+                if step['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent'):
+                    raise ValueError(f'Step {index}: after requires window or accessible evidence')
                 if 'timeout_ms' in step['after']:
                     integer(step['after']['timeout_ms'], 1, 30000)
 
-    def await_condition(self, condition, timeout_ms, after_action=None):
-        """Wait for a window or accessible condition using metadata (and accessibility) only."""
-        args = {'condition': condition, 'timeout_ms': timeout_ms}
+    def await_condition(self, condition, timeout_ms, after_action=None, target=None):
+        args = {'condition': condition, 'timeout_ms': self.deadline.milliseconds(timeout_ms)}
         if after_action is not None:
             args['after_action'] = after_action
-        if condition['kind'] == 'accessible':
-            args['window'] = self.hypr('activewindow').get('address')
+        if condition['kind'] != 'window':
+            args['window'] = target['address'] if target else None
             args['channels'] = ['metadata', 'accessibility']
         else:
             args['channels'] = ['metadata']
         body = json.loads(self.observation_content(args)[0]['text'])
-        return body.get('status'), bool(body.get('condition_met'))
+        return body
+
+    def checked_match(self, body, target, transition=None):
+        if not body.get('condition_met'):
+            return False
+        evidence = body.get('condition_evidence') or {}
+        matched = evidence.get('target')
+        if not matched or not evidence.get('revision'):
+            raise ValueError('Matched target evidence unavailable')
+        identity = self.identity(matched)
+        if transition == 'matched_window':
+            target.clear()
+            target.update(identity)
+        elif identity != target:
+            raise ValueError('Condition matched a different target; explicit transition required')
+        return True
 
     def run_steps(self, a):
-        """Execute a deterministic sequence under one approval, verifying between steps.
-
-        The first step is guarded by the reviewed frame exactly like a single
-        action. Later steps act only after their ``expect`` condition holds or,
-        without one, only while the active window is unchanged. Execution stops
-        at the first unmet condition or timeout and reports every step's outcome.
-        Nothing is retried.
-        """
         steps = a['steps']
-        self.validate_steps(steps)
-        report = []
-        stop_reason = None
-        first = steps[0]
-        first_args = {k: v for k, v in first.items() if k not in ('action', 'expect', 'expect_timeout_ms', 'after')}
-        first_args['frame_id'] = a['frame_id']
-        for key in ('restore_focus', 'target_window', 'target_title'):
-            if key in a:
-                first_args[key] = a[key]
-        if first['action'] in ('wait', 'focus_window'):
-            frame = self.guard(a['frame_id'])
-        else:
+        frame = self.guard(a['frame_id']) if steps[0]['action'] in ('wait', 'focus_window') else None
+        if frame is None:
+            first_args = {k: v for k, v in steps[0].items() if k not in self.CONTROL_KEYS | {'action'}}
+            first_args.update({k: v for k, v in a.items() if k in ('frame_id', 'restore_focus', 'target_window', 'target_title')})
             with self.span('guard'):
-                frame = self.prepare(first['action'], first_args)
-        monitor = frame['monitor']['name']
-        active = frame['active']
+                frame = self.prepare(steps[0]['action'], first_args)
+        target = self.intended_target(frame)
+        self.result_target = dict(target)
+        if self.result_view is None and frame.get('geometry'):
+            self.result_view = {'kind': 'target'}
         for index, step in enumerate(steps):
+            entry = self.ledger.begin(index)
             action = step['action']
-            entry = {'index': index, 'action': action, 'status': 'pending'}
-            report.append(entry)
-            with self.span('step', index=index, action=action):
-                # Precondition: an explicit condition, or an unchanged active window.
-                tick = time.monotonic_ns()
-                if 'expect' in step:
-                    status, met = self.await_condition(step['expect'], step.get('expect_timeout_ms', 5000), self.action_completed_ns)
-                    entry['expect_ms'] = (time.monotonic_ns()-tick)/1e6
-                    if not met:
-                        entry['status'] = 'precondition_failed'
-                        entry['expect_status'] = status
-                        stop_reason = f'step {index}: expect not met ({status})'
-                        break
-                    active = self.hypr('activewindow').get('address')
-                elif index > 0:
-                    current = self.hypr('activewindow').get('address')
-                    if desktop_locked() or current != active:
-                        entry['status'] = 'precondition_failed'
-                        entry['expect_status'] = 'active_window_changed'
-                        stop_reason = f'step {index}: active window changed'
-                        break
-                # Input.
-                tick = time.monotonic_ns()
-                try:
+            self.input_started = False
+            try:
+                self.deadline.remaining()
+                with self.span('step', index=index, action=action):
+                    if 'expect' in step:
+                        body = self.await_condition(step['expect'], step.get('expect_timeout_ms', 5000),
+                                                    self.action_completed_ns, target)
+                        entry['expect_status'] = body.get('status')
+                        if not body.get('condition_met'):
+                            entry['status'] = 'precondition_failed'
+                            self.ledger.stop_reason = f'step {index}: expect not met ({body.get("status")})'
+                            break
+                        if action == 'focus_window':
+                            evidence = body.get('condition_evidence') or {}
+                            if not evidence.get('revision') or (evidence.get('target') or {}).get('address') != step['address']:
+                                raise ValueError('Focus destination does not match existence evidence')
+                        else:
+                            self.checked_match(body, target)
+                    self.recheck_target(target)
                     if action == 'focus_window':
-                        address = step['address']
-                        if address not in [w['address'] for w in self.hypr('clients') if w.get('mapped')]:
+                        found = [w for w in self.hypr('clients') if w.get('address') == step['address'] and w.get('mapped')]
+                        if len(found) != 1:
                             raise ValueError('Unknown window address')
+                        destination = self.identity(found[0])
+                        if 'expect' in step and self.identity(body['condition_evidence']['target']) != destination:
+                            raise ValueError('Focus destination identity changed after existence check')
                         self.frames.clear()
-                        self.action_started = True
-                        self.dispatch('focuswindow', 'address:'+address)
-                        self.wait_focus(address)
+                        self.action_completed_ns = None
+                        self.input_started = self.action_started = True
+                        self.ledger.injecting()
+                        self.dispatch('focuswindow', 'address:'+step['address'])
+                        self.wait_focus(step['address'], self.deadline.remaining(.4))
+                        self.recheck_target(destination)
+                        target = destination
+                        self.result_target = dict(target)
+                        self.ledger.submitted()
                         self.action_completed_ns = time.monotonic_ns()
-                        active = address
-                    elif action == 'wait':
-                        pass
-                    else:
-                        step_args = {k: v for k, v in step.items() if k not in ('action', 'expect', 'expect_timeout_ms', 'after')}
-                        def recheck():
-                            if desktop_locked() or self.hypr('activewindow').get('address') != active:
-                                raise ValueError('Active window changed before input')
-                        self.perform(action, step_args, frame, recheck)
-                except ValueError as exc:
-                    if self.input_started:
-                        raise
-                    entry['status'] = 'precondition_failed'
-                    entry['expect_status'] = str(exc)[:200]
-                    stop_reason = f'step {index}: {str(exc)[:120]}'
-                    break
-                entry['input_ms'] = (time.monotonic_ns()-tick)/1e6
-                entry['status'] = 'done'
-                # Outcome wait.
-                if 'after' in step:
-                    tick = time.monotonic_ns()
-                    status, met = self.await_condition(step['after']['condition'], step['after'].get('timeout_ms', 5000), self.action_completed_ns)
-                    entry['after_ms'] = (time.monotonic_ns()-tick)/1e6
-                    entry['after_status'] = status
-                    if not met:
-                        entry['status'] = 'after_timeout'
-                        stop_reason = f'step {index}: after condition not met ({status})'
-                        break
-                    active = self.hypr('activewindow').get('address')
-        completed = sum(1 for e in report if e['status'] == 'done')
-        summary = {'steps_total': len(steps), 'steps_completed': completed, 'stopped': stop_reason is not None,
-                   'stop_reason': stop_reason, 'steps': report}
+                        self.ledger.completed(self.action_completed_ns)
+                    elif action != 'wait':
+                        if index == 0 and action in ('pointer', 'scroll'):
+                            # The expect wait has not refreshed the reviewed frame.
+                            self.guard(a['frame_id'])
+                            if frame.get('target'):
+                                self.check_target(frame)
+                                if frame.get('visual') and action != 'scroll':
+                                    pixels = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
+                                    if not visual_guard(frame['visual'], pixels, self.action_region(frame, step))['accepted']:
+                                        raise ValueError('Coordinate evidence changed during wait')
+                            self.guard(a['frame_id'])
+                        self.perform(action, step, frame, lambda: self.recheck_target(target))
+                    entry['status'] = 'done'
+                    if 'after' in step:
+                        entry.update(verification='pending', status='verifying')
+                        body = self.await_condition(step['after']['condition'], step['after'].get('timeout_ms', 5000),
+                                                    self.action_completed_ns, target)
+                        entry['after_status'] = body.get('status')
+                        if not self.checked_match(body, target, step.get('transition')):
+                            entry.update(status='after_timeout', verification='failed')
+                            self.ledger.stop_reason = f'step {index}: after condition not met ({body.get("status")})'
+                            break
+                        entry.update(verification='matched', status='done')
+                        # Evidence authorizes only this exact destination, never a later active query.
+                        self.recheck_target(target)
+                        self.result_target = dict(target)
+            except (ValueError, TimeoutError) as exc:
+                if entry['in_flight_unknown'] or entry['injection'] == 'partial':
+                    entry['status'] = 'interrupted'
+                    raise
+                entry.update(status='precondition_failed', expect_status=str(exc)[:200])
+                self.ledger.stop_reason = f'step {index}: {exc}'
+                break
         with self.span('result'):
-            content = self.result_capture(monitor)
-        metadata = json.loads(content[0]['text'])
-        metadata['sequence'] = summary
-        content[0] = text_content(metadata)
-        return content
+            return self.result_capture(frame['monitor']['name'])
 
 
 S = {"type": "string"}
 I = {"type": "integer"}
 FRAME = {"frame_id": S,
+         'result_view': {'type': 'object', 'properties': {
+             'kind': {'type': 'string', 'enum': ['monitor', 'target', 'region']},
+             'box': {'type': 'array', 'items': I, 'minItems': 4, 'maxItems': 4}},
+             'required': ['kind'], 'additionalProperties': False,
+             'description': 'Result capture view. Region box is relative to the current window crop; overlays require overview.'},
+         'duration_ms': {'type': 'integer', 'minimum': 1, 'maximum': 120000, 'default': 60000},
          'after': {'type': 'object', 'properties': {'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT},
                    'required': ['condition'], 'additionalProperties': False,
                    'description': 'Perform this one input, then wait locally for an accessible name or window. Timeout does not undo input; inspect before retrying.'},
@@ -1046,6 +1215,7 @@ FRAME = {"frame_id": S,
          "target_title": {"type": "string", "description": "Required with restore_focus: screenshot target_window.title, displayed as the intended approval target."}}
 XY = {"x": I, "y": I}
 STEP = {'type': 'object', 'required': ['action'], 'additionalProperties': False, 'properties': {
+    'transition': {'type': 'string', 'enum': ['matched_window']},
     'action': {'type': 'string', 'enum': ['press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll']},
     'key': S, 'text': S, 'address': S, **XY, 'button': {'type': 'string', 'enum': ['left', 'right', 'middle', 'move']},
     'count': I, 'steps': I, 'axis': {'type': 'string', 'enum': ['vertical', 'horizontal']},
@@ -1066,11 +1236,17 @@ def tool(name, description, props, required, read=False):
 
 
 TOOLS = [
+    tool('context_for_task', 'Read bounded task context. Caller facts are claims; uncertain shortcuts are exploration references. Never injects input.',
+         {'intent': S, 'observation_ref': S, 'facts': {'type': 'object'},
+          'exact': {'type': 'object', 'properties': {k: S for k in ('id', 'app', 'scope', 'command_id', 'shortcut', 'mode')}, 'additionalProperties': False},
+          'max_bytes': {'type': 'integer', 'minimum': 256, 'maximum': 65536, 'default': 8192},
+          'timeout_ms': {'type': 'integer', 'minimum': 1, 'maximum': 10000, 'default': 1000},
+          'backend': {'type': 'string', 'enum': ['local', 'substring', 'braid'], 'default': 'local'}}, ['intent'], True),
     tool("desktop_state", "Inspect Hyprland monitors, windows, and input backend readiness.", {}, [], True),
     tool("screenshot", "Capture one monitor at logical resolution. Returns image and frame_id required for input.",
          {"monitor": S}, [], True),
     tool("focus_window", "Focus an existing window by its address from desktop_state and return a screenshot.",
-         {"address": S}, ["address"]),
+         {"address": S, 'result_view': FRAME['result_view'], 'duration_ms': FRAME['duration_ms']}, ["address"]),
     tool("pointer", "Move/click at screenshot pixel coordinates, then return the updated screenshot.",
          {**FRAME, **XY, "button": {"type": "string", "enum": ["left", "right", "middle", "move"]}, "count": I},
          ["frame_id", "x", "y"]),
@@ -1084,18 +1260,20 @@ TOOLS = [
     tool("drag", "Left-button drag between two points in one screenshot; release even on failure.",
          {**FRAME, **XY, "end_x": I, "end_y": I}, ["frame_id", "x", "y", "end_x", "end_y"]),
     tool('run_steps', 'Execute a deterministic sequence of inputs under one approval, verifying a window or accessible condition between steps. '
-         'The first step is guarded by the reviewed frame; coordinate actions are allowed only as that first step. Later steps require their expect condition or an unchanged active window. '
+         'The reviewed target is pinned and checked before each input segment. Coordinate actions are allowed only as the first step, with a fresh guard after any wait. A new target requires explicit focus or a matched_window transition. '
          'Stops at the first unmet condition and reports every step. Returns one final screenshot. Not for sequences whose next action depends on reading results.',
-         {**FRAME, 'steps': {'type': 'array', 'minItems': 1, 'maxItems': 12, 'items': STEP}}, ['frame_id', 'steps']),
+         {**{k: v for k, v in FRAME.items() if k != 'after'}, 'steps': {'type': 'array', 'minItems': 1, 'maxItems': 12, 'items': STEP}}, ['frame_id', 'steps']),
     tool('observe_window', 'Observe an exact focused window. Returns a full crop and guarded frame from the same capture when pixels are available. Channel selection controls collection.',
          {k: v for k, v in COMMON.items() if k != 'images'}, ['window'], True),
-    tool('wait_for', 'Wait locally for an exact accessible name, unique window, or changed crop region. Returns outcome evidence and a guarded frame when pixels are available. No input.',
+    tool('wait_for', 'Wait locally for scoped accessible states or disappearance, exact text readback, a unique or changed window, or changed/stable pixels. Returns outcome evidence and a guarded frame when pixels are available. No input.',
          {**{k: v for k, v in COMMON.items() if k != 'images'}, 'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT}, ['condition'], True),
     tool('stop_observing', 'Stop background observation and clear its retained history. No input.', {}, [], True),
 ]
 
 
 def validate(name, args):
+    if name == 'context_for_task':
+        return validate_request(args)
     if name in ('observe_window', 'wait_for', 'stop_observing'):
         if isinstance(args, dict) and 'images' in args:
             raise ValueError('Input observation tools deliver full actionable images when pixels are requested')
@@ -1116,6 +1294,15 @@ def validate(name, args):
             raise ValueError("Invalid argument type: " + k)
         if p["type"] == "boolean" and type(v) is not bool:
             raise ValueError("Invalid argument type: " + k)
+        if k == 'duration_ms':
+            integer(v, 1, 120000)
+        if k == 'result_view':
+            if not isinstance(v, dict) or set(v)-{'kind', 'box'} or v.get('kind') not in ('monitor', 'target', 'region'):
+                raise ValueError('Invalid result view')
+            if v['kind'] == 'region':
+                validate_condition({'kind': 'region_changed', 'box': v.get('box')})
+            elif 'box' in v:
+                raise ValueError('Only region views accept a box')
         if k == 'after':
             if not isinstance(v, dict) or set(v)-{'condition', 'timeout_ms'} or 'condition' not in v:
                 raise ValueError('Invalid after wait')

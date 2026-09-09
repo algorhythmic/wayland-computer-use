@@ -1,0 +1,249 @@
+{
+  "schema": 1,
+  "environment": "obsidian-editor",
+  "version": "1.13.7",
+  "evidence": "documented_defaults",
+  "coverage": "Windows/Linux editing and selection shortcuts from the Obsidian editing reference, expressed as factual key/action pairs. Excludes Vim keymaps and modal controls. Application command overrides are separate.",
+  "sources": [
+    {
+      "url": "https://obsidian.md/help/editing-shortcuts",
+      "retrieved": "2026-09-07"
+    }
+  ],
+  "bindings": [
+    {
+      "shortcut": "CTRL+C",
+      "command": "copy",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+X",
+      "command": "cut",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+V",
+      "command": "paste",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+V",
+      "command": "paste-plain",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Z",
+      "command": "undo",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+Z",
+      "command": "redo",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Y",
+      "command": "redo",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Return",
+      "command": "newline",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "BackSpace",
+      "command": "delete-previous-character",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Delete",
+      "command": "delete-next-character",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+BackSpace",
+      "command": "delete-previous-word",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Delete",
+      "command": "delete-next-word",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+SHIFT+K",
+      "command": "delete-line",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+A",
+      "command": "select-all",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Escape",
+      "command": "simplify-selection",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Left",
+      "command": "move-character-left",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+Left",
+      "command": "select-character-left",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Right",
+      "command": "move-character-right",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+Right",
+      "command": "select-character-right",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Left",
+      "command": "move-word-left",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+CTRL+Left",
+      "command": "select-word-left",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Right",
+      "command": "move-word-right",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+CTRL+Right",
+      "command": "select-word-right",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Home",
+      "command": "move-line-start",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+Home",
+      "command": "select-line-start",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "End",
+      "command": "move-line-end",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+End",
+      "command": "select-line-end",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Up",
+      "command": "move-line-up",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Down",
+      "command": "move-line-down",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+Home",
+      "command": "move-note-start",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+CTRL+Home",
+      "command": "select-note-start",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+End",
+      "command": "move-note-end",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+CTRL+End",
+      "command": "select-note-end",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Page_Up",
+      "command": "move-page-up",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+Page_Up",
+      "command": "select-page-up",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "Page_Down",
+      "command": "move-page-down",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "SHIFT+Page_Down",
+      "command": "select-page-down",
+      "context": "editor, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+C",
+      "command": "copy-paragraph",
+      "context": "editor, no selection, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    },
+    {
+      "shortcut": "CTRL+X",
+      "command": "cut-paragraph",
+      "context": "editor, no selection, Vim mode off",
+      "condition": "Focused editor and selection determine behavior; app and compositor bindings can take precedence."
+    }
+  ]
+}
