@@ -125,3 +125,17 @@ def changed_box(before, after, width, height, tile=64):
                     xmax = right
                     break
     return [xmin, ymin, xmax, ymax]
+
+
+def half_rgb(width, height, rgb):
+    """Half-size nearest-neighbor presentation; guards retain original pixels."""
+    if len(rgb) != width*height*3 or not 0 < width*height <= MAX_PIXELS:
+        raise ValueError('Invalid RGB size')
+    rows = []
+    for y in range(0, height, 2):
+        row = rgb[y*width*3:(y+1)*width*3]
+        # Split/interleave channels in C rather than loop over every pixel.
+        out = bytearray(((width+1)//2)*3)
+        out[0::3], out[1::3], out[2::3] = row[0::6], row[1::6], row[2::6]
+        rows.append(out)
+    return (width+1)//2, (height+1)//2, b''.join(rows)

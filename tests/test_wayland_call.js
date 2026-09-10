@@ -19,7 +19,13 @@ async function test() {
     {type:'image',saved_image:'/tmp/hush-mcp-test.png'}
   ]}})+'\r\n';
   await run([{output:'{"name":"pointer"}\r\n'+result}]);
-  assert.equal(writes.length,1); assert.equal(displayed.length,2);
+  assert.equal(writes.length,1); assert.equal(displayed.length,0);
+  await run([{output:result}], {name:"view_frame",arguments:{frame_id:"new"}});
+  assert.equal(displayed.length,2);
+  await run([{output:result}], {name:'press_key',arguments:{images:'on_failure'}});
+  assert.equal(displayed.length,0);
+  await run([{output:result.replace('\"isError\":false','\"isError\":true')}], {name:'press_key',arguments:{images:'on_failure'}});
+  assert.equal(displayed.length,2);
   await run([{output:result.slice(0,50)},{output:result.slice(50)}]);
   assert.equal(writes.length,2); assert.equal(writes[1].chars,'');
   await assert.rejects(run([{output:'',exit_code:1}]), /outcome unknown/);

@@ -16,7 +16,7 @@ class ExecutionContract(unittest.TestCase):
         def inject(*args, **kwargs):
             state['active'] = '0x777'
         with patch.object(server, 'run', side_effect=inject) as run, \
-                patch.object(d, 'screenshot', side_effect=RuntimeError('capture unavailable')):
+                patch.object(d, 'result_capture', side_effect=RuntimeError('capture unavailable')):
             with self.assertRaises(server.ActionRejected) as raised:
                 d.call('run_steps', {'frame_id': 'token', 'steps': [
                     {'action': 'type_text', 'text': 'x'*81}, {'action': 'press_key', 'key': 'Return'}]})
@@ -34,7 +34,7 @@ class ExecutionContract(unittest.TestCase):
             return [server.text_content({'status': 'matched', 'condition_met': True,
                 'condition_evidence': {'target': {'address': '0x123'}, 'revision': 'obs:1'}})]
         with patch.object(d, 'observation_content', side_effect=observation), \
-                patch.object(server, 'run') as run, patch.object(d, 'screenshot', return_value=[server.text_content({})]):
+                patch.object(server, 'run') as run, patch.object(d, 'result_capture', return_value=[server.text_content({})]):
             result = d.call('run_steps', {'frame_id': 'token', 'steps': [
                 {'action': 'type_text', 'text': 'never',
                  'expect': {'kind': 'window', 'class': 'Test', 'focused': True}}]})
@@ -44,7 +44,7 @@ class ExecutionContract(unittest.TestCase):
     def test_second_backend_failure_does_not_inherit_completion(self):
         d, f, state = self.sequence_desktop()
         with patch.object(server, 'run', side_effect=[None, RuntimeError('backend down')]), \
-                patch.object(d, 'screenshot', side_effect=RuntimeError('capture unavailable')):
+                patch.object(d, 'result_capture', side_effect=RuntimeError('capture unavailable')):
             with self.assertRaises(server.ActionRejected) as raised:
                 d.call('run_steps', {'frame_id': 'token', 'steps': [
                     {'action': 'press_key', 'key': 'Tab'}, {'action': 'type_text', 'text': 'x'},
@@ -74,7 +74,7 @@ class ExecutionContract(unittest.TestCase):
                 'frame_id': 'token', 'steps': [{'action': 'type_text', 'text': 'x'*81}]}
             with patch.object(server, 'desktop_locked', side_effect=lambda: state['locked']), \
                     patch.object(server, 'run', side_effect=inject) as run, \
-                    patch.object(d, 'screenshot', return_value=[]):
+                    patch.object(d, 'result_capture', return_value=[]):
                 with self.assertRaises(server.ActionRejected) as raised:
                     d.call(name, request)
             self.assertEqual(run.call_count, 1)
@@ -96,7 +96,7 @@ class ExecutionContract(unittest.TestCase):
             pixels = bytearray(f['visual'][2]); pixels[0] = 255
             with patch.object(d, 'observation_content', side_effect=observation), \
                     patch.object(d, 'target_pixels', return_value=(*f['visual'][:2], bytes(pixels))), \
-                    patch.object(d, 'mouse') as mouse, patch.object(d, 'screenshot', return_value=[]):
+                    patch.object(d, 'mouse') as mouse, patch.object(d, 'result_capture', return_value=[]):
                 result = d.call('run_steps', {'frame_id': 'token', 'steps': [
                     {'action': 'pointer', 'x': 100, 'y': 100, 'expect': {'kind': 'window', 'address': '0x123'}}]})
             mouse.assert_not_called()
@@ -113,7 +113,7 @@ class ExecutionContract(unittest.TestCase):
                 return [server.text_content({'status': 'matched', 'condition_met': True,
                     'condition_evidence': {'target': {'address': '0x777'}, 'revision': 'obs:2'}})]
             with patch.object(server, 'run', side_effect=inject) as run, patch.object(d, 'observation_content', side_effect=observation), \
-                    patch.object(d, 'screenshot', return_value=[]):
+                    patch.object(d, 'result_capture', return_value=[]):
                 d.call('run_steps', {'frame_id': 'token', 'steps': [
                     {'action': 'press_key', 'key': 'Tab', 'transition': 'matched_window',
                      'after': {'condition': {'kind': 'window', 'address': '0x777', 'focused': True}}},
@@ -131,7 +131,7 @@ class ExecutionContract(unittest.TestCase):
                 'condition_evidence': {'target': {'address': '0x123'}, 'revision': 'obs:1'}})]
         condition = {'condition': {'kind': 'window', 'address': '0x123'}, 'timeout_ms': 30000}
         with patch.object(d, 'observation_content', side_effect=observation), patch.object(server, 'run') as run, \
-                patch.object(d, 'screenshot', return_value=[]):
+                patch.object(d, 'result_capture', return_value=[]):
             result = d.call('run_steps', {'frame_id': 'token', 'duration_ms': 31000, 'steps': [
                 {'action': 'wait', 'after': condition}, {'action': 'wait', 'after': condition},
                 {'action': 'type_text', 'text': 'never'}]})

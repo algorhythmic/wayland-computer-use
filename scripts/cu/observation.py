@@ -138,6 +138,15 @@ class Collector:
                 'completed_ns': time.monotonic_ns(), 'timings_ms': timings}
 
 
+def accessibility_delta(before, after):
+    prior = {n['ref']: n for n in before.get('nodes', [])}
+    current = {n['ref']: n for n in after.get('nodes', [])}
+    return {'fields': {k: v for k, v in after.items() if k != 'nodes' and before.get(k) != v},
+            'removed_fields': [k for k in before if k != 'nodes' and k not in after],
+            'upsert_nodes': [n for ref, n in current.items() if prior.get(ref) != n],
+            'removed_refs': sorted(prior.keys()-current.keys())}
+
+
 class History:
     def __init__(self, capacity=6):
         self.epoch = uuid.uuid4().hex[:12]
@@ -182,7 +191,10 @@ class History:
         if old:
             for key in sorted(current['state'].keys() | old['state'].keys()):
                 if current['state'].get(key) != old['state'].get(key):
-                    body['changes'][key] = {'before': old['state'].get(key), 'after': current['state'].get(key)}
+                    if key == 'accessibility':
+                        body['changes'][key] = accessibility_delta(old['state'].get(key, {}), current['state'].get(key, {}))
+                    else:
+                        body['changes'][key] = {'after': current['state'].get(key)}
         blocks = []
         visual = current['state'].get('visual', {})
         if images and current['rgb'] is not None:
@@ -200,7 +212,7 @@ class History:
                     'desktop_origin': [x+left, y+top], 'width': right-left, 'height': bottom-top,
                     'source_revision': current['revision']})
         body['timings_ms']['response_ms'] = (time.monotonic_ns()-started)/1e6
-        return [{'type': 'text', 'text': json.dumps(body)}, *blocks]
+        return [{'type': 'text', 'text': json.dumps({k: v for k, v in body.items() if v is not None}, separators=(',', ':'))}, *blocks]
 
 
 CONDITION_SCHEMA = {'type': 'object', 'properties': {
@@ -395,7 +407,7 @@ class Observer:
                 self.collector.close()
             self.wakeup.close()
 
-    def observe(self, window=None, since_revision=None, images=True, timeout_ms=15000, wait=False,
+    def observe(self, window=None, since_revision=None, images=False, timeout_ms=15000, wait=False,
                 channels=None, max_age_ms=0, after_action=None, condition=None, return_sample=False,
                 reference_sample=None, a11y_scope=None, read_text=None):
         if condition:
@@ -492,7 +504,7 @@ class Observer:
                         event_source=event_source, observation_lease_seconds=120)
             body['condition_evidence'] = condition_evidence(condition, sample, reference) if condition and status == 'matched' else None
             body['timings_ms']['request_ms'] = (time.monotonic_ns()-now_ns)/1e6
-            result[0]['text'] = json.dumps(body)
+            result[0]['text'] = json.dumps(body, separators=(',', ':'))
             return (result, sample) if return_sample else result
 
     def stop(self):
@@ -518,7 +530,7 @@ SCOPE_SELECTOR = {'type': 'object', 'properties': {
 COMMON = {'a11y_scope': SCOPE_SELECTOR,
           'read_text': {**SCOPE_SELECTOR, 'properties': {**SCOPE_SELECTOR['properties'], 'max_chars': {'type': 'integer', 'minimum': 1, 'maximum': 4096}}},
           'window': {'type': 'string', 'description': 'Exact Hyprland window address; omit for desktop metadata.'},
-          'since_revision': {'type': 'string'}, 'images': {'type': 'boolean'},
+          'since_revision': {'type': 'string'}, 'images': {'type': 'boolean', 'default': False},
           'channels': {'type': 'array', 'items': {'type': 'string', 'enum': ['metadata', 'pixels', 'accessibility']}, 'uniqueItems': True, 'minItems': 1, 'maxItems': 3},
           'max_age_ms': {'type': 'integer', 'minimum': 0, 'maximum': 5000, 'default': 0},
           'after_action': {'type': 'integer', 'minimum': 0, 'description': 'Only use collection started after this local action_completed_ns watermark.'}}

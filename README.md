@@ -98,23 +98,31 @@ is not equivalent to a complete model-driven acceptance test.
 
 Computer Use exposes `desktop_state`, `screenshot`, `focus_window`, `pointer`,
 `type_text`, `press_key`, `scroll`, `drag`, `run_steps`, `observe_window`,
-`wait_for`, `stop_observing`, and read-only `context_for_task`. Input returns the next screenshot, optionally after a bounded
-`after` condition. There is no unconditional 200 ms post-input sleep. A screenshot
+`wait_for`, `read_text`, `view_frame`, `open_uri`, optional `cdp_read`,
+`stop_observing`, and read-only `context_for_task`. Input returns scoped evidence
+and a deferred target frame by default. `images` controls delivery independently
+of guard capture: `none` (default), `on_failure`, `target`, or explicit `monitor`.
+`view_frame` delivers retained pixels only on request, at half size by default;
+`detail: "original"` requests full resolution. Coordinates map back to original
+guard pixels, and viewing never extends the 120-second expiry. Without `after`,
+a bounded quiescence wait checks for 100 ms of stable pixels (up to 1500 ms). A screenshot
 alone does not establish task completion; use an explicit outcome condition.
 Captures use raw RGB internally and encode lossless PNG at delivery. The optional
 persistent helper uses wlr-screencopy on untransformed scale-1 outputs; other
 configurations use raw `grim`. A frame records capture time, target identity,
 layout and visible pixels, and expires after 120 seconds from capture start.
 
-The `wcu-tools-2` contract pins the intended target before every input segment,
+The `wcu-tools-3` contract pins the intended target before every input segment,
 reports partial submission and outcome verification in a recovery ledger, and
 shares a validated duration budget across sequence steps (60 seconds by default,
 120 seconds maximum). An explicit matched-window transition is required to adopt
 a newly opened target. These guards reduce focus races; they cannot make input
 atomic with compositor queries or prove that an app consumed submitted events.
-Target and region result views retain capture provenance; monitor overview remains
-available. Scoped accessibility, focused-control evidence, bounded non-protected
-text readback and readiness predicates support checks between predictable batches.
+Target and region result views retain capture provenance, including on rejection.
+An overlay or changed target reports `overview_required`; monitor overview must
+be requested explicitly. Scoped accessibility, focused-control evidence, bounded non-protected
+text readback and readiness predicates support checks inside predictable batches. `wait_for`
+and `read_text` steps allow paste → exact readback → save in one call.
 See the [execution and context contract](skills/wayland-computer-use/references/execution-and-context.md).
 
 Approval dialogs can steal focus. With `restore_focus:true`, input names the
@@ -122,7 +130,9 @@ observed window/title, validates it, restores it once, rechecks, and acts within
 one approved operation. Unexpected changes reject the action; there are no blind
 retries. Non-scroll input also uses a noise-tolerant pixel guard, stricter near
 the action. It is not semantic UI recognition: animation may still be rejected
-and subtle changes may pass.
+and subtle changes may pass. A small caret-shaped diff is ignored only with
+unchanged, complete AT-SPI focus/offset/bounds evidence; other bars or status
+updates do not automatically pass.
 
 The observer exposes `observe`, `wait_for_change`, `wait_for`, and `stop_observing`.
 An interruptible pipe, filtered Hyprland events, and a persistent AT-SPI worker
@@ -132,7 +142,9 @@ of changed tiles. A renewable 120-second lease bounds collection; explicit stop
 clears retained history. `wait_for_change` detects **any revision change**;
 `wait_for` evaluates an explicit accessible-name, window, or changed-region
 condition. Neither infers task success from a repaint. `channels` selects what is
-collected; `images` controls delivery. Freshness can require collection after a
+collected; `images` controls delivery and defaults to false on the standalone
+observer. Accessibility deltas upsert changed nodes and remove listed refs without
+repeating the preceding tree. Freshness can require collection after a
 request or an `action_completed_ns` watermark. Cached observations report their age.
 AT-SPI refs are revision-local, not stable control identifiers, and their bounds
 are not validated for input. Missing accessibility is explicit; there is no OCR.
@@ -152,6 +164,16 @@ are not validated for input. Missing accessibility is explicit; there is no OCR.
   sent to a remotely hosted model still leave the machine through its client.
   Optional local tracing (`WAYLAND_CU_TRACE_DIR`) writes only timings, counters
   and outcome enums to a private file; see [docs/latency.md](docs/latency.md).
+
+## Feedback and application surfaces
+
+[Outcome-first feedback contract and verification](docs/feedback.md) describes the
+new defaults, readback steps, trace counters, migration and remaining limits.
+`open_uri` dispatches bounded Obsidian open/new and http(s) URIs through the
+registered handler. It does not claim the app accepted or saved the content.
+Optional `cdp_read` requires an existing loopback debugging browser,
+`WCU_CDP_PORT`, and Python `websockets>=15`. It reads bounded DOM text/links without
+script evaluation. No browser configuration is changed by either tool.
 
 ## Development
 

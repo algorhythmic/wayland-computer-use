@@ -25,6 +25,11 @@ def frame(monitor=None):
 
 class Tests(unittest.TestCase):
     def setUp(self):
+        # These input/ledger fixtures isolate rendering readiness; dedicated
+        # feedback tests exercise the real bounded quiescence loop.
+        settle = patch.object(server.Desktop, 'settle', return_value=True)
+        settle.start()
+        self.addCleanup(settle.stop)
         # Deterministic lock state regardless of the test machine; fail-closed paths are tested explicitly.
         patcher = patch.object(server, 'desktop_locked', return_value=False)
         patcher.start()
@@ -90,7 +95,7 @@ class Tests(unittest.TestCase):
         d, f, state, args = self.approval_desktop()
         original = d.hypr
         d.hypr = lambda cmd: [dict(f["target"], at=[10, 20])] if cmd == "clients" else original(cmd)
-        with patch.object(server.subprocess, "run") as process, patch.object(d, "screenshot", return_value=[]):
+        with patch.object(server.subprocess, "run") as process, patch.object(d, "result_capture", return_value=[]):
             process.return_value.returncode = 1
             with self.assertRaises(server.ActionRejected) as error:
                 d.prepare("scroll", args)
@@ -100,7 +105,7 @@ class Tests(unittest.TestCase):
     def test_expired_approval_returns_review_without_input(self):
         d, f, state, args = self.approval_desktop()
         f["time"] -= 121
-        with patch.object(server.subprocess, "run") as process, patch.object(d, "screenshot", return_value=[]), \
+        with patch.object(server.subprocess, "run") as process, patch.object(d, "result_capture", return_value=[]), \
                 patch.object(server.time, "sleep"):
             process.return_value.returncode = 1
             with self.assertRaisesRegex(server.ActionRejected, "expired"):
@@ -111,7 +116,7 @@ class Tests(unittest.TestCase):
         d, f, state, args = self.approval_desktop()
         changed = bytearray(f["visual"][2])
         changed[0] = 7
-        with patch.object(server.subprocess, "run") as process, patch.object(d, "screenshot", return_value=[]), \
+        with patch.object(server.subprocess, "run") as process, patch.object(d, "result_capture", return_value=[]), \
                 patch.object(server.time, "sleep"), patch.object(d, "target_pixels", return_value=(784, 584, bytes(changed))):
             process.return_value.returncode = 1
             with self.assertRaisesRegex(server.ActionRejected, "pixels changed"):
@@ -159,7 +164,7 @@ class Tests(unittest.TestCase):
                 state["active"] = "0x456"
                 return (784, 584, bytes(rgb))
             with patch.object(d, "target_pixels", side_effect=steal_focus), \
-                    patch.object(d, "screenshot", return_value=[]):
+                    patch.object(d, "result_capture", return_value=[]):
                 with self.assertRaises(server.ActionRejected):
                     d.prepare("pointer", args)
 
@@ -235,7 +240,7 @@ class Tests(unittest.TestCase):
     def test_focus_race_after_restoration_rejected(self):
         d, f, state, args = self.approval_desktop()
         d.dispatch = lambda *unused: None
-        with patch.object(server.subprocess, "run") as process, patch.object(d, "screenshot", return_value=[]), \
+        with patch.object(server.subprocess, "run") as process, patch.object(d, "result_capture", return_value=[]), \
                 patch.object(server.time, "sleep"):
             process.return_value.returncode = 1
             with self.assertRaisesRegex(server.ActionRejected, "Focus changed again"):
@@ -276,7 +281,7 @@ class Tests(unittest.TestCase):
     def test_scroll_supplies_both_axes_and_option_terminator(self):
         d = server.Desktop()
         with patch.object(d, "guard", return_value=frame()), patch.object(d, "move"), \
-                patch.object(d, "screenshot", return_value=[]), patch.object(d, "mouse") as mouse:
+                patch.object(d, "result_capture", return_value=[]), patch.object(d, "mouse") as mouse:
             d.call("scroll", {"frame_id": "x", "x": 10, "y": 10, "steps": -3})
             mouse.assert_called_with("mousemove", "--wheel", "--", "0", "-3")
             d.call("scroll", {"frame_id": "x", "x": 10, "y": 10, "steps": 3, "axis": "horizontal"})
@@ -354,7 +359,7 @@ class Tests(unittest.TestCase):
         d = server.Desktop()
         text = 'a'*120+' bcdefghij'
         with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run') as run, \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'n'})]):
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'n'})]):
             meta = json.loads(d.call('type_text', {'frame_id': 'token', 'text': text})[0]['text'])
         self.assertEqual([c.args[1].decode() for c in run.call_args_list], server.text_segments(text))
         self.assertEqual(''.join(c.args[1].decode() for c in run.call_args_list), text)
@@ -363,18 +368,18 @@ class Tests(unittest.TestCase):
     def test_result_capture_retries_once_on_mid_capture_change(self):
         d = server.Desktop()
         with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), patch.object(server.time, 'sleep'), \
-                patch.object(d, 'screenshot', side_effect=[RuntimeError('Target changed during capture; take another screenshot'),
+                patch.object(d, 'capture_result_view', side_effect=[RuntimeError('Target changed during capture; take another screenshot'),
                                                            [server.text_content({'frame_id': 'second'})]]) as shot:
             meta = json.loads(d.call('press_key', {'frame_id': 'token', 'key': 'Return'})[0]['text'])
         self.assertEqual((meta['frame_id'], meta['result_retried'], meta['action_performed'], shot.call_count), ('second', True, True, 2))
         with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), patch.object(server.time, 'sleep'), \
-                patch.object(d, 'screenshot', side_effect=RuntimeError('Target changed during capture; take another screenshot')) as shot:
+                patch.object(d, 'capture_result_view', side_effect=RuntimeError('Target changed during capture; take another screenshot')) as shot:
             with self.assertRaises(server.ActionRejected) as error:
                 d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
         self.assertEqual(shot.call_count, 4)
         self.assertTrue(json.loads(error.exception.content[0]['text'])['action_performed'])
         with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), \
-                patch.object(d, 'screenshot', side_effect=RuntimeError('capture unavailable')) as shot:
+                patch.object(d, 'capture_result_view', side_effect=RuntimeError('capture unavailable')) as shot:
             with self.assertRaises(server.ActionRejected):
                 d.call('press_key', {'frame_id': 'token', 'key': 'Return'})
         self.assertEqual(shot.call_count, 2)
@@ -382,7 +387,7 @@ class Tests(unittest.TestCase):
     def test_literal_text_uses_stdin_and_consumes_frame(self):
         d = server.Desktop()
         d.frames["token"] = frame()
-        with patch.object(d, "guard", return_value=frame()), patch.object(d, "screenshot", return_value=[]), \
+        with patch.object(d, "guard", return_value=frame()), patch.object(d, "result_capture", return_value=[]), \
                 patch.object(server, "run") as run:
             d.call("type_text", {"frame_id": "token", "text": "$(secret) `literal` — café"})
             run.assert_called_once_with(["wtype", "-"], "$(secret) `literal` — café".encode(), timeout=ANY)
@@ -407,7 +412,7 @@ class Tests(unittest.TestCase):
         with patch.object(d.capturer,'capture',side_effect=AssertionError('recaptured')):
             content=d.capture_content(capture,monitor,target,f['layout'],'0x123',[20,30,100,100],True)
         meta=json.loads(content[0]['text']);current=d.frames[meta['frame_id']]
-        self.assertEqual(d.point(current,50,60),(70,90))
+        self.assertEqual(d.point(current,25,30),(70,90))
         self.assertEqual(current['visual'],(84,84,bytes(84*84*3)))
         self.assertEqual(meta['origin'],[20,30])
         self.assertTrue(current['shared_observation'])
@@ -419,7 +424,7 @@ class Tests(unittest.TestCase):
         changed=bytearray(f['visual'][2]);changed[0]=255
         with patch.object(server.subprocess,'run') as process, \
                 patch.object(d,'target_pixels',return_value=(784,584,bytes(changed))), \
-                patch.object(d,'screenshot',return_value=[]),patch.object(d,'dispatch') as dispatch:
+                patch.object(d,'result_capture',return_value=[]),patch.object(d,'dispatch') as dispatch:
             process.return_value.returncode=1
             with self.assertRaises(server.ActionRejected):d.prepare('pointer',args)
             dispatch.assert_not_called()
@@ -430,7 +435,7 @@ class Tests(unittest.TestCase):
         d.frames['token']=f
         with patch.object(d,'guard',return_value=f),patch.object(server,'run') as run, \
                 patch.object(d,'observation_content',return_value=[server.text_content({'status':'timeout','condition_met':False})]) as wait, \
-                patch.object(d,'screenshot',return_value=[]),patch.object(server.time,'sleep') as sleep:
+                patch.object(d,'result_capture',return_value=[]),patch.object(server.time,'sleep') as sleep:
             result=d.call('type_text',args)
         run.assert_called_once_with(['wtype','-'],b'hello',timeout=ANY)
         sleep.assert_not_called()
@@ -442,7 +447,7 @@ class Tests(unittest.TestCase):
     def test_ordinary_input_preserves_first_block_frame_metadata(self):
         d=server.Desktop()
         with patch.object(d,'guard',return_value=frame()),patch.object(server,'run'), \
-                patch.object(d,'screenshot',return_value=[server.text_content({'frame_id':'next','timings_ms':{'encode_ms':1}})]):
+                patch.object(d,'result_capture',return_value=[server.text_content({'frame_id':'next','timings_ms':{'encode_ms':1}})]):
             result=d.call('press_key',{'frame_id':'old','key':'Tab'})
         meta=json.loads(result[0]['text'])
         self.assertEqual(meta['frame_id'],'next')
@@ -452,7 +457,7 @@ class Tests(unittest.TestCase):
     def test_post_input_capture_failure_reports_performed_and_never_replays(self):
         d=server.Desktop()
         with patch.object(d,'guard',return_value=frame()),patch.object(server,'run') as run, \
-                patch.object(d,'screenshot',side_effect=RuntimeError('capture unavailable')):
+                patch.object(d,'result_capture',side_effect=RuntimeError('capture unavailable')):
             with self.assertRaises(server.ActionRejected) as error:
                 d.call('type_text',{'frame_id':'x','text':'hello'})
         run.assert_called_once()
@@ -471,7 +476,7 @@ class Tests(unittest.TestCase):
         changed = bytearray(f['visual'][2]); changed[0] = 255
         with patch.object(server.subprocess, 'run') as process, patch.object(server.time, 'sleep'), \
                 patch.object(d, 'target_pixels', return_value=(784, 584, bytes(changed))), \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'fresh'})]):
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'fresh'})]):
             process.return_value.returncode = 1
             with self.assertRaises(server.ActionRejected) as error:
                 d.call('pointer', args)
@@ -516,7 +521,7 @@ class Tests(unittest.TestCase):
                                               'width': 2, 'height': 1, 'png_bytes': 70, 'timings_ms': {'capture_ms': 1}}),
                          {'type': 'image', 'mimeType': 'image/png', 'data': 'AAAA'}]
             with patch.object(d, 'guard', return_value=frame()), patch.object(server, 'run'), \
-                    patch.object(d, 'screenshot', return_value=delivered):
+                    patch.object(d, 'result_capture', return_value=delivered):
                 d.call('type_text', {'frame_id': 'old', 'text': 'SECRET WORDS'})
             with patch.object(d, 'guard', side_effect=ValueError('Frame missing')):
                 with self.assertRaises(ValueError):
@@ -580,7 +585,7 @@ class Tests(unittest.TestCase):
                  {'action': 'type_text', 'text': 'name'},
                  {'action': 'press_key', 'key': 'Return'}]
         with patch.object(server, 'run') as run, patch.object(d, 'observation_content', side_effect=observation), \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]) as shot, \
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'final'})]) as shot, \
                 patch.object(server.time, 'sleep'):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         self.assertEqual(meta['frame_id'], 'final')
@@ -603,7 +608,7 @@ class Tests(unittest.TestCase):
                  {'action': 'type_text', 'text': 'never', 'expect': {'kind': 'window', 'title_prefix': 'Untitled'}, 'expect_timeout_ms': 10},
                  {'action': 'press_key', 'key': 'Return'}]
         with patch.object(server, 'run') as run, patch.object(d, 'observation_content', side_effect=observation), \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'final'})]):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         seq = meta['sequence']
         self.assertEqual((seq['steps_completed'], seq['stopped']), (1, True))
@@ -617,7 +622,7 @@ class Tests(unittest.TestCase):
             state['active'] = '0x999'  # The first key press moved focus elsewhere.
         steps = [{'action': 'press_key', 'key': 'CTRL+n'}, {'action': 'type_text', 'text': 'never'}]
         with patch.object(server, 'run', side_effect=run) as runner, \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'final'})]):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         self.assertEqual(meta['sequence']['steps'][1]['expect_status'], 'active_window_changed')
         self.assertEqual(runner.call_count, 1)
@@ -628,7 +633,7 @@ class Tests(unittest.TestCase):
                  {'action': 'type_text', 'text': 'never'}]
         with patch.object(server, 'run') as run, \
                 patch.object(d, 'observation_content', return_value=[server.text_content({'status': 'timeout', 'condition_met': False})]), \
-                patch.object(d, 'screenshot', return_value=[server.text_content({'frame_id': 'final'})]):
+                patch.object(d, 'result_capture', return_value=[server.text_content({'frame_id': 'final'})]):
             meta = json.loads(d.call('run_steps', {'frame_id': 'token', 'steps': steps})[0]['text'])
         seq = meta['sequence']
         self.assertEqual([s['status'] for s in seq['steps']], ['after_timeout', 'unattempted'])
@@ -639,7 +644,7 @@ class Tests(unittest.TestCase):
         d, f, state = self.sequence_desktop()
         steps = [{'action': 'press_key', 'key': 'CTRL+n'}, {'action': 'type_text', 'text': 'x'}]
         with patch.object(server, 'run', side_effect=[None, RuntimeError('backend down')]), \
-                patch.object(d, 'screenshot', return_value=[]):
+                patch.object(d, 'result_capture', return_value=[]):
             with self.assertRaises(server.ActionRejected) as error:
                 d.call('run_steps', {'frame_id': 'token', 'steps': steps})
         body = json.loads(error.exception.content[0]['text'])
@@ -668,7 +673,7 @@ class Tests(unittest.TestCase):
         responses = [json.loads(line) for line in stdout.getvalue().splitlines()]
         self.assertEqual(len(responses), 3)
         self.assertEqual(responses[0]["result"]["protocolVersion"], "2025-06-18")
-        self.assertEqual(len(responses[1]["result"]["tools"]), 13)
+        self.assertEqual(len(responses[1]["result"]["tools"]), len(server.TOOLS))
         self.assertTrue(responses[2]["result"]["isError"])
 
 

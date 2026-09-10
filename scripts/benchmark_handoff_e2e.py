@@ -66,7 +66,9 @@ class MCP(Lines):
                 images.append({'width':width,'height':height,'png_bytes':len(png),'detail_hint':c.get('_meta',{}).get('codex/imageDetail')})
         frame=next((m['frame_id'] for m in metadata if 'frame_id' in m),None)
         sequence=next((m['sequence'] for m in metadata if 'sequence' in m),None)
-        self.rows.append({'tool':name,'elapsed_ms':elapsed,'response_bytes':len(json.dumps(result).encode()),'images':images,
+        self.rows.append({'tool':name,'elapsed_ms':elapsed,'response_bytes':len(json.dumps(result).encode()),
+                          'model_visible_bytes':len(json.dumps(result,ensure_ascii=False,separators=(',', ':')).encode()),
+                          'model_visible_image_pixels':sum(i['width']*i['height'] for i in images),'images':images,
                           'is_error':result.get('isError',False),'sequence':sequence})
         return result,frame,metadata
 
@@ -74,15 +76,17 @@ class MCP(Lines):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--tasks',nargs='+',choices=['form','note','canvas'],default=['form','note','canvas']);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--trials',type=int,default=3)
+    parser.add_argument('--variants', nargs='+', choices=['single_monitor','sequence_monitor','sequence_target','sequence_deferred'], default=['single_monitor','sequence_monitor','sequence_target','sequence_deferred'])
     parser.add_argument('--fixture-only',action='store_true',help='Launch for initial model inspection; stdin ends fixture')
     parser.add_argument('--baseline',type=Path,help='Frozen old source server for interruption comparison')
     args=parser.parse_args();args.output.parent.mkdir(parents=True,exist_ok=True)
     server.session_env();control=server.Desktop()
     original=control.hypr('activewindow').get('address')
-    fixture=Lines(subprocess.Popen([sys.executable,str(ROOT/'tests/handoff_fixture.py'),'--artifacts',str(args.output.parent/'artifacts')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,
+    fixture=Lines(subprocess.Popen([sys.executable,str(ROOT/'tests/handoff_fixture.py'),'--steady-caret','--artifacts',str(args.output.parent/'artifacts')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,
                                   env=dict(os.environ,GDK_BACKEND='wayland')))
     browser=None;client=None;baseline=None
     report={'scope':'Deterministic desktop task E2E through fresh MCP; excludes model inference and approvals',
+            'fixture_cursor_blink':False, 'cursor_note':'Fixture-only steady caret isolates focus-race tests; it does not establish caret coverage in user apps',
             'status':'incomplete','trials':[],'failures':[],'source':{},'started_at':time.time()}
     def save():args.output.write_text(json.dumps(report,indent=2)+'\n')
     try:
@@ -126,6 +130,7 @@ def main():
             if variant=='single_monitor':
                 for step in steps:
                     action=step['action'];params={k:v for k,v in step.items() if k not in ('action','expect')}
+                    params.update(images='monitor', detail='original')
                     if action!='focus_window':params['frame_id']=frame
                     else:params.pop('after',None)
                     response,frame,_=c.call(action,params)
@@ -134,7 +139,9 @@ def main():
                         response,frame,checks=c.call('wait_for',{'window':step['address'],**step['after']})
                         assert not response.get('isError') and checks[0].get('condition_met'),'Focused control not ready'
             else:
-                response,frame,_=c.call('run_steps',{'frame_id':frame,'duration_ms':20000,'result_view':{'kind':'target' if variant=='sequence_target' else 'monitor'},'steps':steps})
+                response,frame,_=c.call('run_steps',{'frame_id':frame,'duration_ms':20000,'result_view':{'kind':'target' if variant in ('sequence_target','sequence_deferred') else 'monitor'},
+                    'images':'none' if variant=='sequence_deferred' else 'target' if variant=='sequence_target' else 'monitor',
+                    'detail':'half' if variant=='sequence_deferred' else 'original','steps':steps})
                 if response.get('isError') or any(m.get('sequence',{}).get('stopped') for m in [json.loads(v['text']) for v in response['content'] if v['type']=='text']):
                     report['failed_calls']=c.rows[-1:]
                     report['failed_fixture_state']=fixture.send({'op':'read'})
@@ -149,7 +156,7 @@ def main():
             return response
         for task in args.tasks:
             for trial in range(args.trials):
-                variants=['single_monitor','sequence_monitor','sequence_target']
+                variants=list(args.variants)
                 if trial%2:variants.reverse()
                 for variant in variants:
                     assert fixture.send({'op':'reset','mode':task})['reset']==task
@@ -167,7 +174,11 @@ def main():
                                 'after':{'condition':{'kind':'accessible','name':'Saved note'},'timeout_ms':3000}}]
                     else:steps=[{'action':'press_key','key':'space'}]
                     offset=len(client.rows);start=time.perf_counter_ns()
-                    if task=='note':
+                    if task=='note' and variant=='sequence_deferred':
+                        steps[-2]['after']={'condition':{'kind':'text_equals','text':SOURCE_TEXT},'timeout_ms':3000}
+                        steps.insert(-1,{'action':'read_text'})
+                        execute(client,steps,frame,variant)
+                    elif task=='note':
                         execute(client,steps[:-1],frame,variant)
                         # Clipboard paste is asynchronous. End this batch and use
                         # task-scoped readback before issuing the save action.
@@ -200,6 +211,8 @@ def main():
                     report['trials'].append({'task':task,'trial':trial,'variant':variant,'elapsed_ms':elapsed,'artifact_verified':True,
                         'tool_calls':len(rows),'input_tool_calls':sum(r['tool'] in ('type_text','press_key','run_steps','focus_window') for r in rows),'image_count':sum(len(r['images']) for r in rows),
                         'delivered_png_bytes':sum(i['png_bytes'] for r in rows for i in r['images']),
+                        'model_visible_image_pixels':sum(r['model_visible_image_pixels'] for r in rows),
+                        'model_visible_bytes':sum(r['model_visible_bytes'] for r in rows),
                         'guard_rejections':sum(r['is_error'] for r in rows),'calls':rows})
                     save();print(json.dumps({'task':task,'trial':trial,'variant':variant,'ms':round(elapsed,1)}),flush=True)
         for c,name in [(client,'current')]+([(baseline,'baseline')] if baseline else []):
@@ -207,6 +220,9 @@ def main():
                 fixture.send({'op':'reset','mode':'interrupt'});frame=focus(c,fixture_window()['address'])
                 offset=len(c.rows);response,_,meta=c.call('type_text',{'frame_id':frame,'text':'x'*81})
                 time.sleep(.1);final=fixture.send({'op':'read'})
+                if not final['interrupted']:
+                    report['interruption_diagnostic']={'fixture':final, 'result':meta}
+                    save()
                 assert final['interrupted']
                 report['trials'].append({'task':'focus_interruption_natural','variant':name,'trial':trial,'target_characters':len(final['name']),
                     'decoy_characters':len(final['decoy']),'guard_rejected':response.get('isError',False),'calls':c.rows[offset:]})
@@ -247,7 +263,7 @@ def main():
         report['summary']={}
         for task in args.tasks:
             report['summary'][task]={}
-            for variant in ('single_monitor','sequence_monitor','sequence_target'):
+            for variant in args.variants:
                 rows=[r for r in report['trials'] if r['task']==task and r['variant']==variant]
                 report['summary'][task][variant]={k:statistics.median(r[k] for r in rows) for k in ('elapsed_ms','tool_calls','input_tool_calls','delivered_png_bytes','image_count')}
         report['status']='complete';save()

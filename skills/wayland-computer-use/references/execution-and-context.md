@@ -36,9 +36,7 @@ A focus step must first establish an existing destination, then verify it:
 
 Compositor focus alone does not establish that an application is ready for keys.
 When the task requires a particular control, verify that control's focused state
-before typing. Clipboard paste can finish asynchronously: end the batch, read
-the expected text through a scoped `wait_for` with `text_equals`, and only then
-save or submit. Use a fresh observation when that application exposes no readback.
+before typing. Clipboard paste can finish asynchronously: follow it with a `wait_for` step using `text_equals`, then optionally a `read_text` step before save or submit. These read-only steps are allowed inside the same batch. A missing, stale or incomplete readback stops the sequence. Without an explicit selector, text comes from the unique focused control (up to 1024 characters); explicit revision-scoped selectors support up to 4096. Use a fresh observation when that application exposes no readback.
 
 An `expect`/`after` match is evidence about its exact matched target. It never
 adopts a later active-window query. A different newly opened window requires

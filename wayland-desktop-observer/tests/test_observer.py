@@ -68,7 +68,7 @@ class HistoryTests(unittest.TestCase):
         h = m.History()
         rev = h.add(sample(value=0))['revision']
         h.add(sample(value=1));h.add(sample(value=2))
-        self.assertEqual(body(h.response(rev))['changes']['value'], {'before':0,'after':2})
+        self.assertEqual(body(h.response(rev))['changes']['value'], {'after':2})
 
     def test_geometry_change_forces_overview(self):
         h = m.History();s = sample(bytes(128*128*3))

@@ -1,0 +1,55 @@
+{
+  "scope": "Deterministic desktop task E2E through fresh MCP; excludes model inference and approvals",
+  "fixture_cursor_blink": false,
+  "status": "complete",
+  "runtime_revision": "fdc3e17f6207f2f0c40c0191ca278436d5ba214cc8e1725779ea8ab1f6a28a5b",
+  "trials": [
+    {
+      "task": "note",
+      "trial": 0,
+      "variant": "sequence_deferred",
+      "elapsed_ms": 913.718958,
+      "artifact_verified": true,
+      "tool_calls": 1,
+      "input_tool_calls": 1,
+      "image_count": 0,
+      "delivered_png_bytes": 0,
+      "model_visible_image_pixels": 0,
+      "model_visible_bytes": 5681,
+      "guard_rejections": 0
+    },
+    {
+      "task": "focus_interruption_natural",
+      "variant": "current",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 40,
+      "guard_rejected": true
+    },
+    {
+      "task": "focus_interruption_between_segments",
+      "variant": "current",
+      "trial": 0,
+      "target_characters": 40,
+      "decoy_characters": 0,
+      "guard_rejected": true
+    }
+  ],
+  "validation": {
+    "input_tests": 149,
+    "input_skipped": 7,
+    "observer_tests": 31,
+    "baseline_tests": 28,
+    "node_adapter": "passed",
+    "skill_validator": "passed",
+    "frozen_comparison": "preserved",
+    "isolated_cdp": "passed"
+  },
+  "limits": [
+    "One final trial; excludes launch/focus setup, model inference and approvals.",
+    "Natural focus race delivered 40 characters to the disposable decoy before the next guard stopped input.",
+    "The synchronized between-segment test delivered zero decoy characters.",
+    "GTK empty fields do not expose usable character extents here; caret rejection remains conservative.",
+    "Local checkout runtime only; existing installed connections have not been updated."
+  ]
+}

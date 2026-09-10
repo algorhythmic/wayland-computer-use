@@ -33,13 +33,12 @@ Omit `--focus-fixture` when allowing the fixture to receive focus naturally.
 
 ## Lower-latency local-client operation
 
-Prefer directly connected MCP tools when available: their input result already
-contains the next screenshot. The local PTY client used in this development chat
+Prefer directly connected MCP tools when available: their input result returns text evidence and a retained frame reference by default. The local PTY client used in this development chat
 instead saves each image to `/tmp/hush-mcp-*.png` and prints its path. For that
 client, `scripts/wayland_call.js` is a function expression for `functions.exec`:
 load its source into session storage, evaluate it, and invoke with the existing
 PTY session ID and `{name, arguments}` request. It submits once, collects the
-response, and displays its screenshot in the same execution. Keep exactly one
+response, and leaves images deferred unless explicitly requested by `view_frame`, `screenshot`, or a delivery policy. Keep exactly one
 outstanding request per client; drain previous responses before switching to it.
 On timeout or transport failure, stop and inspect—never resend input blindly.
 Approval policy is unchanged. This adapter does not grant tools absent from a chat.

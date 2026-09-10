@@ -11,7 +11,9 @@ import gi
 gi.require_version('Gtk','4.0')
 from gi.repository import Gtk, Gdk, GLib
 
-parser=argparse.ArgumentParser();parser.add_argument('--artifacts',type=Path,required=True);args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--artifacts',type=Path,required=True)
+parser.add_argument('--steady-caret',action='store_true',help='Disable this fixture process cursor blinking to isolate focus-race tests')
+args=parser.parse_args()
 args.artifacts.mkdir(parents=True,exist_ok=True)
 app=Gtk.Application(application_id='org.example.WCUHandoffFixture')
 state={'mode':'form','canvas':False,'interrupt':False,'interrupted':False,'artifact':None}
@@ -21,6 +23,8 @@ def emit(value):print(json.dumps(value),flush=True)
 
 
 def activate(app):
+    if args.steady_caret:
+        Gtk.Settings.get_default().set_property('gtk-cursor-blink',False)
     window=Gtk.ApplicationWindow(application=app,title='WCU Handoff Fixture')
     window.set_default_size(720,480)
     box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=14)

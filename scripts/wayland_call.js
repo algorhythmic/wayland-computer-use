@@ -29,12 +29,26 @@
       if (reply.error) { text(reply); return reply; }
       if (!reply.result || !Array.isArray(reply.result.content))
         throw new Error("Unexpected outstanding MCP reply; stop and inspect client state");
+      const failedOutcome = reply.result.isError || reply.result.content.some(item => {
+        if (item.type !== 'text') return false;
+        try {
+          const body = JSON.parse(item.text);
+          return body.sequence?.stopped === true || body.wait_timed_out === true || body.requires_review === true;
+        } catch { return false; }
+      });
       for (const item of reply.result.content) {
         if (item.type === "image") {
           if (!/^\/tmp\/hush-mcp-[A-Za-z0-9_-]+\.png$/.test(item.saved_image || ""))
             throw new Error("Unexpected screenshot path; stop and inspect");
-          const viewed = await tools.view_image({path: item.saved_image, detail: "original"});
-          image(viewed.image_url, "original");
+          if (request.name === "view_frame" || request.name === "screenshot" ||
+              args.images === "target" || args.images === "monitor" ||
+              (args.images === "on_failure" && failedOutcome)) {
+            const viewed = await tools.view_image({path: item.saved_image, detail: "original"});
+            image(viewed.image_url, "original");
+          } else {
+            text({saved_image: item.saved_image, image_delivered: false,
+                  note: "View only if pixels are needed. Original frame expires 120 seconds after capture; viewing does not refresh it."});
+          }
         } else if (item.type === "text") {
           text(item.text);
         }

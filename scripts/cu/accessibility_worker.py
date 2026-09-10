@@ -61,6 +61,7 @@ def probe_tree(root, Atspi, scope=None, read_text=None):
     source = root
     root, root_ref = resolve(root, scope, Atspi) if scope else (root, 'root')
     nodes, queue = [], [(root, root_ref, 0)]
+    focused_objects = []
     truncated = False
     while queue and len(nodes) < 200:
         obj, path, depth = queue.pop(0)
@@ -81,6 +82,8 @@ def probe_tree(root, Atspi, scope=None, read_text=None):
         if value:
             node['value'] = value.get_current_value()
         nodes.append(node)
+        if 'focused' in node['states']:
+            focused_objects.append((obj, node))
         count = obj.get_child_count()
         capacity = max(0, 200-len(nodes)-len(queue)) if depth < 12 else 0
         truncated |= count > capacity
@@ -94,26 +97,50 @@ def probe_tree(root, Atspi, scope=None, read_text=None):
               'focused_control': focused[0] if complete and len(focused) == 1 else None,
               'focus_status': 'unique' if complete and len(focused) == 1 else 'ambiguous' if len(focused) > 1 else 'unavailable',
               'coordinates': 'AT-SPI window-relative; not verified for input'}
+    if complete and len(focused_objects) == 1:
+        obj, node = focused_objects[0]
+        result['text_readback'] = read_control_text(obj, node['ref'], Atspi, 1024)
+        if not node['protected'] and 'editable' in node['states']:
+            try:
+                interface = obj.get_text_iface()
+                offset = interface.get_caret_offset()
+                count = interface.get_character_count()
+                # Some toolkits explicitly expose a zero-width insertion rect
+                # at end-of-text. Accept only that reported rect, never infer the
+                # trailing edge of the previous glyph.
+                if 0 <= offset <= count:
+                    rect = interface.get_character_extents(offset, Atspi.CoordType.WINDOW)
+                    if 1 <= rect.height <= 64 and (offset < count or 0 <= rect.width <= 2):
+                        node['caret'] = {'offset': offset, 'box': [rect.x-1, rect.y, rect.x+2, rect.y+rect.height]}
+            except Exception:
+                pass
+    elif not read_text:
+        result['text_readback'] = {'status': 'unavailable', 'verifiable': False,
+                                   'reason': 'unique_focused_control_unavailable'}
     if read_text:
         text_obj, text_ref = resolve(source, read_text, Atspi)
         if text_ref != root_ref and not text_ref.startswith(root_ref+'/'):
             raise ValueError('Text reference outside requested scope')
-        if text_obj.get_role() == Atspi.Role.PASSWORD_TEXT:
-            result['text_readback'] = {'status': 'protected', 'verifiable': False}
-        else:
-            interface = text_obj.get_text_iface()
-            if interface:
-                count = interface.get_character_count()
-                limit = read_text.get('max_chars', 1024)
-                result['text_readback'] = {'status': 'available', 'ref': text_ref,
-                    # PyGObject's Accessible override also defines get_text()
-                    # (the legacy interface accessor). Dispatch through Text to
-                    # avoid calling that zero-argument method on real objects.
-                    'text': Atspi.Text.get_text(interface, 0, min(count, limit)), 'complete': count <= limit,
-                    'verifiable': count <= limit}
-            else:
-                result['text_readback'] = {'status': 'unavailable', 'verifiable': False}
+        result['text_readback'] = read_control_text(text_obj, text_ref, Atspi, read_text.get('max_chars', 1024))
     return result
+
+
+def read_control_text(obj, ref, Atspi, limit):
+    if obj.get_role() == Atspi.Role.PASSWORD_TEXT:
+        return {'status': 'protected', 'verifiable': False}
+    try:
+        interface = obj.get_text_iface()
+        if interface:
+            count = interface.get_character_count()
+            if count < 0:
+                return {'status': 'unavailable', 'verifiable': False}
+            text = Atspi.Text.get_text(interface, 0, min(count, limit))
+            complete = count <= limit and len(text) == count
+            return {'status': 'available', 'ref': ref, 'text': text[:limit],
+                    'complete': complete, 'verifiable': complete}
+    except Exception:
+        pass
+    return {'status': 'unavailable', 'verifiable': False}
 
 
 def serve():

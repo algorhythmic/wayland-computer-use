@@ -21,7 +21,7 @@ import uuid
 if __package__:
     from .cu.capture import Capturer
     from .cu.capture import Capture
-    from .cu.pixels import crop, png_rgb
+    from .cu.pixels import crop, png_rgb, half_rgb
     from .cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from .cu import observation
     from .cu import trace
@@ -29,12 +29,13 @@ if __package__:
     from .cu.context_records import SnapshotStore, SCHEMA_VERSION
     from .cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
     from .cu.braid_client import BraidBackend
+    from .cu.app_surfaces import cdp_read, validate_uri, surface_context
     from .cu.system import desktop_locked, hypr_query
 else:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from cu.capture import Capturer
     from cu.capture import Capture
-    from cu.pixels import crop, png_rgb
+    from cu.pixels import crop, png_rgb, half_rgb
     from cu.observation import Observer, Collector, CONDITION_SCHEMA, TIMEOUT, COMMON, validate_condition
     from cu import observation
     from cu import trace
@@ -42,6 +43,7 @@ else:
     from cu.context_records import SnapshotStore, SCHEMA_VERSION
     from cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
     from cu.braid_client import BraidBackend
+    from cu.app_surfaces import cdp_read, validate_uri, surface_context
     from cu.system import desktop_locked, hypr_query
 
 
@@ -141,7 +143,7 @@ def key_args(chord):
 
 
 def text_content(value):
-    return {"type": "text", "text": json.dumps(value, ensure_ascii=False)}
+    return {"type": "text", "text": json.dumps(value, ensure_ascii=False, separators=(',', ':'))}
 
 
 # Each wtype process extends its virtual-keyboard keymap when it meets a new
@@ -191,14 +193,23 @@ def argument_shape(name, a):
 
 def result_summary(content):
     """Sizes, frame provenance, guard metrics and wait outcomes from a response."""
-    summary = {'blocks': len(content), 'images': 0, 'image_base64_bytes': 0, 'text_bytes': 0, 'frames': []}
+    summary = {'model_visible_image_pixels': 0,
+               'model_visible_bytes': len(json.dumps(content, ensure_ascii=False, separators=(',', ':')).encode()),
+               'blocks': len(content), 'images': 0, 'image_base64_bytes': 0, 'text_bytes': 0, 'frames': []}
     for block in content:
         if block.get('type') == 'image':
             summary['images'] += 1
             summary['image_base64_bytes'] += len(block.get('data', ''))
+            try:
+                header = base64.b64decode(block.get('data', '')[:32])
+                if header[:8] == b'\x89PNG\r\n\x1a\n':
+                    w, h = struct.unpack('!II', header[16:24])
+                    summary['model_visible_image_pixels'] += w*h
+            except (ValueError, struct.error):
+                pass
             continue
         text = block.get('text', '')
-        summary['text_bytes'] += len(text)
+        summary['text_bytes'] += len(text.encode('utf-8'))
         if len(text) > 65536:
             continue
         try:
@@ -209,7 +220,7 @@ def result_summary(content):
             continue
         if 'frame_id' in body:
             summary['frames'].append({k: body.get(k) for k in ('capture_backend', 'fallback_reason', 'width',
-                                                                'height', 'png_bytes', 'monitor', 'timings_ms')})
+                                                                'height', 'png_bytes', 'monitor', 'timings_ms') if k in body})
         if isinstance(body.get('visual_difference'), dict):
             summary['guard_metrics'] = body['visual_difference']
         for key in ('status', 'condition_met', 'wait_timed_out', 'fresh_sample', 'freshness_satisfied', 'age_ms',
@@ -373,6 +384,11 @@ class Desktop:
         self.context_diagnostics = None
         self.result_view = None
         self.result_target = None
+        self.delivered_accessibility = None
+        self.images = 'none'
+        self.image_detail = 'half'
+        self.result_failed = False
+        self.settle_timeout_ms = 1500
         self.recorder = trace.Recorder(provenance=trace.provenance([globals().get('__file__')]))
 
     def close(self):
@@ -443,14 +459,15 @@ class Desktop:
             "trace": self.recorder.status(), 'runtime': self.capabilities()}
 
     def capabilities(self):
-        return {'identity': self.runtime_identity, 'tool_contract_version': 'wcu-tools-2',
+        return {'identity': self.runtime_identity, 'tool_contract_version': 'wcu-tools-3',
             'tool_contract_sha256': hashlib.sha256(json.dumps(TOOLS, sort_keys=True).encode()).hexdigest(),
             'context_schema': SCHEMA_VERSION, 'context_contract': CONTRACT_VERSION,
             'observer_version': hashlib.sha256(Path(observation.__file__).read_bytes()).hexdigest(),
             'client_loaded_skill_revision': None,
             'capabilities': ['guarded_sequences', 'segment_guards', 'execution_ledger', 'shared_deadline',
                              'context_for_task', 'explicit_window_transitions', 'scoped_accessibility',
-                             'bounded_text_readback', 'readiness_conditions', 'result_views', 'original_image_detail'],
+                             'bounded_text_readback', 'readiness_conditions', 'result_views', 'original_image_detail', 'deferred_frames', 'image_delivery_policy',
+                             'text_first_results', 'batch_readback', 'bounded_quiescence', 'application_surfaces'],
             'unsupported': ['focus_until', 'semantic_activation', 'arbitrary_code', 'asynchronous_input']}
 
     def task_context(self, args):
@@ -463,6 +480,11 @@ class Desktop:
                     'output': {'unit': 'utf8_bytes', 'renderer': 'canonical-json-utf8-v1', 'limit': args.get('max_bytes', 8192), 'bytes': 0}}
         else:
             body, self.context_diagnostics = context_for_task(snapshot, args, self.context_evidence, self.context_backend)
+        surfaces = surface_context(args['intent'])
+        if surfaces:
+            body['app_surfaces'] = surfaces
+            if len(render(body)) > args.get('max_bytes', 8192):
+                del body['app_surfaces']
         return [{'type': 'text', 'text': render(body).decode()}]
 
     @staticmethod
@@ -488,7 +510,7 @@ class Desktop:
             return self.capture_result_view(monitor)
 
     def capture_result_view(self, monitor):
-        policy = self.result_view or {'kind': 'monitor'}
+        policy = self.result_view or {'kind': 'target'}
         reason = None
         if policy['kind'] != 'monitor':
             active = self.hypr('activewindow')
@@ -503,10 +525,14 @@ class Desktop:
                         reason = 'overlay_overview_required'
                 except Exception:
                     reason = 'overlay_coverage_unavailable'
+            if reason is not None:
+                return [text_content({'status': 'review_required', 'requires_review': True,
+                    'overview_required': True, 'reason': reason, 'image_available': False,
+                    'next_observation': 'Explicit screenshot for monitor overview', 'result_view': policy})]
             if reason is None:
-                content, sample = self.observation_service().observe(active['address'], channels=['metadata', 'pixels'],
+                content, sample = self.observation_service().observe(active['address'], channels=['metadata', 'pixels', 'accessibility'],
                     images=False, return_sample=True, timeout_ms=self.deadline.milliseconds(3000) if self.deadline else 3000)
-                if not sample.get('capture'):
+                if not sample.get('capture') or json.loads(content[0]['text']).get('freshness_satisfied') is not True:
                     raise RuntimeError('Result crop unavailable')
                 geometry = sample['geometry']
                 capture = sample['capture']
@@ -520,6 +546,15 @@ class Desktop:
                     self.layout(sample['state']['monitors']), sample['target']['address'], geometry, True)
                 meta = json.loads(result[0]['text'])
                 meta['result_view'] = policy
+                meta['accessibility'] = sample['state'].get('accessibility', {'status': 'unavailable'})
+                meta['revision'] = sample.get('revision')
+                self.frames[meta['frame_id']]['accessibility'] = meta['accessibility']
+                previous = self.delivered_accessibility
+                if previous and previous[0] == self.result_target and previous[1]:
+                    meta['accessibility'] = {'mode': 'delta', 'since_revision': previous[1],
+                        'changes': observation.accessibility_delta(previous[2], meta['accessibility'])}
+                self.delivered_accessibility = (dict(self.result_target), sample.get('revision'),
+                    sample['state'].get('accessibility', {'status': 'unavailable'}))
                 result[0] = text_content(meta)
                 return result
         result = self.screenshot(monitor)
@@ -572,31 +607,76 @@ class Desktop:
                               "height": height, "layout": layout, "active": active,
                               "target": target, "visual": visual, "geometry": geometry,
                               "shared_observation": shared}}
-        encode_start = time.monotonic_ns()
-        png = png_rgb(width, height, capture.rgb)
-        requested = getattr(capture, 'requested_ns', None)
-        return [text_content({"frame_id": token, "monitor": monitor["name"], "width": width,
-                              "height": height, "origin": geometry[:2] if geometry else [monitor["x"], monitor["y"]],
-                              "coordinates": "screenshot pixels", "active_window": active,
-                              "target_window": target, 'capture_started_ns': capture.started_ns,
-                              'capture_backend': capture.backend, 'presentation_ns': capture.presentation_ns,
-                              'fallback_reason': getattr(capture, 'fallback_reason', None), 'png_bytes': len(png),
-                              'timings_ms': {'capture_ms': (capture.completed_ns-capture.started_ns)/1e6,
-                                             'lock_wait_ms': (capture.started_ns-requested)/1e6 if requested else 0,
-                                             'encode_ms': (time.monotonic_ns()-encode_start)/1e6}}),
-                {"type": "image", "mimeType": "image/png", "data": base64.b64encode(png).decode(),
-                 '_meta': {'codex/imageDetail': 'original'}}]
+        frame = self.frames[token]
+        frame['capture'] = capture
+        frame['image_delivered'] = False
+        return self.deliver_frame(token, self.images in ('target', 'monitor') or
+                                  self.images == 'on_failure' and (self.result_failed or
+                                      bool(self.ledger and self.ledger.stop_reason)))
+
+    def deliver_frame(self, token, deliver=True, detail=None):
+        frame = self.frames.get(token)
+        if not frame or time.monotonic()-frame['time'] > 120:
+            raise ValueError('Frame missing, consumed, or expired; observe again. Viewing never refreshes its age.')
+        capture = frame['capture']
+        detail = detail or self.image_detail
+        width, height, rgb = capture.width, capture.height, capture.rgb
+        if detail != 'original':
+            width, height, rgb = half_rgb(width, height, rgb) if deliver else ((width+1)//2, (height+1)//2, None)
+        # A different presentation has a different coordinate capability; old IDs
+        # cannot silently acquire a new scale.
+        if frame.get('image_delivered') and (width, height) != (frame['view_width'], frame['view_height']):
+            new_token = uuid.uuid4().hex
+            self.frames = {new_token: frame}
+            token = new_token
+            if self.context_evidence:
+                self.context_evidence = SessionEvidence(token, self.context_evidence.facts, capture.started_ns)
+        frame.update(view_width=width, view_height=height, view_scale=1 if detail == 'original' else 2)
+        if deliver:
+            frame['image_delivered'] = True
+        monitor, geometry = frame['monitor'], frame['geometry']
+        meta = {'frame_id': token, 'monitor': monitor['name'], 'width': width, 'height': height,
+                'source_size': [capture.width, capture.height], 'source_pixels_per_view_pixel': frame['view_scale'],
+                'origin': geometry[:2] if geometry else [monitor['x'], monitor['y']],
+                'coordinates': 'view pixels; mapped to retained full-resolution guard',
+                'active_window': frame['active'], 'target_window': frame['target'],
+                'capture_started_ns': capture.started_ns, 'capture_backend': capture.backend,
+                'expires_at_ns': capture.started_ns+120_000_000_000,
+                'remaining_ms': max(0, int((120-(time.monotonic()-frame['time']))*1000)),
+                'image_available': True, 'image_delivered': deliver,
+                'view_tool': {'name': 'view_frame', 'arguments': {'frame_id': token, 'detail': detail}},
+                'timings_ms': {'capture_ms': (capture.completed_ns-capture.started_ns)/1e6}}
+        if capture.presentation_ns is not None:
+            meta['presentation_ns'] = capture.presentation_ns
+        if getattr(capture, 'fallback_reason', None):
+            meta['fallback_reason'] = capture.fallback_reason
+        blocks = []
+        if deliver:
+            tick = time.monotonic_ns()
+            png = png_rgb(width, height, rgb)
+            meta['png_bytes'] = len(png)
+            meta['timings_ms']['encode_ms'] = (time.monotonic_ns()-tick)/1e6
+            blocks.append({'type': 'image', 'mimeType': 'image/png', 'data': base64.b64encode(png).decode(),
+                           '_meta': {'codex/imageDetail': 'original'}})
+        return [text_content(meta), *blocks]
 
     def observation_content(self, args):
+        args = {k: v for k, v in args.items() if k not in ('images', 'detail')}
         content, sample = self.observation_service().observe(**args, images=False, return_sample=True)
         meta = json.loads(content[0]['text'])
         capture = sample.get('capture')
         if capture and meta['freshness_satisfied'] and time.monotonic_ns()-capture.started_ns < 120_000_000_000:
             target = {k: v for k, v in sample['target'].items() if k != 'id'}
-            next_frame = self.capture_content(capture, sample['monitor'], target,
-                self.layout(sample['state']['monitors']), sample['state']['active_window'], sample['geometry'], True)
-            meta.update(actionable=True, input_frame_id=json.loads(next_frame[0]['text'])['frame_id'])
-            content[0]['text'] = json.dumps(meta)
+            if self.images == 'monitor':
+                next_frame = self.screenshot(sample['monitor']['name'])
+            else:
+                next_frame = self.capture_content(capture, sample['monitor'], target,
+                    self.layout(sample['state']['monitors']), sample['state']['active_window'], sample['geometry'], True)
+            token = json.loads(next_frame[0]['text'])['frame_id']
+            self.frames[token]['accessibility'] = sample['state'].get('accessibility', {})
+            self.delivered_accessibility = (self.identity(target), sample.get('revision'), sample['state'].get('accessibility', {}))
+            meta.update(actionable=True, input_frame_id=token)
+            content[0] = text_content(meta)
             content += next_frame
         return content
 
@@ -641,6 +721,8 @@ class Desktop:
         points = [(args["x"], args["y"])]
         if "end_x" in args:
             points.append((args["end_x"], args["end_y"]))
+        points = [(x*frame.get('view_scale', 1),
+                   y*frame.get('view_scale', 1)) for x, y in points]
         if any(not (left <= x < right and top <= y < bottom) for x, y in points):
             raise ValueError("Action location outside validated window interior")
         # 32 screenshot pixels around a click; entire drag bounding box plus margin.
@@ -649,13 +731,46 @@ class Desktop:
                 min(right, max(x for x, y in points)+33)-left,
                 min(bottom, max(y for x, y in points)+33)-top)
 
+    def guarded_pixels(self, frame, after, region=None):
+        metrics = visual_guard(frame['visual'], after, region)
+        box = metrics.get('changed_bbox_xyxy')
+        if metrics['accepted'] or not box or box[2]-box[0] > 3 or box[3]-box[1] > 64:
+            return metrics
+        before = frame.get('accessibility', {})
+        focused = before.get('focused_control') or {}
+        caret = focused.get('caret')
+        if before.get('focus_status') != 'unique' or not caret or focused.get('protected'):
+            return metrics
+        # Tiny bars alone are not proof of a caret. Require unchanged, complete
+        # AT-SPI focus/offset/extents on both sides, and no change outside them.
+        evidence = self.observation_service().collector.accessibility.probe(
+            frame['target']['pid'], frame['target']['title'])
+        current = evidence.get('focused_control') or {}
+        if evidence.get('focus_status') != 'unique' or any(current.get(k) != focused.get(k)
+                for k in ('ref', 'role', 'name', 'states', 'protected', 'caret')):
+            return metrics
+        mapping = self.mapping(frame['monitor'], frame.get('geometry'))
+        bounds = self.target_bounds(frame['target'], mapping, frame['width'], frame['height'])
+        scale_x = frame['width']/(mapping['width']/mapping['scale'])
+        scale_y = frame['height']/(mapping['height']/mapping['scale'])
+        tx, ty = frame['target']['at']
+        left, top, right, bottom = caret['box']
+        expected = [math.floor((tx+left-mapping['x'])*scale_x)-bounds[0],
+                    math.floor((ty+top-mapping['y'])*scale_y)-bounds[1],
+                    math.ceil((tx+right-mapping['x'])*scale_x)-bounds[0],
+                    math.ceil((ty+bottom-mapping['y'])*scale_y)-bounds[1]]
+        if expected[0] <= box[0] < box[2] <= expected[2] and expected[1] <= box[1] < box[3] <= expected[3]:
+            metrics.update(accepted=True, ignored_change='verified_focused_caret', caret_box_xyxy=expected)
+        return metrics
+
     def reject(self, message, monitor, details=None):
         self.frames.clear()
         content = [text_content({"error": message, "action_performed": False,
                                  "requires_review": True, **(details or {})})]
         try:
             with self.span('recovery'):
-                content += self.screenshot(monitor)
+                self.result_failed = True
+                content += self.result_capture(monitor)
         except Exception as exc:
             content.append(text_content({"screenshot_error": str(exc)}))
         raise ActionRejected(message, content)
@@ -671,6 +786,11 @@ class Desktop:
             raise ValueError("Target closed, moved, resized, or changed identity/title")
 
     def prepare(self, name, a):
+        pending = self.frames.get(a['frame_id'])
+        if pending and pending.get('target'):
+            self.result_target = self.identity(pending['target'])
+        if pending and 'x' in a and not pending.get('image_delivered', True):
+            raise ValueError('Coordinate input requires viewing this frame with view_frame first')
         if not a.get("restore_focus", False):
             frame = self.guard(a["frame_id"])
             self.note(frame_age_ms=(time.monotonic()-frame["time"])*1000,
@@ -680,7 +800,7 @@ class Desktop:
                     self.check_target(frame)
                     with self.span('visual_check'):
                         after = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
-                        metrics = visual_guard(frame['visual'], after, self.action_region(frame, a))
+                        metrics = self.guarded_pixels(frame, after, self.action_region(frame, a))
                     if not metrics['accepted']:
                         self.reject('Target pixels changed; review before input', frame['monitor']['name'], {'visual_difference': metrics})
                     self.check_target(frame)
@@ -714,7 +834,7 @@ class Desktop:
             if name != "scroll":
                 with self.span('visual_check'):
                     after = self.target_pixels(target, frame["monitor"], geometry=frame.get('geometry'))
-                    metrics = visual_guard(frame["visual"], after, self.action_region(frame, a))
+                    metrics = self.guarded_pixels(frame, after, self.action_region(frame, a))
                 if not metrics["accepted"]:
                     details = {"visual_difference": metrics}
                     try:
@@ -757,14 +877,14 @@ class Desktop:
 
     @staticmethod
     def point(frame, x, y):
-        integer(x, 0, frame["width"] - 1)
-        integer(y, 0, frame["height"] - 1)
+        integer(x, 0, frame.get("view_width", frame["width"]) - 1)
+        integer(y, 0, frame.get("view_height", frame["height"]) - 1)
         m = Desktop.mapping(frame["monitor"], frame.get('geometry'))
         w, h = m["width"], m["height"]
         if m["transform"] % 2:
             w, h = h, w
-        return (m["x"] + math.floor(x * w / m["scale"] / frame["width"]),
-                m["y"] + math.floor(y * h / m["scale"] / frame["height"]))
+        return (m["x"] + math.floor(x * frame.get("view_scale", 1) * w / m["scale"] / frame["width"]),
+                m["y"] + math.floor(y * frame.get("view_scale", 1) * h / m["scale"] / frame["height"]))
 
     def move(self, point):
         self.dispatch("movecursor", f"{point[0]} {point[1]}")
@@ -783,13 +903,20 @@ class Desktop:
         self.input_started = False
         self.ledger = self.deadline = None
         self.result_view = a.get('result_view') if isinstance(a, dict) else None
-        self.result_target = None
+        pending = self.frames.get(a.get('frame_id')) if isinstance(a, dict) else None
+        self.result_target = self.identity(pending['target']) if pending and pending.get('target') else None
+        self.images = a.get('images', 'monitor' if name == 'screenshot' else 'none') if isinstance(a, dict) else 'none'
+        self.image_detail = a.get('detail', 'half') if isinstance(a, dict) else 'half'
+        if self.images == 'monitor':
+            self.result_view = {'kind': 'monitor'}
+        self.result_failed = False
+        self.settle_timeout_ms = a.get('settle_timeout_ms', 1500) if isinstance(a, dict) else 1500
         previous = trace.activate(self.trace)
         try:
             validate(name, a)
             if name == 'run_steps':
                 self.validate_steps(a['steps'])
-            if name in (*self.STEP_ACTIONS, 'drag') and name != 'wait' or name == 'run_steps':
+            if name in ('press_key', 'type_text', 'pointer', 'scroll', 'drag', 'focus_window', 'run_steps', 'open_uri'):
                 self.deadline = Deadline(a.get('duration_ms', DEFAULT_BUDGET_MS))
                 self.ledger = Ledger(a['steps'] if name == 'run_steps' else [{'action': name}])
                 if name != 'run_steps':
@@ -858,6 +985,7 @@ class Desktop:
     def recover(self, content):
         """A fresh read never replays input. Capture failure preserves the ledger."""
         self.frames.clear()
+        self.result_failed = True
         previous = self.deadline
         self.deadline = Deadline(5000)
         try:
@@ -894,6 +1022,24 @@ class Desktop:
     def _call(self, name, a):
         if name == 'context_for_task':
             return self.task_context(a)
+        if name == 'cdp_read':
+            return [text_content(cdp_read(**a))]
+        if name == 'open_uri':
+            if desktop_locked():
+                raise ValueError('Desktop is locked')
+            self.frames.clear()
+            self.input_started = self.action_started = True
+            self.ledger.injecting()
+            run(['xdg-open', a['uri']], timeout=self.deadline.remaining(10))
+            self.ledger.submitted()
+            self.action_completed_ns = time.monotonic_ns()
+            self.ledger.completed(self.action_completed_ns)
+            self.ledger.current['status'] = 'done'
+            return [text_content({'status': 'dispatched', 'application_accepted': 'unverified'})]
+        if name == 'view_frame':
+            return self.deliver_frame(a['frame_id'], detail=a.get('detail', 'half'))
+        if name == 'read_text':
+            return self.observation_content({**a, 'channels': ['metadata', 'accessibility']})
         if name in ('observe_window', 'wait_for'):
             with self.span('wait' if name == 'wait_for' else 'observe'):
                 return self.observation_content(a)
@@ -920,6 +1066,7 @@ class Desktop:
             self.ledger.submitted()
             self.ledger.completed(self.action_completed_ns)
             self.ledger.current['status'] = 'done'
+            self.settle(self.result_target, self.ledger.current)
             with self.span('result'):
                 return self.result_capture()
         # Validate all action arguments before restoration, which is itself a mutation.
@@ -939,7 +1086,7 @@ class Desktop:
                     self.point(pending, a[xkey], a[ykey])
         if 'after' in a:
             validate_condition(a['after']['condition'])
-            if a['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent'):
+            if a['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent', 'text_equals'):
                 raise ValueError('Use a separate wait_for with scoped/baseline evidence for this condition')
             if a['after']['condition']['kind'] == 'accessible' and not (pending or {}).get('target'):
                 raise ValueError('Accessible outcome wait requires a screenshot with a focused target')
@@ -957,21 +1104,25 @@ class Desktop:
             self.perform(name, a, frame, recheck)
         if 'after' in a:
             condition = a['after']['condition']
-            window = None if condition['kind'] == 'window' else (frame.get('target') or {}).get('address')
+            window = None if condition['kind'] == 'window' else target.get('address')
             self.ledger.current['status'] = 'verifying'
             with self.span('wait'):
                 result = self.observation_content({'window': window, 'condition': condition,
-                    'timeout_ms': self.deadline.milliseconds(a['after'].get('timeout_ms', 5000)), 'after_action': self.action_completed_ns})
+                    'timeout_ms': self.deadline.milliseconds(a['after'].get('timeout_ms', 5000)), 'after_action': self.action_completed_ns,
+                    'channels': ['metadata'] if condition['kind'] == 'window' else ['metadata', 'accessibility']})
             outcome = json.loads(result[0]['text'])
             self.ledger.current['verification'] = 'matched' if outcome.get('condition_met') else 'failed'
             self.ledger.current['status'] = 'done' if outcome.get('condition_met') else 'after_timeout'
+            if outcome.get('condition_met') and condition['kind'] == 'text_equals':
+                self.ledger.current['application_accepted'] = 'verified_text'
             if not outcome.get('condition_met'):
                 self.ledger.current['status'] = 'after_timeout'
                 self.ledger.stop_reason = 'after_not_met'
-            if not any(block['type'] == 'image' for block in result):
+            if not any('input_frame_id' in json.loads(block.get('text', '{}')) for block in result if block['type'] == 'text'):
                 with self.span('result'):
                     result += self.result_capture(frame['monitor']['name'])
             return result
+        self.settle(target, self.ledger.current)
         with self.span('result'):
             return self.result_capture(frame["monitor"]["name"])
 
@@ -1029,10 +1180,10 @@ class Desktop:
         entry['status'] = 'done'
 
     # ----- Deterministic sequences -------------------------------------------------
-    STEP_ACTIONS = ('press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll')
-    CONTROL_KEYS = {'expect', 'expect_timeout_ms', 'after', 'transition'}
+    STEP_ACTIONS = ('press_key', 'type_text', 'focus_window', 'wait', 'wait_for', 'read_text', 'pointer', 'scroll')
+    CONTROL_KEYS = {'expect', 'expect_timeout_ms', 'after', 'transition', 'condition', 'timeout_ms', 'read_text', 'a11y_scope'}
     STEP_KEYS = {'transition', 'action', 'key', 'text', 'address', 'x', 'y', 'button', 'count', 'steps', 'axis',
-                 'expect', 'expect_timeout_ms', 'after'}
+                 'expect', 'expect_timeout_ms', 'after', 'condition', 'timeout_ms', 'read_text', 'a11y_scope'}
 
     def validate_steps(self, steps):
         if not isinstance(steps, list) or not 1 <= len(steps) <= 12:
@@ -1042,10 +1193,23 @@ class Desktop:
                 raise ValueError(f'Invalid step {index}')
             action = step['action']
             payload = {k: v for k, v in step.items() if k not in self.CONTROL_KEYS | {'action'}}
-            if action != 'wait':
+            if action not in ('wait', 'wait_for', 'read_text'):
                 validate(action, payload if action == 'focus_window' else {'frame_id': 'validation', **payload})
             elif payload:
-                raise ValueError('wait has no input fields')
+                raise ValueError('Read steps have no input fields')
+            if action == 'wait_for' and 'condition' not in step:
+                raise ValueError('wait_for step requires condition')
+            if 'condition' in step:
+                if action != 'wait_for':
+                    raise ValueError('Only wait_for steps accept condition')
+                validate_condition(step['condition'])
+                if step['condition']['kind'] not in ('window', 'accessible', 'accessible_absent', 'text_equals'):
+                    raise ValueError('Batch wait_for requires window or accessibility evidence')
+            if 'timeout_ms' in step:
+                integer(step['timeout_ms'], 1, 30000)
+            for selector in ('read_text', 'a11y_scope'):
+                if selector in step:
+                    observation.validate('observe', {'window': 'validation', selector: step[selector]})
             if 'transition' in step and (step['transition'] != 'matched_window' or
                     step.get('after', {}).get('condition', {}).get('kind') != 'window' or
                     step['after']['condition'].get('focused') is not True):
@@ -1067,7 +1231,7 @@ class Desktop:
             for key in ('expect',):
                 if key in step:
                     validate_condition(step[key])
-                    if step[key]['kind'] not in ('window', 'accessible', 'accessible_absent'):
+                    if step[key]['kind'] not in ('window', 'accessible', 'accessible_absent', 'text_equals'):
                         raise ValueError(f'Step {index}: expect requires window or accessible evidence')
             if 'expect_timeout_ms' in step:
                 integer(step['expect_timeout_ms'], 1, 30000)
@@ -1075,12 +1239,12 @@ class Desktop:
                 if not isinstance(step['after'], dict) or set(step['after'])-{'condition', 'timeout_ms'} or 'condition' not in step['after']:
                     raise ValueError(f'Step {index}: invalid after')
                 validate_condition(step['after']['condition'])
-                if step['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent'):
+                if step['after']['condition']['kind'] not in ('window', 'accessible', 'accessible_absent', 'text_equals'):
                     raise ValueError(f'Step {index}: after requires window or accessible evidence')
                 if 'timeout_ms' in step['after']:
                     integer(step['after']['timeout_ms'], 1, 30000)
 
-    def await_condition(self, condition, timeout_ms, after_action=None, target=None):
+    def await_condition(self, condition, timeout_ms, after_action=None, target=None, **selectors):
         args = {'condition': condition, 'timeout_ms': self.deadline.milliseconds(timeout_ms)}
         if after_action is not None:
             args['after_action'] = after_action
@@ -1089,8 +1253,47 @@ class Desktop:
             args['channels'] = ['metadata', 'accessibility']
         else:
             args['channels'] = ['metadata']
+        args.update(selectors)
         body = json.loads(self.observation_content(args)[0]['text'])
         return body
+
+    def settle(self, target, entry):
+        """Wait for bounded pixel quiescence; never replay input or claim acceptance."""
+        if self.settle_timeout_ms == 0:
+            entry['readiness'] = 'not_requested'
+            return True
+        self.recheck_target(target)
+        observer = self.observation_service()
+        timeout = self.deadline.milliseconds(self.settle_timeout_ms)
+        end = time.monotonic()+timeout/1000
+        previous = None
+        stable_since = None
+        delay = .025
+        while True:
+            remaining = end-time.monotonic()
+            if remaining <= 0:
+                entry.update(readiness='timeout', status='readiness_timeout')
+                self.ledger.stop_reason = 'quiescence_timeout'
+                return False
+            content, sample = observer.observe(target['address'], channels=['metadata', 'pixels'],
+                images=False, return_sample=True, after_action=self.action_completed_ns,
+                timeout_ms=max(1, int(remaining*1000)))
+            self.recheck_target(target)
+            capture = sample.get('capture')
+            if capture is None or json.loads(content[0]['text']).get('freshness_satisfied') is not True:
+                entry.update(readiness='unavailable', status='readiness_unavailable')
+                self.ledger.stop_reason = 'quiescence_unavailable'
+                return False
+            signature = (sample['geometry'], capture.rgb)
+            now = time.monotonic()
+            if previous == signature:
+                if now-stable_since >= .1:
+                    entry['readiness'] = 'quiescent'
+                    return True
+            else:
+                previous, stable_since = signature, now
+            time.sleep(min(delay, max(0, end-now), self.deadline.remaining()))
+            delay = min(.1, delay*1.5)
 
     def checked_match(self, body, target, transition=None):
         if not body.get('condition_met'):
@@ -1109,7 +1312,7 @@ class Desktop:
 
     def run_steps(self, a):
         steps = a['steps']
-        frame = self.guard(a['frame_id']) if steps[0]['action'] in ('wait', 'focus_window') else None
+        frame = self.guard(a['frame_id']) if steps[0]['action'] in ('wait', 'wait_for', 'read_text', 'focus_window') else None
         if frame is None:
             first_args = {k: v for k, v in steps[0].items() if k not in self.CONTROL_KEYS | {'action'}}
             first_args.update({k: v for k, v in a.items() if k in ('frame_id', 'restore_focus', 'target_window', 'target_title')})
@@ -1128,7 +1331,8 @@ class Desktop:
                 with self.span('step', index=index, action=action):
                     if 'expect' in step:
                         body = self.await_condition(step['expect'], step.get('expect_timeout_ms', 5000),
-                                                    self.action_completed_ns, target)
+                                                    self.action_completed_ns, target,
+                                                    **{k: step[k] for k in ('read_text', 'a11y_scope') if k in step})
                         entry['expect_status'] = body.get('status')
                         if not body.get('condition_met'):
                             entry['status'] = 'precondition_failed'
@@ -1160,6 +1364,33 @@ class Desktop:
                         self.ledger.submitted()
                         self.action_completed_ns = time.monotonic_ns()
                         self.ledger.completed(self.action_completed_ns)
+                    elif action == 'wait_for':
+                        body = self.await_condition(step['condition'], step.get('timeout_ms', 5000),
+                            self.action_completed_ns, target,
+                            **{k: step[k] for k in ('read_text', 'a11y_scope') if k in step})
+                        entry['observation'] = body
+                        if not self.checked_match(body, target):
+                            entry.update(status='after_timeout', verification='failed')
+                            self.ledger.stop_reason = f'step {index}: wait_for not met'
+                            break
+                        entry['verification'] = 'matched'
+                        if step['condition']['kind'] == 'text_equals':
+                            entry['application_accepted'] = 'verified_text'
+                    elif action == 'read_text':
+                        args = {'window': target['address'], 'channels': ['metadata', 'accessibility'],
+                                **{k: step[k] for k in ('read_text', 'a11y_scope') if k in step}}
+                        if self.action_completed_ns is not None:
+                            args['after_action'] = self.action_completed_ns
+                        content, sample = self.observation_service().observe(**args, images=False,
+                            return_sample=True, timeout_ms=self.deadline.milliseconds(step.get('timeout_ms', 3000)))
+                        evidence = sample['state'].get('accessibility', {}).get('text_readback', {})
+                        entry['readback'] = evidence
+                        self.recheck_target(target)
+                        if evidence.get('verifiable') is not True or json.loads(content[0]['text']).get('freshness_satisfied') is not True:
+                            entry.update(status='readback_unavailable', verification='failed')
+                            self.ledger.stop_reason = f'step {index}: complete text unavailable'
+                            break
+                        entry['verification'] = 'read'
                     elif action != 'wait':
                         if index == 0 and action in ('pointer', 'scroll'):
                             # The expect wait has not refreshed the reviewed frame.
@@ -1168,7 +1399,7 @@ class Desktop:
                                 self.check_target(frame)
                                 if frame.get('visual') and action != 'scroll':
                                     pixels = self.target_pixels(frame['target'], frame['monitor'], geometry=frame.get('geometry'))
-                                    if not visual_guard(frame['visual'], pixels, self.action_region(frame, step))['accepted']:
+                                    if not self.guarded_pixels(frame, pixels, self.action_region(frame, step))['accepted']:
                                         raise ValueError('Coordinate evidence changed during wait')
                             self.guard(a['frame_id'])
                         self.perform(action, step, frame, lambda: self.recheck_target(target))
@@ -1176,16 +1407,22 @@ class Desktop:
                     if 'after' in step:
                         entry.update(verification='pending', status='verifying')
                         body = self.await_condition(step['after']['condition'], step['after'].get('timeout_ms', 5000),
-                                                    self.action_completed_ns, target)
+                                                    self.action_completed_ns, target,
+                                                    **{k: step[k] for k in ('read_text', 'a11y_scope') if k in step})
                         entry['after_status'] = body.get('status')
                         if not self.checked_match(body, target, step.get('transition')):
                             entry.update(status='after_timeout', verification='failed')
                             self.ledger.stop_reason = f'step {index}: after condition not met ({body.get("status")})'
                             break
                         entry.update(verification='matched', status='done')
+                        if step['after']['condition']['kind'] == 'text_equals':
+                            entry['application_accepted'] = 'verified_text'
                         # Evidence authorizes only this exact destination, never a later active query.
                         self.recheck_target(target)
                         self.result_target = dict(target)
+                    elif action not in ('wait', 'wait_for', 'read_text'):
+                        if not self.settle(target, entry):
+                            break
             except (ValueError, TimeoutError) as exc:
                 if entry['in_flight_unknown'] or entry['injection'] == 'partial':
                     entry['status'] = 'interrupted'
@@ -1199,12 +1436,18 @@ class Desktop:
 
 S = {"type": "string"}
 I = {"type": "integer"}
-FRAME = {"frame_id": S,
+DELIVERY = {
+    'images': {'type': 'string', 'enum': ['none', 'on_failure', 'target', 'monitor'], 'default': 'none',
+               'description': 'Image delivery, independent of guard capture. none returns a view_frame reference. Monitor is explicit overview.'},
+    'detail': {'type': 'string', 'enum': ['half', 'original'], 'default': 'half'}}
+FRAME = {"frame_id": S, **DELIVERY,
+         'settle_timeout_ms': {'type': 'integer', 'minimum': 0, 'maximum': 5000, 'default': 1500,
+                              'description': 'Bounded quiescence wait without after; 0 opts out. Does not prove application acceptance.'},
          'result_view': {'type': 'object', 'properties': {
              'kind': {'type': 'string', 'enum': ['monitor', 'target', 'region']},
              'box': {'type': 'array', 'items': I, 'minItems': 4, 'maxItems': 4}},
              'required': ['kind'], 'additionalProperties': False,
-             'description': 'Result capture view. Region box is relative to the current window crop; overlays require overview.'},
+             'description': 'Target crop by default. Region box is relative to the current window crop. Overlays report overview_required without broadening capture.'},
          'duration_ms': {'type': 'integer', 'minimum': 1, 'maximum': 120000, 'default': 60000},
          'after': {'type': 'object', 'properties': {'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT},
                    'required': ['condition'], 'additionalProperties': False,
@@ -1216,7 +1459,9 @@ FRAME = {"frame_id": S,
 XY = {"x": I, "y": I}
 STEP = {'type': 'object', 'required': ['action'], 'additionalProperties': False, 'properties': {
     'transition': {'type': 'string', 'enum': ['matched_window']},
-    'action': {'type': 'string', 'enum': ['press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll']},
+    'action': {'type': 'string', 'enum': ['press_key', 'type_text', 'focus_window', 'wait', 'pointer', 'scroll', 'wait_for', 'read_text']},
+    'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT,
+    'read_text': COMMON['read_text'], 'a11y_scope': COMMON['a11y_scope'],
     'key': S, 'text': S, 'address': S, **XY, 'button': {'type': 'string', 'enum': ['left', 'right', 'middle', 'move']},
     'count': I, 'steps': I, 'axis': {'type': 'string', 'enum': ['vertical', 'horizontal']},
     'expect': {**CONDITION_SCHEMA, 'description': 'Window or accessible condition that must hold before this step acts; waited for up to expect_timeout_ms.'},
@@ -1244,15 +1489,15 @@ TOOLS = [
           'backend': {'type': 'string', 'enum': ['local', 'substring', 'braid'], 'default': 'local'}}, ['intent'], True),
     tool("desktop_state", "Inspect Hyprland monitors, windows, and input backend readiness.", {}, [], True),
     tool("screenshot", "Capture one monitor at logical resolution. Returns image and frame_id required for input.",
-         {"monitor": S}, [], True),
-    tool("focus_window", "Focus an existing window by its address from desktop_state and return a screenshot.",
-         {"address": S, 'result_view': FRAME['result_view'], 'duration_ms': FRAME['duration_ms']}, ["address"]),
-    tool("pointer", "Move/click at screenshot pixel coordinates, then return the updated screenshot.",
+         {"monitor": S, **DELIVERY, "images": {**DELIVERY["images"], "enum": ["none", "monitor"], "default": "monitor"}}, [], True),
+    tool("focus_window", "Focus an existing window by its address from desktop_state and return scoped evidence and a deferred frame.",
+         {"address": S, **DELIVERY, 'settle_timeout_ms': FRAME['settle_timeout_ms'], 'result_view': FRAME['result_view'], 'duration_ms': FRAME['duration_ms']}, ["address"]),
+    tool("pointer", "Move/click at viewed frame pixel coordinates, then return outcome evidence and a deferred target frame.",
          {**FRAME, **XY, "button": {"type": "string", "enum": ["left", "right", "middle", "move"]}, "count": I},
          ["frame_id", "x", "y"]),
     tool("type_text", "Type literal UTF-8 text in focused app. Newlines may submit/execute. Does not append Enter.",
          {**FRAME, "text": S}, ["frame_id", "text"]),
-    tool("press_key", "Press a key/chord, e.g. CTRL+A, Return, ALT+Tab. Returns updated screenshot.",
+    tool("press_key", "Press a key/chord, e.g. CTRL+A, Return, ALT+Tab. Returns outcome evidence and a deferred target frame.",
          {**FRAME, "key": S}, ["frame_id", "key"]),
     tool("scroll", "Scroll at screenshot coordinates. Signed wheel steps: positive up/right, negative down/left.",
          {**FRAME, **XY, "steps": I, "axis": {"type": "string", "enum": ["vertical", "horizontal"]}},
@@ -1261,12 +1506,20 @@ TOOLS = [
          {**FRAME, **XY, "end_x": I, "end_y": I}, ["frame_id", "x", "y", "end_x", "end_y"]),
     tool('run_steps', 'Execute a deterministic sequence of inputs under one approval, verifying a window or accessible condition between steps. '
          'The reviewed target is pinned and checked before each input segment. Coordinate actions are allowed only as the first step, with a fresh guard after any wait. A new target requires explicit focus or a matched_window transition. '
-         'Stops at the first unmet condition and reports every step. Returns one final screenshot. Not for sequences whose next action depends on reading results.',
+         'Stops at the first unmet condition and reports every step. Returns a final ledger and deferred target frame; images are opt-in. Not for sequences whose next action depends on reading results.',
          {**{k: v for k, v in FRAME.items() if k != 'after'}, 'steps': {'type': 'array', 'minItems': 1, 'maxItems': 12, 'items': STEP}}, ['frame_id', 'steps']),
-    tool('observe_window', 'Observe an exact focused window. Returns a full crop and guarded frame from the same capture when pixels are available. Channel selection controls collection.',
-         {k: v for k, v in COMMON.items() if k != 'images'}, ['window'], True),
+    tool('open_uri', 'Dispatch an explicit http(s) URL or bounded Obsidian open/new URI through the registered desktop handler. Can create a note; dispatch is not proof of completion. No overwrite, callback URLs or arbitrary schemes.',
+         {'uri': S, 'duration_ms': FRAME['duration_ms']}, ['uri']),
+    tool('cdp_read', 'Read an existing explicitly configured loopback Chromium CDP page. Omit target_id to list pages; otherwise provide its exact expected_url and a CSS selector. No script evaluation, navigation or input. Requires WCU_CDP_PORT and optional websockets>=15.',
+         {'target_id': S, 'expected_url': S, 'selector': S, 'max_chars': {'type': 'integer', 'minimum': 1, 'maximum': 8192}}, [], True),
+    tool('view_frame', 'View retained pixels on demand. Capture time and 120-second expiry never refresh. Half size by default; coordinate input requires viewing its frame.',
+         {'frame_id': S, 'detail': DELIVERY['detail']}, ['frame_id'], True),
+    tool('read_text', 'Read bounded non-protected text from the unique focused control or an explicit revision-scoped selector. Reports unavailable or incomplete evidence.',
+         {'window': S, 'read_text': COMMON['read_text'], 'a11y_scope': COMMON['a11y_scope'], 'after_action': COMMON['after_action']}, ['window'], True),
+    tool('observe_window', 'Observe an exact focused window. Text-first accessibility and revision deltas, with a deferred guarded crop when pixels are collected. images controls delivery separately; view_frame reads retained pixels on demand.',
+         {**{k: v for k, v in COMMON.items() if k != 'images'}, **DELIVERY}, ['window'], True),
     tool('wait_for', 'Wait locally for scoped accessible states or disappearance, exact text readback, a unique or changed window, or changed/stable pixels. Returns outcome evidence and a guarded frame when pixels are available. No input.',
-         {**{k: v for k, v in COMMON.items() if k != 'images'}, 'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT}, ['condition'], True),
+         {**{k: v for k, v in COMMON.items() if k != 'images'}, **DELIVERY, 'condition': CONDITION_SCHEMA, 'timeout_ms': TIMEOUT}, ['condition'], True),
     tool('stop_observing', 'Stop background observation and clear its retained history. No input.', {}, [], True),
 ]
 
@@ -1274,13 +1527,23 @@ TOOLS = [
 def validate(name, args):
     if name == 'context_for_task':
         return validate_request(args)
+    if name == 'read_text':
+        observation.validate('observe', args)
+        if not args.get('window') or set(args)-{'window', 'read_text', 'a11y_scope', 'after_action'}:
+            raise ValueError('read_text requires window and optional scoped selector')
+        return
     if name in ('observe_window', 'wait_for', 'stop_observing'):
-        if isinstance(args, dict) and 'images' in args:
-            raise ValueError('Input observation tools deliver full actionable images when pixels are requested')
-        observation.validate('observe' if name == 'observe_window' else name, args)
+        if not isinstance(args, dict):
+            raise ValueError('Invalid arguments')
+        for k, prop in DELIVERY.items():
+            if k in args and args[k] not in prop['enum']:
+                raise ValueError('Invalid delivery option')
+        observation.validate('observe' if name == 'observe_window' else name, {k: v for k, v in args.items() if k not in DELIVERY})
         if name == 'observe_window' and not args.get('window'):
             raise ValueError('observe_window requires window')
         return
+    if name == 'cdp_read' and isinstance(args, dict) and (('target_id' in args) != ('expected_url' in args)):
+        raise ValueError('CDP read requires both target_id and expected_url')
     spec = next((t["inputSchema"] for t in TOOLS if t["name"] == name), None)
     if spec is None or not isinstance(args, dict):
         raise ValueError("Unknown tool or invalid arguments")
@@ -1294,6 +1557,15 @@ def validate(name, args):
             raise ValueError("Invalid argument type: " + k)
         if p["type"] == "boolean" and type(v) is not bool:
             raise ValueError("Invalid argument type: " + k)
+        if name == 'open_uri' and k == 'uri':
+            validate_uri(v)
+        if name == 'cdp_read':
+            if k == 'max_chars':
+                integer(v, 1, 8192)
+            elif not v or len(v) > (4096 if k == 'expected_url' else 512):
+                raise ValueError('Invalid CDP selector or page identity')
+        if k == 'settle_timeout_ms':
+            integer(v, 0, 5000)
         if k == 'duration_ms':
             integer(v, 1, 120000)
         if k == 'result_view':
@@ -1331,7 +1603,7 @@ def serve():
                 if method == "initialize":
                     result = {"protocolVersion": "2025-06-18", "capabilities": {"tools": {}},
                               "serverInfo": {"name": "wayland-computer-use", "version": "0.1.0"},
-                              "instructions": "Use screenshots before input. Approval dialogs may steal focus: request ONE combined input with restore_focus=true and target_window/target_title from the screenshot. Describe it as Focus <title> and <action>. Do not loop separate refocus calls. Default false rejects focus changes. On action_performed=false, review the returned screenshot before a new approval. Frames expire after 120 seconds. Shared live desktop; do not disable approval gates."}
+                              "instructions": "Use fresh scoped evidence before input; coordinate actions require view_frame. Input returns text evidence by default. Approval dialogs may steal focus: request ONE combined input with restore_focus=true and target_window/target_title from the screenshot. Describe it as Focus <title> and <action>. Do not loop separate refocus calls. Default false rejects focus changes. On action_performed=false, review returned evidence and use view_frame only when pixels are needed. Frames expire after 120 seconds. Shared live desktop; do not disable approval gates."}
                 elif method == "ping":
                     result = {}
                 elif method == "tools/list":

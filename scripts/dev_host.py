@@ -160,9 +160,9 @@ class Runtime:
         if method == "initialize":
             return {"protocolVersion": "2025-06-18", "capabilities": {"tools": {}},
                     "serverInfo": {"name": "wayland-computer-use", "version": self.revision},
-                    "instructions": "Shared live desktop: retain approval gates. Use fresh screenshots before input. "
+                    "instructions": "Shared live desktop: retain approval gates. Use fresh scoped evidence before input; view_frame is required before coordinate input. Inputs return text evidence by default. "
                     "For approval focus changes approve one combined restore_focus action naming target_window and target_title. "
-                    "After a development reload all old frame IDs are invalid; capture and review again. Never replay failed input."}
+                    "After a development reload all old frame IDs are invalid; observe again. Never replay failed input."}
         if method == "ping":
             return {}
         if method == "tools/list":
