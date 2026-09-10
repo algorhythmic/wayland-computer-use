@@ -167,6 +167,10 @@ are not validated for input. Missing accessibility is explicit; there is no OCR.
 
 ## Feedback and application surfaces
 
+[Verified Obsidian transfers](docs/obsidian-transfers.md) provide structured note
+creation with exact encoding, durable operation receipts, and saved-content checks.
+Retries and reconnects reconcile the same operation without creating duplicates.
+
 [Outcome-first feedback contract and verification](docs/feedback.md) describes the
 new defaults, readback steps, trace counters, migration and remaining limits.
 `open_uri` dispatches bounded Obsidian open/new and http(s) URIs through the

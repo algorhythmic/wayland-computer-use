@@ -1,0 +1,92 @@
+{
+  "scope": "Real Obsidian in isolated profile/vault; excludes model inference and approval time",
+  "status": "complete",
+  "runtime_revision": "1d1d404b9d33485abd81ac6063e768ed1ba5ac3ba0f023ebf7a9431223dfd926",
+  "installed_plugin_version": "0.1.0+codex.20260910081553",
+  "setup_ms": 147.99261698499322,
+  "cold_ms": 1071.0641259793192,
+  "warm_median_ms": 255.25841800845228,
+  "validation": {
+    "input_tests": 167,
+    "optional_skipped": 7,
+    "observer_tests": 31,
+    "node_adapter": "passed",
+    "skill_validator": "passed",
+    "plugin_validator": "passed",
+    "frozen_comparison": "preserved"
+  },
+  "trials": [
+    {
+      "trial": 0,
+      "app_state": "cold",
+      "elapsed_ms": 1071.0641259793192,
+      "artifact_verified": true,
+      "creation_tool_calls": 1,
+      "validation_tool_calls": 3,
+      "model_visible_image_pixels": 0,
+      "image_count": 0,
+      "creation_result_bytes": 1171,
+      "duplicate_count": 0,
+      "repeat_verified": true,
+      "reconnect_verified": true,
+      "root_destination_verified_despite_folder_preference": true,
+      "launch": {
+        "status": "acknowledged",
+        "spawned": true,
+        "backend": "gio",
+        "exit_code": 0,
+        "elapsed_ms": 7.934663
+      }
+    },
+    {
+      "trial": 1,
+      "app_state": "warm",
+      "elapsed_ms": 284.6143149945419,
+      "artifact_verified": true,
+      "creation_tool_calls": 1,
+      "validation_tool_calls": 3,
+      "model_visible_image_pixels": 0,
+      "image_count": 0,
+      "creation_result_bytes": 1171,
+      "duplicate_count": 0,
+      "repeat_verified": true,
+      "reconnect_verified": true,
+      "root_destination_verified_despite_folder_preference": true,
+      "launch": {
+        "status": "acknowledged",
+        "spawned": true,
+        "backend": "gio",
+        "exit_code": 0,
+        "elapsed_ms": 16.764739
+      }
+    },
+    {
+      "trial": 2,
+      "app_state": "warm",
+      "elapsed_ms": 225.90252102236263,
+      "artifact_verified": true,
+      "creation_tool_calls": 1,
+      "validation_tool_calls": 3,
+      "model_visible_image_pixels": 0,
+      "image_count": 0,
+      "creation_result_bytes": 1170,
+      "duplicate_count": 0,
+      "repeat_verified": true,
+      "reconnect_verified": true,
+      "root_destination_verified_despite_folder_preference": true,
+      "launch": {
+        "status": "acknowledged",
+        "spawned": true,
+        "backend": "gio",
+        "exit_code": 0,
+        "elapsed_ms": 15.955137
+      }
+    }
+  ],
+  "limits": [
+    "One isolated cold-app trial and two warm-app trials; no model inference or approval time.",
+    "GUI keyboard focus races remain unchanged.",
+    "Duplicate prevention depends on preserving and sharing the durable receipt store.",
+    "Arbitrary note moves or edits can leave reconciliation unverified; uncertain requests are not replayed."
+  ]
+}

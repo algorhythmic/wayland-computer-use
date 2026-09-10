@@ -1,6 +1,6 @@
 # Outcome-first desktop feedback
 
-Contract `wcu-tools-3` separates collection, input validation, and model delivery.
+Contract `wcu-tools-4` separates collection, input validation, and model delivery.
 The proposed HN → Obsidian speedup is an end-to-end target, not a measured result.
 
 ## Defaults and migration
@@ -52,6 +52,10 @@ incomplete or stale readback stops the batch; exact text mismatch stops the wait
 The ledger distinguishes input submission, quiescence and verified text.
 
 ## App surfaces
+
+The [verified Obsidian transfer contract](obsidian-transfers.md) adds structured
+creation, durable duplicate prevention, exact saved-file verification, and bounded
+launch acknowledgement. Prefer it over manually encoded creation URIs.
 
 See the skill's [application surface reference](../skills/wayland-computer-use/references/application-surfaces.md)
 for Obsidian URI parameters, loopback CDP setup and accessibility launch flags.

@@ -6,31 +6,83 @@ import json
 import os
 import re
 import shutil
+import subprocess
+import threading
 import time
-from urllib.parse import parse_qsl, urlsplit
+from urllib.parse import parse_qsl, urlsplit, unquote
 
 
 def validate_uri(uri):
-    if not isinstance(uri, str) or not 1 <= len(uri) <= 32768 or any(ord(c) < 32 for c in uri):
+    if not isinstance(uri, str) or not 1 <= len(uri) <= 120000 or any(ord(c) < 32 for c in uri):
         raise ValueError('Invalid URI')
     parsed = urlsplit(uri)
     if parsed.scheme in ('http', 'https'):
         if not parsed.hostname or parsed.username or parsed.password:
             raise ValueError('URI requires a host and no embedded credentials')
     elif parsed.scheme == 'obsidian':
-        allowed = {'open': {'vault', 'file'}, 'new': {'vault', 'name', 'content'}}
-        pairs = parse_qsl(parsed.query, keep_blank_values=True, strict_parsing=True)
+        if '+' in parsed.query or re.search(r'%(?![0-9A-Fa-f]{2})', parsed.query) or any(c.isspace() for c in parsed.query):
+            raise ValueError('Obsidian parameters require percent encoding: spaces as %20, literal plus as %2B; prefer obsidian_create_note')
+        allowed = {'open': {'vault', 'file'}, 'new': {'vault', 'name', 'file', 'content'}}
+        pairs = parse_qsl(parsed.query, keep_blank_values=True, strict_parsing=True, errors='strict')
         params = dict(pairs)
         if parsed.netloc not in allowed or parsed.path not in ('', '/') or parsed.fragment or \
                 len(params) != len(pairs) or set(params)-allowed[parsed.netloc] or not params.get('vault'):
             raise ValueError('Supported Obsidian URIs: open?vault=&file= or new?vault=&name=&content=')
-        if parsed.netloc == 'new' and (not params.get('name') or '/' in params['name'] or '\\' in params['name'] or params['name'] in ('.', '..')):
-            raise ValueError('Obsidian new requires a note name, without a path')
+        if parsed.netloc == 'new':
+            destinations = [params[k] for k in ('name', 'file') if k in params]
+            if len(destinations) != 1 or not destinations[0] or '/' in destinations[0] or '\\' in destinations[0] or destinations[0] in ('.', '..'):
+                raise ValueError('Obsidian new requires exactly one note name or root-level file, without a path')
         if any('\x00' in v for v in params.values()):
             raise ValueError('URI parameters must not contain NUL')
     else:
         raise ValueError('Only http, https, and bounded Obsidian open/new URIs are supported')
     return uri
+
+
+def dispatch_uri(uri, wait_ms=500):
+    """Wait for a launch acknowledgement, never for a GUI's inherited pipe EOF.
+
+    Once spawned, do not kill or retry a launcher: it may already have delivered
+    the URI. A daemon drains bounded diagnostic bytes and reaps the launcher.
+    """
+    validate_uri(uri)
+    if type(wait_ms) is not int or not 0 <= wait_ms <= 5000:
+        raise ValueError('Invalid launch acknowledgement budget')
+    backend = 'gio' if shutil.which('gio') else 'xdg-open'
+    argv = ['gio', 'open', uri] if backend == 'gio' else ['xdg-open', uri]
+    started = time.monotonic_ns()
+    try:
+        process = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.PIPE, start_new_session=True, close_fds=True)
+    except OSError as exc:
+        return {'status': 'not_started', 'spawned': False, 'backend': backend,
+                'error_type': type(exc).__name__, 'errno': exc.errno}
+    captured = bytearray()
+    def drain():
+        try:
+            while block := process.stderr.read1(1024):
+                captured.extend(block[:max(0, 2048-len(captured))])
+        except (OSError, ValueError):
+            pass
+        finally:
+            process.stderr.close()
+    threading.Thread(target=drain, daemon=True).start()
+    try:
+        code = process.wait(timeout=wait_ms/1000)
+    except subprocess.TimeoutExpired:
+        code = None
+        threading.Thread(target=process.wait, daemon=True).start()
+    # Only bounded, redacted diagnostics; never echo note content or URI values.
+    diagnostic = bytes(captured).decode(errors='replace')
+    secrets = [uri, unquote(uri), *[v for _, v in parse_qsl(urlsplit(uri).query) if v]]
+    for value in sorted(secrets, key=len, reverse=True):
+        diagnostic = diagnostic.replace(value, '[redacted]')
+    diagnostic = re.sub(r'[a-zA-Z][a-zA-Z0-9+.-]*://\S+', '[URI]', diagnostic)
+    diagnostic = ''.join(c for c in diagnostic if c in '\n\t' or ord(c) >= 32)[:512]
+    return {'status': 'acknowledged' if code == 0 else 'pending' if code is None else 'launcher_error',
+            'spawned': True, 'backend': backend, 'pid': process.pid, 'exit_code': code,
+            'elapsed_ms': (time.monotonic_ns()-started)/1e6, 'diagnostic': diagnostic,
+            'application_accepted': 'unverified', 'retry_safe': False}
 
 
 def cdp_port():
@@ -44,9 +96,9 @@ def surface_context(intent):
     """Candidates with explicit prerequisites, never inferred authorization."""
     actions = []
     if any(word in intent.casefold() for word in ('obsidian', 'note', 'uri')):
-        actions.append({'tool': 'open_uri', 'app': 'obsidian', 'operation': 'new or open',
-                        'prerequisites': ['known vault', 'registered obsidian URI handler', 'authorized note content'],
-                        'launcher_available': bool(shutil.which('xdg-open'))})
+        actions.append({'tool': 'obsidian_create_note', 'app': 'obsidian', 'operation': 'create and verify',
+                        'prerequisites': ['registered vault name or ID', 'unique operation_id', 'authorized note content'],
+                        'launcher_available': bool(shutil.which('gio') or shutil.which('xdg-open'))})
     if any(word in intent.casefold() for word in ('browser', 'chrom', 'web', 'comment', 'page')):
         actions.append({'tool': 'cdp_read', 'app': 'chromium',
                         'prerequisites': ['existing loopback CDP browser', 'selected page ID and expected URL'],

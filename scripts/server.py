@@ -29,7 +29,8 @@ if __package__:
     from .cu.context_records import SnapshotStore, SCHEMA_VERSION
     from .cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
     from .cu.braid_client import BraidBackend
-    from .cu.app_surfaces import cdp_read, validate_uri, surface_context
+    from .cu.app_surfaces import cdp_read, validate_uri, surface_context, dispatch_uri
+    from .cu.obsidian import NoteTransfers, validate_note, validate_operation
     from .cu.system import desktop_locked, hypr_query
 else:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -43,7 +44,8 @@ else:
     from cu.context_records import SnapshotStore, SCHEMA_VERSION
     from cu.context_retrieval import context_for_task, validate_request, SessionEvidence, render, CONTRACT_VERSION
     from cu.braid_client import BraidBackend
-    from cu.app_surfaces import cdp_read, validate_uri, surface_context
+    from cu.app_surfaces import cdp_read, validate_uri, surface_context, dispatch_uri
+    from cu.obsidian import NoteTransfers, validate_note, validate_operation
     from cu.system import desktop_locked, hypr_query
 
 
@@ -459,7 +461,7 @@ class Desktop:
             "trace": self.recorder.status(), 'runtime': self.capabilities()}
 
     def capabilities(self):
-        return {'identity': self.runtime_identity, 'tool_contract_version': 'wcu-tools-3',
+        return {'identity': self.runtime_identity, 'tool_contract_version': 'wcu-tools-4',
             'tool_contract_sha256': hashlib.sha256(json.dumps(TOOLS, sort_keys=True).encode()).hexdigest(),
             'context_schema': SCHEMA_VERSION, 'context_contract': CONTRACT_VERSION,
             'observer_version': hashlib.sha256(Path(observation.__file__).read_bytes()).hexdigest(),
@@ -467,7 +469,7 @@ class Desktop:
             'capabilities': ['guarded_sequences', 'segment_guards', 'execution_ledger', 'shared_deadline',
                              'context_for_task', 'explicit_window_transitions', 'scoped_accessibility',
                              'bounded_text_readback', 'readiness_conditions', 'result_views', 'original_image_detail', 'deferred_frames', 'image_delivery_policy',
-                             'text_first_results', 'batch_readback', 'bounded_quiescence', 'application_surfaces'],
+                             'text_first_results', 'batch_readback', 'bounded_quiescence', 'application_surfaces', 'verified_obsidian_notes', 'durable_note_receipts'],
             'unsupported': ['focus_until', 'semantic_activation', 'arbitrary_code', 'asynchronous_input']}
 
     def task_context(self, args):
@@ -1024,18 +1026,39 @@ class Desktop:
             return self.task_context(a)
         if name == 'cdp_read':
             return [text_content(cdp_read(**a))]
+        if name == 'obsidian_note_status':
+            return [text_content(NoteTransfers().status(**a))]
+        if name == 'obsidian_create_note':
+            if desktop_locked():
+                raise ValueError('Desktop is locked')
+            def starting():
+                if desktop_locked():
+                    raise ValueError('Desktop locked before note dispatch')
+                self.action_started = self.input_started = True
+            result = NoteTransfers().create(**a, before_dispatch=starting)
+            self.action_started = result['dispatched_this_call']
+            if result['action_performed'] is True:
+                self.action_completed_ns = time.monotonic_ns()
+            return [text_content(result)]
         if name == 'open_uri':
             if desktop_locked():
                 raise ValueError('Desktop is locked')
             self.frames.clear()
             self.input_started = self.action_started = True
             self.ledger.injecting()
-            run(['xdg-open', a['uri']], timeout=self.deadline.remaining(10))
-            self.ledger.submitted()
-            self.action_completed_ns = time.monotonic_ns()
-            self.ledger.completed(self.action_completed_ns)
-            self.ledger.current['status'] = 'done'
-            return [text_content({'status': 'dispatched', 'application_accepted': 'unverified'})]
+            launch = dispatch_uri(a['uri'], wait_ms=min(500, self.deadline.milliseconds(500)))
+            if not launch['spawned']:
+                self.input_started = self.action_started = False
+                self.ledger.current.update(injection='not_started', in_flight_unknown=False, status='interrupted')
+                self.ledger.stop_reason = 'launcher_not_started'
+            else:
+                self.ledger.submitted()
+                self.action_completed_ns = time.monotonic_ns()
+                self.ledger.completed(self.action_completed_ns)
+                self.ledger.current['status'] = 'done'
+            return [text_content({'status': 'dispatched' if launch['status'] == 'acknowledged' else 'dispatch_uncertain',
+                'application_accepted': 'unverified', 'launch': launch, 'retry_safe': False,
+                'requires_review': launch['status'] != 'acknowledged'})]
         if name == 'view_frame':
             return self.deliver_frame(a['frame_id'], detail=a.get('detail', 'half'))
         if name == 'read_text':
@@ -1470,14 +1493,14 @@ STEP = {'type': 'object', 'required': ['action'], 'additionalProperties': False,
               'additionalProperties': False, 'description': 'Condition waited for after this step; the sequence stops if it times out.'}}}
 
 
-def tool(name, description, props, required, read=False):
+def tool(name, description, props, required, read=False, idempotent=None):
     if "restore_focus" in props:
         description += " With restore_focus=true, this operation RESTORES FOCUS to target_title/target_window, revalidates, then performs the input; approve the whole operation."
     return {"name": name, "description": description,
             "inputSchema": {"type": "object", "properties": props,
                             "required": required, "additionalProperties": False},
             "annotations": {"readOnlyHint": read, "destructiveHint": not read,
-                            "idempotentHint": read, "openWorldHint": True}}
+                            "idempotentHint": read if idempotent is None else idempotent, "openWorldHint": True}}
 
 
 TOOLS = [
@@ -1508,8 +1531,14 @@ TOOLS = [
          'The reviewed target is pinned and checked before each input segment. Coordinate actions are allowed only as the first step, with a fresh guard after any wait. A new target requires explicit focus or a matched_window transition. '
          'Stops at the first unmet condition and reports every step. Returns a final ledger and deferred target frame; images are opt-in. Not for sequences whose next action depends on reading results.',
          {**{k: v for k, v in FRAME.items() if k != 'after'}, 'steps': {'type': 'array', 'minItems': 1, 'maxItems': 12, 'items': STEP}}, ['frame_id', 'steps']),
-    tool('open_uri', 'Dispatch an explicit http(s) URL or bounded Obsidian open/new URI through the registered desktop handler. Can create a note; dispatch is not proof of completion. No overwrite, callback URLs or arbitrary schemes.',
+    tool('open_uri', 'Launch an explicit http(s) or bounded Obsidian URI through the registered handler. Waits briefly for launch acknowledgement, never for the GUI to close. An uncertain dispatch must not be repeated blindly. Prefer obsidian_create_note for creation with duplicate prevention and exact readback. No overwrite or callbacks.',
          {'uri': S, 'duration_ms': FRAME['duration_ms']}, ['uri']),
+    tool('obsidian_create_note', 'Create and verify one note in a registered Obsidian vault. Pass an exact vault name or ID, plain note name, literal content, and a unique operation_id. Encodes internally and targets the vault root. Reusing the same ID and content only reconciles the original attempt, across reconnects. Existing or reserved destinations are rejected. No overwrite. Returns exact saved-content verification or an uncertain receipt for obsidian_note_status.',
+         {'vault': S, 'name': S, 'content': S, 'operation_id': S,
+          'timeout_ms': {'type': 'integer', 'minimum': 0, 'maximum': 30000, 'default': 5000}},
+         ['vault', 'name', 'content', 'operation_id'], idempotent=True),
+    tool('obsidian_note_status', 'Read and reconcile a durable note operation in its registered vault, including an automatically suffixed filename. Verifies bounded saved-file content. Never dispatches, creates, overwrites, or replays input. Unverified or ambiguous outcomes require inspection, not a new operation ID.',
+         {'operation_id': S, 'timeout_ms': {'type': 'integer', 'minimum': 0, 'maximum': 30000, 'default': 0}}, ['operation_id'], True),
     tool('cdp_read', 'Read an existing explicitly configured loopback Chromium CDP page. Omit target_id to list pages; otherwise provide its exact expected_url and a CSS selector. No script evaluation, navigation or input. Requires WCU_CDP_PORT and optional websockets>=15.',
          {'target_id': S, 'expected_url': S, 'selector': S, 'max_chars': {'type': 'integer', 'minimum': 1, 'maximum': 8192}}, [], True),
     tool('view_frame', 'View retained pixels on demand. Capture time and 120-second expiry never refresh. Half size by default; coordinate input requires viewing its frame.',
@@ -1583,6 +1612,13 @@ def validate(name, args):
                 integer(v['timeout_ms'], 1, 30000)
         if "enum" in p and v not in p["enum"]:
             raise ValueError("Invalid choice: " + k)
+
+    if name == 'obsidian_create_note':
+        validate_note(args['vault'], args['name'], args['content'], args['operation_id'])
+    if name == 'obsidian_note_status':
+        validate_operation(args['operation_id'])
+    if name in ('obsidian_create_note', 'obsidian_note_status') and 'timeout_ms' in args:
+        integer(args['timeout_ms'], 0, 30000)
 
 
 def serve():

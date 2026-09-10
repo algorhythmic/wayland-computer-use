@@ -3,18 +3,31 @@
 Use these tools only within the user's chosen app/task. They dispatch or read
 specific protocol operations, never arbitrary scripts or commands.
 
-For an existing Obsidian vault, percent-encode each parameter independently:
+For note creation use `obsidian_create_note` with `vault` (registered name or ID),
+`name` (plain note name), literal `content`, and a unique `operation_id`. It
+percent-encodes internally, creates at the vault root, and verifies the exact
+saved content. Do not manually construct a creation URI when this tool is available.
 
-```text
-obsidian://new?vault=My%20vault&name=HN%20reflection&content=Excerpt%0A%0AMy%20comment
+```json
+{"vault":"My vault","name":"HN reflection","content":"Excerpt\n\nMy comment","operation_id":"hn-reflection-20260910-001","timeout_ms":5000}
 ```
 
-`open_uri` supports `obsidian://new` with `vault`, `name`, optional `content`,
-and `obsidian://open` with `vault`, optional `file`. The URI handler must already
-be registered. No overwrite/append, filesystem path, callback or arbitrary scheme
-is accepted. Use a fresh unique name and verify the resulting note through the
-app or an authorized file read; a successful dispatch is not a saved-note receipt.
-[Obsidian URI documentation](https://obsidian.md/help/uri).
+A `verified` result includes the saved `note_path`. For `unverified` or `ambiguous`
+outcomes, call `obsidian_note_status` with the same `operation_id`. Repeating the
+same creation request only reconciles; it never dispatches again. Do not invent a
+new ID to bypass an uncertain result. Durable receipts survive reconnects and
+reserve the target before launch. Existing notes are never overwritten. Status
+readback covers the requested root-level name and new numeric collision suffixes;
+arbitrary moves/renames remain uncertain. Receipts store paths/hashes, not bodies.
+
+`open_uri` still handles explicit http(s) and bounded Obsidian open/new URIs.
+It reports launch acknowledgement separately from application completion; a
+pending launcher is never killed or replayed. Raw Obsidian parameters must use
+`%20` for spaces and `%2B` for literal plus signs. This legacy dispatch-only route
+cannot verify a saved note or prevent duplicates across retries.
+
+[Full transfer contract and repeatable benchmark](../../../docs/obsidian-transfers.md) ·
+[Official Obsidian URI documentation](https://obsidian.md/help/uri).
 
 For Chromium, prefer an available browser connector. WCU's optional `cdp_read`
 uses an already running debugging browser at numeric loopback and the port in

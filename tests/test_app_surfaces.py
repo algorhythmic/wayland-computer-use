@@ -3,7 +3,7 @@ import os
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 from test_server import server
 from cu import app_surfaces as app
@@ -11,11 +11,11 @@ from cu import app_surfaces as app
 
 class SurfaceTests(unittest.TestCase):
     def test_uri_validates_scheme_parameters_and_encoding(self):
-        uri = 'obsidian://new?'+urlencode({'vault': 'My vault', 'name': 'HN', 'content': 'Excerpt\nReflection? &'})
+        uri = 'obsidian://new?'+urlencode({'vault': 'My vault', 'name': 'HN', 'content': 'Excerpt\nReflection? &'}, quote_via=quote)
         self.assertEqual(app.validate_uri(uri), uri)
         for uri in ('javascript:alert(1)', 'file:///etc/passwd', 'https://user:secret@example.com',
                     'obsidian://new?vault=v&name=n&overwrite=true', 'obsidian://new?vault=v&name=n&x-success=https://x',
-                    'obsidian://new?vault=v&name=..%2Fn', 'obsidian://new?vault=v&vault=w&name=n'):
+                    'obsidian://new?vault=v&name=..%2Fn', 'obsidian://new?vault=v&vault=w&name=n', 'obsidian://new?vault=v&name=has+spaces', 'obsidian://new?vault=v&name=bad%5Cpath', 'obsidian://new?vault=v&file=n&name=m'):
             with self.subTest(uri=uri), self.assertRaises(ValueError):
                 app.validate_uri(uri)
 
@@ -23,9 +23,9 @@ class SurfaceTests(unittest.TestCase):
         d = server.Desktop()
         self.addCleanup(d.close)
         uri = 'obsidian://new?vault=Test&name=HN&content=Excerpt'
-        with patch.object(server, 'desktop_locked', return_value=False), patch.object(server, 'run') as run:
+        with patch.object(server, 'desktop_locked', return_value=False), patch.object(server, 'dispatch_uri', return_value={'status': 'acknowledged', 'spawned': True}) as run:
             result = d.call('open_uri', {'uri': uri})
-        self.assertEqual(run.call_args.args[0], ['xdg-open', uri])
+        self.assertEqual(run.call_args.args[0], uri)
         self.assertEqual(run.call_count, 1)
         self.assertEqual(json.loads(result[0]['text'])['application_accepted'], 'unverified')
         with patch.object(server, 'run') as run, self.assertRaises(ValueError):
@@ -81,4 +81,4 @@ class SurfaceTests(unittest.TestCase):
                 self.assertEqual(len(result[0]['text'].encode()), body['output']['bytes'])
                 self.assertLessEqual(body['output']['bytes'], limit)
                 if limit == 2048:
-                    self.assertEqual([a['tool'] for a in body['app_surfaces']], ['open_uri', 'cdp_read'])
+                    self.assertEqual([a['tool'] for a in body['app_surfaces']], ['obsidian_create_note', 'cdp_read'])
