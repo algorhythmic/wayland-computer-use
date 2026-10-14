@@ -1,8 +1,66 @@
 # Wayland Computer Use
 
-Experimental local MCP tools for operating and observing a **Hyprland/Wayland**
-desktop, developed on Omarchy. A community project, not an official OpenAI
-computer-use implementation or support for every Wayland compositor.
+Two MCP servers that let an AI agent observe and operate a Linux Hyprland/Wayland desktop with guarded input.
+
+Focus changes and partial input make desktop automation hard to verify. The input server rechecks its target before each segment, records submitted actions, and never replays them automatically. A separate observer uses accessibility data and changed-region images where available.
+
+**Proof:** 27/27 paired desktop task artifacts passed; batching cut median task time 37–47% ([results](reports/2026-09-08-wcu-braid-implementation-results.md), [raw data](reports/benchmarks/wcu-braid-20260908/desktop-e2e.json)). These are deterministic local pipelines, excluding model inference and approval time.
+
+**Works with:** Claude Code and Codex. Claude Code 2.1.296 passed a read-only MCP call; input, images and approvals were not tested in that version. [Client setup and test scope](#use-with-claude-code).
+
+**Part of:** the agent runtime alongside [Heimdall](https://github.com/algorhythmic/heimdall) and [Braid](https://github.com/algorhythmic/braid). Runs independently; Braid is an optional context backend and Heimdall integration is not delivered.
+
+## Quick start
+
+Needs an unlocked Hyprland session, Python 3, `hyprctl` and `grim`; input also needs `wtype` and `ydotool`.
+
+```bash
+git clone https://github.com/algorhythmic/wayland-computer-use.git
+cd wayland-computer-use
+python3 scripts/configure_mcp.py  # prints client config; writes nothing
+```
+
+Follow [Setup](#setup) to publish the runtime and configure your client.
+
+## Status and limits
+
+Hyprland only. A community project, not an official OpenAI implementation. Guards reduce focus races but cannot make input atomic. Benchmarks use one machine and do not measure general agent performance. Local development suite: 184 passed, 7 skipped; [validation details](#validation-and-benchmark-limits) below.
+
+---
+
+## Use with Claude Code
+
+Tested on October 14, 2026 with Claude Code 2.1.296 on the development machine,
+against a locally published development runtime (`c618243`), ahead of the public
+main branch at the time of this check. Write the `wayland` entry printed by
+`configure_mcp.py` to a file, for example `wcu-mcp.json`. The tested file kept
+`command`, `args` and `env`, and omitted the Codex `startup_timeout_sec` field:
+
+```json
+{"mcpServers": {"wayland": {"command": "/usr/bin/python3",
+  "args": ["/absolute/path/to/wayland-computer-use/scripts/dev_host.py"],
+  "env": {"PYTHONDONTWRITEBYTECODE": "1"}}}}
+```
+
+Load only that server and allow only the read-only `desktop_state` tool:
+
+```bash
+printf '%s' "Call mcp__wayland__desktop_state once and report tool_contract_version." |
+  claude -p --strict-mcp-config --mcp-config wcu-mcp.json --tools "" \
+    --setting-sources "" --no-session-persistence \
+    --allowedTools mcp__wayland__desktop_state
+```
+
+What this established: the `wayland` server connected and exposed all 19 tools. The
+model made one `desktop_state` call, which returned without error and reported
+`wcu-tools-5`. A separate config for `wayland-desktop-observer/scripts/observer_server.py`
+connected and listed its 4 tools; none was called. What it did not establish: input,
+image delivery, approval prompts, or a full desktop task in this Claude Code version.
+On September 7, a Claude Code session drove an earlier build through four
+model-driven desktop task trials. Each trial finished, but each left a corrupted
+source line ([results](reports/2026-09-07-browser-obsidian-ab/results.md)).
+
+## Components
 
 One repository, **two independent MCP servers**, using shared observation code.
 Their permissions, runtime state, and input guards remain separate.
@@ -98,8 +156,9 @@ is not equivalent to a complete model-driven acceptance test.
 
 Computer Use exposes `desktop_state`, `screenshot`, `focus_window`, `pointer`,
 `type_text`, `press_key`, `scroll`, `drag`, `run_steps`, `observe_window`,
-`wait_for`, `read_text`, `view_frame`, `open_uri`, optional `cdp_read`,
-`stop_observing`, and read-only `context_for_task`. Input returns scoped evidence
+`wait_for`, `read_text`, `view_frame`, `open_uri`, `obsidian_create_note`,
+`obsidian_note_status`, optional `cdp_read`, `stop_observing`, and read-only
+`context_for_task`. Input returns scoped evidence
 and a deferred target frame by default. `images` controls delivery independently
 of guard capture: `none` (default), `on_failure`, `target`, or explicit `monitor`.
 `view_frame` delivers retained pixels only on request, at half size by default;
@@ -112,7 +171,8 @@ persistent helper uses wlr-screencopy on untransformed scale-1 outputs; other
 configurations use raw `grim`. A frame records capture time, target identity,
 layout and visible pixels, and expires after 120 seconds from capture start.
 
-The `wcu-tools-3` contract pins the intended target before every input segment,
+The public `wcu-tools-4` contract (extended by `wcu-tools-5` in the local
+development build tested above) pins the intended target before every input segment,
 reports partial submission and outcome verification in a recovery ledger, and
 shares a validated duration budget across sequence steps (60 seconds by default,
 120 seconds maximum). An explicit matched-window transition is required to adopt
@@ -234,5 +294,34 @@ entry point. The original sibling observer checkout remains independent; continu
 source development in this repository. Installed plugin activation is recorded
 separately from publication and existing-chat tool discovery in release evidence.
 
-No open-source license has been selected yet. Publication does not itself grant
-an open-source license; select one before advertising reuse terms.
+Licensed under [Apache License 2.0](LICENSE).
+
+
+## Validation and benchmark limits
+
+- **Hyprland only.** Developed on Omarchy. This is a community project, not an
+  official OpenAI computer-use implementation, and it does not support every
+  Wayland compositor.
+- **The benchmarks are narrow.** They are local, deterministic task pipelines on one
+  machine and shared desktop: three trials per task and variant for the paired
+  tasks, and six trials on one GTK fixture for change detection. They exclude model
+  inference and approval time. They are not end-to-end agent benchmarks or token
+  measurements. The change-detection comparison is between two pipelines, not
+  equal-sized encoders, and depends on usable accessibility data.
+- **Guards reduce focus races but do not make input atomic.** In a natural
+  asynchronous focus race, 40 characters reached a decoy window before the next
+  segment guard rejected the rest. Zero wrong-window input is not claimed.
+- **The Braid backend has no measured quality advantage.** On eleven labeled cases it
+  matched local retrieval quality but was slower. Local retrieval is the default.
+- **Tests:** on October 14, 2026, `python3 -m unittest discover -s tests -v`
+  on local development commit `c618243` with uncommitted evaluation changes
+  ran 191 tests: 184 passed and 7 optional Braid tests skipped. The temporary Unix
+  socket fixture requires a host that permits local socket binding. The September
+  10 record of 167 input tests applies to an older build. The 191-test run is
+  development evidence, not a fresh test result for the public main branch.
+- **Approvals belong to the MCP client.** Read-only does not mean privacy-free or
+  automatically approved.
+
+## License
+
+[Apache License 2.0](LICENSE).
